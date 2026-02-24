@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+    <title>Guad - Documents</title>
+</head>
+<body>
+
+<main>
+    <h1>Document List</h1>
+
+    <form method="get" th:action="@{/admin/documents}">
+        <div class="grid">
+            <input type="text" 
+                   name="search" 
+                   placeholder="Search by name or ID..."
+                   th:value="${search}">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Project</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="document : ${documents}">
+            <td>
+                <a th:href="@{/admin/documents/{id}(id=${document.id()})}"
+                   th:text="${document.id()}"></a>
+            </td>
+            <td th:text="${document.name()}"></td>
+            <td th:text="${document.projectName()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
+

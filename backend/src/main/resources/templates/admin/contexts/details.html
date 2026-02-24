@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+  <title>Guad - Dashboard</title>
+</head>
+<body>
+
+<main>
+  <h1>Context Details</h1>
+
+  <ul>
+    <li>Id: <span th:text="${context.id()}"></span></li>
+    <li>Name: <span th:text="${context.name()}"></span></li>
+    <li>Description: <span th:text="${context.description()}"></span></li>
+    <li>Color: <span th:text="${context.color()}"></span></li>
+    <li>Icon Key: <span th:text="${context.iconKey()}"></span></li>
+  </ul>
+</main>
+
+</body>
+</html>
+

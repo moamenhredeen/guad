@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/pico.min.css}">
+    <title>Guad - Login</title>
+</head>
+<body>
+<main class="container">
+
+    <hgroup class="text-center">
+        <h1>Guad</h1>
+        <h3>GTD-based task manager</h3>
+    </hgroup>
+
+    <article th:if="${param.error != null}">
+        <p>Error</p>
+    </article>
+    <article th:if="${param.logout}">
+        <p>You have been logged out.</p>
+    </article>
+
+    <form method="post" th:action="@{/admin/auth/login}">
+        <article>
+            <header>Login</header>
+            <input id="username" type="text" name="username" placeholder="Enter your name" required autofocus
+                   autocomplete="username"/>
+            <input id="password" type="password" name="password" required placeholder="Enter your name"/>
+            <input type="checkbox" id="remember-me" name="remember-me"/>
+            <footer>
+                <button type="submit">Sign in</button>
+            </footer>
+        </article>
+    </form>
+
+    <article th:if="${not #lists.isEmpty(oauth2Providers)}">
+        <header>Or sign in with</header>
+        <div th:each="provider : ${oauth2Providers}">
+            <a th:href="@{${provider.url}}" role="button" class="secondary outline"
+               style="width: 100%; text-align: center; margin-bottom: 0.5rem;"
+               th:text="${'Sign in with ' + provider.name}">
+            </a>
+        </div>
+    </article>
+</main>
+</body>
+</html>

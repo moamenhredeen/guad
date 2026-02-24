@@ -1,0 +1,54 @@
+name: "guad-app"
+services:
+  # app
+  db:
+    image: "postgres:latest"
+    volumes:
+      - "guad_data:/var/lib/postgresql"
+    networks:
+      - guad_network
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=guad_db"
+      - "POSTGRES_USER=guad_user"
+      - "POSTGRES_PASSWORD=guad_password"
+
+  keycloak:
+    image: "quay.io/keycloak/keycloak:latest"
+    command: start-dev
+    networks:
+      - guad_network
+    ports:
+      - "8081:8080"
+    environment:
+      - "KEYCLOAK_ADMIN=admin"
+      - "KEYCLOAK_ADMIN_PASSWORD=admin"
+      - "KC_DB=postgres"
+      - "KC_DB_URL=jdbc:postgresql://keycloak_db:5432/keycloak_db"
+      - "KC_DB_USERNAME=keycloak_user"
+      - "KC_DB_PASSWORD=keycloak_password"
+    depends_on:
+      - keycloak_db
+
+  keycloak_db:
+    image: "postgres:latest"
+    volumes:
+      - "keycloak_data:/var/lib/postgresql"
+    networks:
+      - guad_network
+    ports:
+      - "5433:5432"
+    labels:
+      org.springframework.boot.ignore: true
+    environment:
+      - "POSTGRES_DB=keycloak_db"
+      - "POSTGRES_USER=keycloak_user"
+      - "POSTGRES_PASSWORD=keycloak_password"
+
+networks:
+  guad_network:
+    driver: bridge
+volumes:
+  guad_data:
+  keycloak_data:

@@ -1,0 +1,72 @@
+server:
+  port: 8080
+  tomcat:
+    max-part-count: 100
+spring:
+  application:
+    name: guad
+  datasource:
+    url: jdbc:postgresql://localhost:5432/guad_db
+    username: guad_user
+    password: guad_password
+  data:
+    web:
+      pageable:
+        default-page-size: 25
+        max-page-size: 100
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-name: Keycloak
+            client-id: keycloak
+            client-secret: p56JlkSbHTN4XUY8eiyIoMN0GLpanOrm
+            scope: [ openid, profile]
+            client-authentication-method: client_secret_basic
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/keycloak
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8081/realms/master
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8080/realms/master/
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID:AKIA4IPYLWN7DA3ACHV5}
+        secret-key: ${AWS_SECRET_ACCESS_KEY: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}
+      s3:
+        region: ${AWS_REGION:us-east-1}
+        bucket: ${AWS_S3_BUCKET_NAME:aws-s3-tue-bucket}
+logging:
+  level:
+    org.springframework.web: INFO
+    org.springframework.security: TRACE
+
+
+attachment:
+  presigned-url-expiration-minutes: 60
+  max-file-size-mb: 50
+  allowed-mime-types:
+    - image/jpeg
+    - image/png
+    - image/gif
+    - image/webp
+    - application/pdf
+    - application/msword
+    - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    - application/vnd.ms-excel
+    - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    - text/plain
+    - text/csv

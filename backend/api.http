@@ -1,0 +1,23 @@
+@url = http://localhost:8080/api
+
+### auth register
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email": "moamen+3@hredeen.com",
+  "firstName": "moamen",
+  "lastName": "hredeen",
+  "password": "strong-password",
+  "passwordConfirmation": "strong-password",
+  "username": "moamenhredeen+3"
+}
+
+### auth login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "moamenhredeen",
+  "password": "strong-password"
+}

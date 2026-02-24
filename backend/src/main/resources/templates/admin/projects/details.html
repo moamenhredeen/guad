@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+  <title>Guad - Project Details</title>
+</head>
+<body>
+
+<main>
+  <h1>Project Details</h1>
+
+  <ul>
+    <li>Id: <span th:text="${project.id()}"></span></li>
+    <li>Name: <span th:text="${project.name()}"></span></li>
+    <li>Description: <span th:text="${project.description()}"></span></li>
+    <li>Desired Outcome: <span th:text="${project.desiredOutcome()}"></span></li>
+    <li>Status: <span th:text="${project.status()}"></span></li>
+    <li>Created Date: <span th:text="${project.createdDate() != null ? #temporals.format(project.createdDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></li>
+    <li>Updated Date: <span th:text="${project.updatedDate() != null ? #temporals.format(project.updatedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></li>
+    <li>Completed Date: <span th:text="${project.completedDate() != null ? #temporals.format(project.completedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></li>
+    <li>Color: <span th:text="${project.color()}"></span></li>
+    <li>Area: <a th:if="${project.areaId() != null}"
+                 th:href="@{/admin/areas/{id}(id=${project.areaId()})}"
+                 th:text="${project.areaName()}"></a>
+        <span th:if="${project.areaId() == null}">None</span>
+    </li>
+  </ul>
+
+  <div th:if="${project.attachments() != null && !project.attachments().isEmpty()}" style="margin-top: 2rem;">
+    <h2>Attachments</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+      <article th:each="attachment : ${project.attachments()}" style="padding: 1rem; border: 1px solid var(--pico-border-color); border-radius: 4px;">
+        <a th:href="@{/admin/attachments/{id}(id=${attachment.id()})}" style="text-decoration: none; color: inherit;">
+          <div th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('image/')}" style="text-align: center; margin-bottom: 0.5rem;">
+            <img th:src="${attachment.downloadUrl()}" 
+                 th:alt="${attachment.filename()}" 
+                 style="max-width: 100%; max-height: 150px; object-fit: contain; border-radius: 4px;">
+          </div>
+          <div th:if="${attachment.mimeType() == null or !attachment.mimeType().startsWith('image/')}" style="text-align: center; margin-bottom: 0.5rem; padding: 2rem; background-color: var(--pico-muted-border-color); border-radius: 4px;">
+            <span style="font-size: 3rem;">📄</span>
+          </div>
+          <h6 style="margin: 0.5rem 0 0.25rem 0; word-break: break-word;" th:text="${attachment.filename()}"></h6>
+          <small style="color: var(--pico-muted-color);">
+            <span th:text="${#numbers.formatDecimal(attachment.fileSize() / 1024.0, 1, 2)} + ' KB'"></span>
+            <span th:if="${attachment.mimeType() != null}" th:text="' · ' + ${attachment.mimeType()}"></span>
+          </small>
+        </a>
+      </article>
+    </div>
+  </div>
+  <div th:if="${project.attachments() == null || project.attachments().isEmpty()}" style="margin-top: 2rem;">
+    <h2>Attachments</h2>
+    <p>No attachments</p>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <h2>Actions</h2>
+    
+    <form method="get" th:action="@{/admin/projects/{id}(id=${project.id()})}" style="margin-bottom: 1rem;">
+      <input type="hidden" name="documentSearch" th:value="${documentSearchKeyword != null ? documentSearchKeyword : ''}">
+      <div class="grid">
+        <input type="text" 
+               name="actionSearch" 
+               placeholder="Search actions by description or ID..."
+               th:value="${actionSearchKeyword != null ? actionSearchKeyword : ''}"
+               style="width: 100%;">
+        <button type="submit">Search Actions</button>
+      </div>
+    </form>
+
+    <div th:if="${actionSearchResults != null and !actionSearchResults.isEmpty()}" style="margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; max-height: 200px; overflow-y: auto;">
+      <div style="padding: 0.5rem; background-color: #f0f0f0; font-weight: bold;">Search Results - Click to Add:</div>
+      <div th:each="action : ${actionSearchResults}" style="padding: 0.5rem; border-bottom: 1px solid #eee;">
+        <form method="post" th:action="@{/admin/projects/{id}/add-action(id=${project.id()})}" style="display: inline;">
+          <input type="hidden" name="actionId" th:value="${action.id()}">
+          <button type="submit" style="background: none; border: none; color: #007bff; cursor: pointer; text-decoration: underline; padding: 0;">
+            <strong th:text="${action.description()}"></strong>
+            <span style="color: #666; font-size: 0.9em;" th:text="' (ID: ' + ${action.id()} + ', Status: ' + ${action.status()} + ')'"></span>
+            <span style="color: #28a745; margin-left: 0.5rem;">[Add]</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div th:if="${project.actions() != null && !project.actions().isEmpty()}" style="margin-top: 1rem;">
+      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+        <article th:each="action : ${project.actions()}" style="padding: 1rem; border: 1px solid var(--pico-border-color); border-radius: 4px; position: relative;">
+          <a th:href="@{/admin/actions/{id}(id=${action.id()})}" style="text-decoration: none; color: inherit;">
+            <h6 style="margin: 0 0 0.5rem 0; word-break: break-word;" th:text="${action.description()}"></h6>
+            <small style="color: var(--pico-muted-color);" th:text="${action.status()}"></small>
+          </a>
+          <form method="post" th:action="@{/admin/projects/{id}/remove-action(id=${project.id()})}" style="position: absolute; top: 0.5rem; right: 0.5rem;">
+            <input type="hidden" name="actionId" th:value="${action.id()}">
+            <button type="submit" style="background: #dc3545; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 3px; cursor: pointer; font-size: 0.8em;">Remove</button>
+          </form>
+        </article>
+      </div>
+    </div>
+    <div th:if="${project.actions() == null || project.actions().isEmpty()}" style="margin-top: 1rem;">
+      <p>No actions</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <h2>Documents</h2>
+    
+    <form method="get" th:action="@{/admin/projects/{id}(id=${project.id()})}" style="margin-bottom: 1rem;">
+      <input type="hidden" name="actionSearch" th:value="${actionSearchKeyword != null ? actionSearchKeyword : ''}">
+      <div class="grid">
+        <input type="text" 
+               name="documentSearch" 
+               placeholder="Search documents by name or ID..."
+               th:value="${documentSearchKeyword != null ? documentSearchKeyword : ''}"
+               style="width: 100%;">
+        <button type="submit">Search Documents</button>
+      </div>
+    </form>
+
+    <div th:if="${documentSearchResults != null and !documentSearchResults.isEmpty()}" style="margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; max-height: 200px; overflow-y: auto;">
+      <div style="padding: 0.5rem; background-color: #f0f0f0; font-weight: bold;">Search Results - Click to Add:</div>
+      <div th:each="document : ${documentSearchResults}" style="padding: 0.5rem; border-bottom: 1px solid #eee;">
+        <form method="post" th:action="@{/admin/projects/{id}/add-document(id=${project.id()})}" style="display: inline;">
+          <input type="hidden" name="documentId" th:value="${document.id()}">
+          <button type="submit" style="background: none; border: none; color: #007bff; cursor: pointer; text-decoration: underline; padding: 0;">
+            <strong th:text="${document.name()}"></strong>
+            <span style="color: #666; font-size: 0.9em;" th:text="' (ID: ' + ${document.id()} + ')'"></span>
+            <div th:if="${document.content() != null and !document.content().isEmpty()}" 
+                 style="color: #888; font-size: 0.85em; margin-top: 0.25rem;"
+                 th:text="${document.content().length() > 100 ? document.content().substring(0, 100) + '...' : document.content()}">
+            </div>
+            <span style="color: #28a745; margin-left: 0.5rem;">[Add]</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div th:if="${project.documents() != null && !project.documents().isEmpty()}" style="margin-top: 1rem;">
+      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+        <article th:each="document : ${project.documents()}" style="padding: 1rem; border: 1px solid var(--pico-border-color); border-radius: 4px; position: relative;">
+          <a th:href="@{/admin/documents/{id}(id=${document.id()})}" style="text-decoration: none; color: inherit;">
+            <h6 style="margin: 0 0 0.5rem 0; word-break: break-word;" th:text="${document.name()}"></h6>
+            <small style="color: var(--pico-muted-color);" th:text="${document.content()}"></small>
+          </a>
+          <form method="post" th:action="@{/admin/projects/{id}/remove-document(id=${project.id()})}" style="position: absolute; top: 0.5rem; right: 0.5rem;">
+            <input type="hidden" name="documentId" th:value="${document.id()}">
+            <button type="submit" style="background: #dc3545; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 3px; cursor: pointer; font-size: 0.8em;">Remove</button>
+          </form>
+        </article>
+      </div>
+    </div>
+    <div th:if="${project.documents() == null || project.documents().isEmpty()}" style="margin-top: 1rem;">
+      <p>No documents</p>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
+

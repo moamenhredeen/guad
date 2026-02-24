@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+  <title>Guad - Delete Document</title>
+</head>
+<body>
+
+<main>
+  <h1>Delete Document</h1>
+
+  <p>Are you sure you want to delete document "<span th:text="${document.name()}"></span>"?</p>
+
+  <form method="post" th:action="@{/admin/documents/delete/{id}(id=${document.id()})}">
+    <button type="submit">Delete</button>
+    <a th:href="@{/admin/documents}">Cancel</a>
+  </form>
+
+</main>
+
+</body>
+</html>
+

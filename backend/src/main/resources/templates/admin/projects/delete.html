@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+  <title>Guad - Delete Project</title>
+</head>
+<body>
+
+<main>
+  <h1>Delete Project</h1>
+
+  <p>Are you sure you want to delete project "<span th:text="${viewModel.name()}"></span>"?</p>
+
+  <form method="post" th:action="@{/admin/projects/delete/{id}(id=${viewModel.id()})}">
+    <button type="submit">Delete</button>
+    <a th:href="@{/admin/projects}">Cancel</a>
+  </form>
+
+</main>
+
+</body>
+</html>
+

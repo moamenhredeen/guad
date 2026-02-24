@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+    <title>Guad - Dashboard</title>
+</head>
+<body>
+
+<main>
+    <h1>Context List</h1>
+
+    <form method="get" th:action="@{/admin/contexts}">
+        <div class="grid">
+            <input type="text" 
+                   name="search" 
+                   placeholder="Search by name, description, user, or ID..."
+                   th:value="${search}">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Color</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="context : ${contexts}">
+            <td>
+                <a th:href="@{/admin/contexts/{id}(id=${context.id()})}"
+                   th:text="${context.id()}"></a>
+            </td>
+            <td th:text="${context.name()}"></td>
+            <td th:text="${context.description()}"></td>
+            <td th:text="${context.color()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
+

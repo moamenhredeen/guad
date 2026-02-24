@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+    <title>Guad - Dashboard</title>
+</head>
+<body>
+
+<main>
+    <h1>Area List</h1>
+
+    <form method="get" th:action="@{/admin/areas}">
+        <div class="grid">
+            <input type="text" 
+                   name="search" 
+                   placeholder="Search by name, description, user, or ID..."
+                   th:value="${search}">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Order</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="area : ${areas}">
+            <td>
+                <a th:href="@{/admin/areas/{id}(id=${area.id()})}"
+                   th:text="${area.id()}"></a>
+            </td>
+            <td th:text="${area.name()}"></td>
+            <td th:text="${area.description()}"></td>
+            <td th:text="${area.order()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
+

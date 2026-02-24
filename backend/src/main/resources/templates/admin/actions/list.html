@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+    <title>Guad - Actions</title>
+</head>
+<body>
+
+<main>
+    <h1>Action List</h1>
+
+    <form method="get" th:action="@{/admin/actions}">
+        <div class="grid">
+            <input type="text" 
+                   name="search" 
+                   placeholder="Search by description or ID..."
+                   th:value="${search}">
+            <select name="status">
+                <option value="">All Statuses</option>
+                <option th:each="s : ${statuses}"
+                        th:value="${s}"
+                        th:selected="${s == status}"
+                        th:text="${s}"></option>
+            </select>
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Area</th>
+            <th>Project</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="action : ${actions}">
+            <td>
+                <a th:href="@{/admin/actions/{id}(id=${action.id()})}"
+                   th:text="${action.id()}"></a>
+            </td>
+            <td th:text="${action.description()}"></td>
+            <td th:text="${action.status()}"></td>
+            <td th:text="${action.areaName()}"></td>
+            <td th:text="${action.projectName()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
+

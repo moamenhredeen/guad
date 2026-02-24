@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+  <title>Guad - Dashboard</title>
+</head>
+<body>
+
+<main>
+  <h1>Are you sure you want to delete the <strong th:text="${area.name()}"></strong> area</h1>
+
+  <form method="post" th:action="@{/admin/areas/delete/{id}(id=${area.id()})}">
+    <button type="submit">Delete</button>
+  </form>
+
+</main>
+
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+<!doctype html>
+<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/pico.min.css}">
+    <style>
+        button, a[role="button"] {
+            max-width: 150px;
+        }
+    </style>
+    <title th:replace="${title}">Guad</title>
+</head>
+<body class="container">
+
+<nav>
+    <ul>
+        <li><a th:href="@{/admin/dashboard}"><strong>Guad</strong></a></li>
+        <li><a th:href="@{/admin/areas}">Areas</a></li>
+        <li><a th:href="@{/admin/projects}">Projects</a></li>
+        <li><a th:href="@{/admin/contexts}">Contexts</a></li>
+        <li><a th:href="@{/admin/inbox}">Inbox</a></li>
+        <li><a th:href="@{/admin/actions}">Actions</a></li>
+        <li><a th:href="@{/admin/documents}">Documents</a></li>
+        <li><a th:href="@{/admin/attachments}">Attachments</a></li>
+        <li><a th:href="@{/admin/auth/logout}">Logout</a></li>
+    </ul>
+</nav>
+
+<!-- main content  -->
+<main th:replace="${content}"></main>
+
+
+</body>
+</html>
