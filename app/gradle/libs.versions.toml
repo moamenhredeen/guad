@@ -147,7 +147,9 @@ android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", versio
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+jetbrains-compose-gradlePlugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 androidx-room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 buildkonfig-gradlePlugin = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
@@ -174,14 +176,14 @@ androidx-runner = { group = "androidx.test", name = "runner", version.ref = "run
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 
 [plugins]
-conventionAndroidApplication = { id = "app.guad.android.application", version = "unspecified" }
-conventionAndroidApplicationCompose = { id = "app.guad.android.application.compose", version = "unspecified" }
-conventionCmpApplication = { id = "app.guad.cmp.application", version = "unspecified" }
-conventionKmpLibrary = { id = "app.guad.kmp.library", version = "unspecified" }
-conventionCmpLibrary = { id = "app.guad.cmp.library", version = "unspecified" }
-conventionCmpFeature = { id = "app.guad.cmp.feature", version = "unspecified" }
-conventionBuildkonfig = { id = "app.guad.buildkonfig", version = "unspecified" }
-conventionRoom = { id = "app.guad.room", version = "unspecified" }
+conventionAndroidApplication = { id = "app.guad.convention.application.android", version = "unspecified" }
+conventionAndroidApplicationCompose = { id = "app.guad.convention.application.compose", version = "unspecified" }
+conventionCmpApplication = { id = "app.guad.convention.application.cmp", version = "unspecified" }
+conventionKmpLibrary = { id = "app.guad.convention.library.kmp", version = "unspecified" }
+conventionCmpLibrary = { id = "app.guad.convention.library.cmp", version = "unspecified" }
+conventionCmpFeature = { id = "app.guad.convention.library.feature-presentation", version = "unspecified" }
+conventionBuildkonfig = { id = "app.guad.convention.buildkonfig", version = "unspecified" }
+conventionRoom = { id = "app.guad.convention.room", version = "unspecified" }
 
 # Android
 androidApplication = { id = "com.android.application", version.ref = "agp" }

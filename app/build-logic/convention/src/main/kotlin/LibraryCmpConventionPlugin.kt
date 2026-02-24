@@ -1,5 +1,3 @@
-package app.guad.convention
-
 import app.guad.convention.shared.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,8 +17,14 @@ class LibraryCmpConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-foundation").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-core").get())
+            }
 
-                "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
+            project.afterEvaluate {
+                configurations.findByName("androidDebugImplementation")?.let {
+                    dependencies {
+                        "androidDebugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
+                    }
+                }
             }
         }
     }

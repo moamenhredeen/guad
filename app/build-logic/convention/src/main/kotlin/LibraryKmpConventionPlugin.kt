@@ -1,8 +1,6 @@
 import app.guad.convention.shared.libs
 import app.guad.convention.shared.pathToFrameworkName
 import app.guad.convention.shared.pathToPackageName
-import app.guad.convention.shared.pathToResourcePrefix
-import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.androidLibrary
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -17,14 +15,9 @@ class LibraryKmpConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             with(pluginManager) {
-                apply("com.android.library")
+                apply("com.android.kotlin.multiplatform.library")
                 apply("org.jetbrains.kotlin.multiplatform")
                 apply("org.jetbrains.kotlin.plugin.serialization")
-            }
-
-            extensions.configure<LibraryExtension> {
-                resourcePrefix = project.pathToResourcePrefix()
-                // Required to make debug build of app run in iOS simulator
             }
 
             extensions.configure<KotlinMultiplatformExtension> {
