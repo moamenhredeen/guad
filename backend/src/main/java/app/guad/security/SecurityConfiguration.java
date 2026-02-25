@@ -2,8 +2,11 @@ package app.guad.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,10 +17,10 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain adminFilterChain(
+    SecurityFilterChain adminFilterChain(
             HttpSecurity http,
             ClientRegistrationRepository clientRegistrationRepository
-    ) throws Exception {
+    ) {
         return http
                 .securityMatcher("/admin/**", "/oauth2/**", "/login/oauth2/**")
                 .authorizeHttpRequests(authZ -> authZ
@@ -31,6 +34,26 @@ public class SecurityConfiguration {
                 .logout(logout -> logout
                         .logoutUrl("/admin/auth/logout")
                         .logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)))
+                .build();
+    }
+
+    @Bean
+    SecurityFilterChain apiFilterChain(
+            HttpSecurity http,
+            Oauth2AccessDeniedHandler oauth2AccessDeniedHandler,
+            Oauth2AuthenticationEntryPoint oauth2AuthenticationEntryPoint
+    ) {
+        return http
+                .securityMatcher("/api/**")
+                .authorizeHttpRequests(authZ ->
+                        authZ.anyRequest().authenticated())
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(Customizer.withDefaults())
+                        .authenticationEntryPoint(oauth2AuthenticationEntryPoint)
+                        .accessDeniedHandler(oauth2AccessDeniedHandler))
                 .build();
     }
 
