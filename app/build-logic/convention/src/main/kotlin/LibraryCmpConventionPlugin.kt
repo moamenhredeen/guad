@@ -12,19 +12,15 @@ class LibraryCmpConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.compose")
             }
 
-            dependencies {
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-ui").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-foundation").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-core").get())
-            }
 
-            project.afterEvaluate {
-                configurations.findByName("androidDebugImplementation")?.let {
-                    dependencies {
-                        "androidDebugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
-                    }
-                }
+            dependencies {
+                "commonMainImplementation"(libs.findLibrary("compose-ui").get())
+                "commonMainImplementation"(libs.findLibrary("compose-foundation").get())
+                "commonMainImplementation"(libs.findLibrary("compose-material3").get())
+                "commonMainImplementation"(libs.findLibrary("compose-material-icons-core").get())
+                "commonMainImplementation"(libs.findLibrary("compose-components-resources").get())
+                "commonMainImplementation"(libs.findLibrary("compose-uiToolingPreview").get())
+                "androidRuntimeClasspath"(libs.findLibrary("compose-uiTooling").get())
             }
         }
     }

@@ -1,7 +1,7 @@
 import app.guad.convention.shared.libs
 import app.guad.convention.shared.pathToFrameworkName
 import app.guad.convention.shared.pathToPackageName
-import com.android.build.api.dsl.androidLibrary
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -15,21 +15,36 @@ class LibraryKmpConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             with(pluginManager) {
-                apply("com.android.kotlin.multiplatform.library")
                 apply("org.jetbrains.kotlin.multiplatform")
+                apply("com.android.kotlin.multiplatform.library")
                 apply("org.jetbrains.kotlin.plugin.serialization")
+            }
+
+            tasks.withType<KotlinCompile>().configureEach {
+                compilerOptions {
+                    jvmTarget.set(JvmTarget.JVM_17)
+                    freeCompilerArgs.add(
+                        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+                    )
+                }
             }
 
             extensions.configure<KotlinMultiplatformExtension> {
 
-                androidLibrary {
+                targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
                     namespace = project.pathToPackageName()
                     compileSdk = libs.findVersion("projectCompileSdkVersion").get().requiredVersion.toInt()
                     minSdk = libs.findVersion("projectMinSdkVersion").get().requiredVersion.toInt()
-                    experimentalProperties["android.experimental.kmp.enableAndroidResources"] = "true"
-                    compilerOptions {
-                        jvmTarget.set(JvmTarget.JVM_17)
+
+                    androidResources {
+                        enable = true
                     }
+                }
+
+                compilerOptions {
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
+                    freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+                    freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
                 }
 
                 jvm("desktop") {
@@ -62,23 +77,7 @@ class LibraryKmpConventionPlugin : Plugin<Project> {
                     }
                 }
 
-                compilerOptions {
-                    freeCompilerArgs.add("-Xexpect-actual-classes")
-                    freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
-                    freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
-                }
-
             }
-
-            tasks.withType<KotlinCompile>().configureEach {
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_17)
-                    freeCompilerArgs.add(
-                        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-                    )
-                }
-            }
-
 
             dependencies {
                 "commonMainImplementation"(libs.findLibrary("kotlinx-serialization-json").get())

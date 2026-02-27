@@ -39,18 +39,6 @@ tasks {
 
 gradlePlugin {
     plugins {
-        register("androidApplication") {
-            id = "app.guad.convention.application.android"
-            implementationClass = "ApplicationAndroidConventionPlugin"
-        }
-        register("androidComposeApplication") {
-            id = "app.guad.convention.application.compose"
-            implementationClass = "ApplicationComposeConventionPlugin"
-        }
-        register("cmpApplication") {
-            id = "app.guad.convention.application.cmp"
-            implementationClass = "ApplicationCmpConventionPlugin"
-        }
         register("kmpLibrary") {
             id = "app.guad.convention.library.kmp"
             implementationClass = "LibraryKmpConventionPlugin"

@@ -1,14 +1,10 @@
 plugins {
-    alias(libs.plugins.conventionCmpApplication)
+    alias(libs.plugins.conventionCmpLibrary)
     alias(libs.plugins.composeHotReload)
 }
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-        }
         commonMain.dependencies {
             implementation(projects.core.data)
             implementation(projects.core.domain)
@@ -31,6 +27,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.jetbrains.compose.viewmodel)
             implementation(libs.jetbrains.lifecycle.compose)
+
+            implementation(libs.kotlin.test)
         }
     }
 }

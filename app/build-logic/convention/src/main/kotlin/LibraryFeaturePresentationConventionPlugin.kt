@@ -19,7 +19,7 @@ class LibraryFeaturePresentationConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(libs.findLibrary("koin-compose").get())
                 "commonMainImplementation"(libs.findLibrary("koin-compose-viewmodel").get())
 
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
+                "commonMainImplementation"(libs.findLibrary("compose-runtime").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-viewmodel").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-compose").get())
@@ -27,7 +27,7 @@ class LibraryFeaturePresentationConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel-savedstate").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-savedstate").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-bundle").get())
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-navigation").get())
+                "commonMainImplementation"(libs.findLibrary("compose-navigation").get())
             }
 
             project.afterEvaluate {
