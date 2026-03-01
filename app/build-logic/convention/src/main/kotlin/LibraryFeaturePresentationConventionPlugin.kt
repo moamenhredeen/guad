@@ -28,6 +28,8 @@ class LibraryFeaturePresentationConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(libs.findLibrary("jetbrains-savedstate").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-bundle").get())
                 "commonMainImplementation"(libs.findLibrary("compose-navigation").get())
+
+                "commonMainImplementation"(libs.findLibrary("compose-components-resources").get())
             }
 
             project.afterEvaluate {
