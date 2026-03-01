@@ -37,5 +37,9 @@ android {
 dependencies {
     implementation(projects.composeApp)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.compose.material3)
+
+    implementation(projects.core.designsystem)
+
     debugImplementation(libs.compose.uiTooling)
 }
