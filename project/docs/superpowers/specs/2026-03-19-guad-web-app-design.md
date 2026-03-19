@@ -85,8 +85,11 @@ Slides in from right when a task is clicked. The selected task row highlights wi
   - Area — plain text
   - Energy — plain text (High/Medium/Low)
   - Time needed — plain text
+- **Status:** Dropdown to change action status (NEXT, SOMEDAY_MAYBE) via `PATCH /api/actions/{id}/status`
 - **Notes:** Label + grau-1 background container
 - **Delete:** Red "Delete Task" text at bottom
+
+**API:** `PUT /api/actions/{id}` (save edits), `PATCH /api/actions/{id}/complete`, `PATCH /api/actions/{id}/status`, `DELETE /api/actions/{id}`
 
 ## Pages
 
@@ -97,7 +100,7 @@ Slides in from right when a task is clicked. The selected task row highlights wi
 **Content:**
 - Task list: checkbox + title + "Added {time}" metadata
 - Inline "Add Task" form (Todoist-style): expands to show title input, note placeholder, toolbar buttons (Project, Context, Due), "Add Task" submit button
-- Triage action bar below the list: horizontal row of quick-process buttons — ⚡ Next Action, 📁 To Project, ⏳ Waiting For, 💭 Someday, 🗑️ Trash. These appear contextually when item(s) are selected.
+- Triage action bar below the list: horizontal row of quick-process buttons — ⚡ Next Action, 📁 To Project, ⏳ Waiting For, 💭 Someday, 📋 Reference, 🗑️ Trash. These appear contextually when item(s) are selected. Maps to the backend `ProcessAction` enum: `NEXT_ACTION, PROJECT, WAITING_FOR, SOMEDAY_MAYBE, REFERENCE, TRASH`.
 
 **Empty state:** Teal circle with checkmark, "Alles guad!", "Nix zum schaffe. Press Q to capture something new."
 
@@ -112,6 +115,8 @@ Slides in from right when a task is clicked. The selected task row highlights wi
 - Tasks grouped by context section headers (12px, uppercase, türkis)
 - Each row: checkbox + title + project name + optional due date (orange)
 - Inline "Add Task" at bottom
+
+**Context inheritance:** When a context filter chip is active, the inline "Add Task" form auto-selects that context for the new action.
 
 **API:** `GET /api/actions?status=NEXT`, `GET /api/contexts`, `PATCH /api/actions/{id}/complete`
 
@@ -139,7 +144,7 @@ Slides in from right when a task is clicked. The selected task row highlights wi
   3. **Completed** (grün header) — green checkmarks, strikethrough titles, reduced opacity
 - Dashed "+ Add next action" button at bottom
 
-**API:** `GET /api/projects/{id}` (returns ProjectDetailResponse with actions, waitingFor, completed)
+**API:** `GET /api/projects/{id}` (returns ProjectDetailResponse with actions, waitingFor, completed), `POST /api/projects/{id}/actions` (add next action directly to project)
 
 ### Waiting For
 
@@ -150,7 +155,9 @@ Slides in from right when a task is clicked. The selected task row highlights wi
 - Older items show age in orange: "Delegated Mar 5 · 14 days"
 - "Add waiting for item" button at bottom
 
-**API:** `GET /api/waiting-for`, `POST /api/waiting-for`, `PATCH /api/waiting-for/{id}/resolve`
+**Backend prerequisite:** The `WaitingForResponse` DTO currently does not include `delegatedAt` or `followUpDate`. These fields exist on the entity and in `CreateWaitingForRequest` but are not returned. The backend needs to be updated to include `delegatedAt` in the response so the UI can compute age. Until then, `createdDate` can be used as a proxy.
+
+**API:** `GET /api/waiting-for`, `POST /api/waiting-for`, `PUT /api/waiting-for/{id}`, `PATCH /api/waiting-for/{id}/resolve`
 
 ### Someday/Maybe
 
@@ -165,22 +172,22 @@ Slides in from right when a task is clicked. The selected task row highlights wi
 
 ### Weekly Review (wizard)
 
-**Purpose:** Guided 6-step weekly review process.
+**Purpose:** Guided weekly review process — 5 interactive steps + completion screen.
 
 **Content:**
-- Top bar: "Exit Review" link + "Step {n} of 6" counter
+- Top bar: "Exit Review" link + "Step {n} of 5" counter
 - Progress bar: 4px track, türkis fill proportional to step
 - Step title (serif, 24px bold) + guiding question (14px, grau-5)
 - Checklist: reviewed items (green check, grayed text), current item (yellow highlight, bold), pending items (empty checkbox)
 - Bottom: step breadcrumbs (completed green ✓, current bold, pending gray) + "Next: {step name} →" button (turkis-dark bg)
 
-**Steps:** 1. Clear Inbox, 2. Review Next Actions, 3. Review Projects, 4. Review Waiting For, 5. Review Someday/Maybe, 6. Done — "Sauber gmacht!"
+**Steps:** 1. Clear Inbox, 2. Review Next Actions, 3. Review Projects, 4. Review Waiting For, 5. Review Someday/Maybe. After step 5 completes → completion screen: "Sauber gmacht!" (maps to backend `ReviewStep.DONE`)
 
 **API:** `POST /api/reviews` (start), `GET /api/reviews/current`, `PATCH /api/reviews/{id}/step`, `POST /api/reviews/{id}/complete`
 
 ### Contexts (manage page)
 
-**Content:** Simple list of contexts with name, description, color. Add/edit/delete.
+**Content:** Simple list of contexts with name, description, color, and icon key. Add/edit/delete.
 
 **API:** `GET /api/contexts`, `POST /api/contexts`, `PUT /api/contexts/{id}`, `DELETE /api/contexts/{id}`
 
@@ -200,7 +207,7 @@ Two entry points:
 - Expanded: bordered container with title input (15px), note placeholder (13px, grau-3), toolbar row (Project, Context, Due buttons) + "Add Task" submit button
 
 ### Quick Capture Modal (`Q` shortcut)
-- Global keyboard shortcut `Q` opens a centered modal dialog
+- Global keyboard shortcut `Q` opens a centered modal dialog. **Only active when no text input/textarea is focused** — must check `event.target` to avoid interfering with typing.
 - Dimmed backdrop (`rgba(42,38,35,0.15)`)
 - Modal (480px wide): serif title "Quick Capture", same form as inline add-task but with türkis border
 - Keyboard shortcuts: `Esc` to close, `Cmd/Ctrl+Enter` to save
@@ -254,9 +261,10 @@ web/src/
 │   ├── contexts.ts
 │   ├── areas.ts
 │   ├── review.ts
-│   └── auth.ts
+│   ├── dashboard.ts       # Sidebar badge counts from /api/dashboard
+│   └── auth.ts            # OAuth2 token state, user info
 ├── api/
-│   ├── client.ts          # Axios/fetch wrapper with JWT interceptor
+│   ├── client.ts          # Fetch wrapper with JWT interceptor
 │   ├── inbox.ts
 │   ├── actions.ts
 │   ├── projects.ts
@@ -265,7 +273,7 @@ web/src/
 │   ├── contexts.ts
 │   ├── areas.ts
 │   ├── review.ts
-│   └── auth.ts
+│   └── dashboard.ts
 ├── types/
 │   └── index.ts           # TypeScript interfaces matching backend DTOs
 ├── composables/
@@ -277,20 +285,57 @@ web/src/
 └── styles.css
 ```
 
-### Auth Flow
-- Login/SignUp/OTP pages are unauthenticated routes
-- JWT token stored in memory (Pinia auth store) + localStorage for persistence
-- API client attaches `Authorization: Bearer {token}` header
-- Router guard redirects to `/login` if no token
-- Token refresh handled by interceptor
+### Auth Flow (OAuth2/OIDC with Keycloak)
+
+The backend uses Keycloak as the OAuth2/OIDC authorization server. The API (`/api/**`) is a stateless JWT resource server — it validates tokens issued by Keycloak but does not issue tokens itself.
+
+**Web app auth strategy: Authorization Code flow with PKCE**
+- The web app initiates the OAuth2 Authorization Code flow with PKCE (standard for SPAs)
+- User is redirected to Keycloak's login/registration page
+- Keycloak handles authentication (email/password, social providers like Google/GitHub)
+- After authentication, Keycloak redirects back with an authorization code
+- The web app exchanges the code for JWT tokens (access + refresh)
+- Access token stored in memory (Pinia auth store), refresh token used for silent renewal
+- API client attaches `Authorization: Bearer {access_token}` header
+- Router guard redirects to Keycloak login if no valid token
+- Token refresh: use the refresh token to get new access tokens before expiry
+
+**Keycloak config (development):**
+- Provider URL: `http://localhost:8081/realms/master`
+- Client: public client (no secret), authorization code + PKCE
+- Scopes: `openid profile`
+
+**Implication for existing views:** The existing `LoginView.vue`, `SignUpView.vue`, and `OTPVerificationView.vue` are placeholders that assumed a custom auth API. They should be replaced with a redirect-based OAuth2 flow. A simple `/login` route can trigger the Keycloak redirect, and a `/callback` route handles the return. No custom login form needed — Keycloak provides the UI.
+
+### Sidebar Badge Counts
+
+Sidebar navigation badges (Inbox count, Next Actions count, etc.) and the "Review Due" indicator are populated from the dashboard API.
+
+- On app load and periodically (e.g., every 60 seconds), call `GET /api/dashboard`
+- Response provides: `inboxCount`, `nextActionsCount`, `activeProjectsCount`, `waitingForCount`, `somedayMaybeActionsCount`, `weeklyReviewDue`, `lastReviewDate`
+- Also refresh after any mutation (adding/completing/processing items)
+
+### API Field Mapping
+
+The UI uses "title" for the primary text of tasks. The backend uses different field names:
+- **InboxItem:** `title` (matches UI terminology)
+- **Action:** `description` (UI "title" maps to API `description`)
+- **WaitingFor:** `title` (matches UI terminology)
+- **Project:** `name` (UI "title" maps to API `name`)
+
+### Loading and Error States
+
+- **Loading:** Skeleton placeholders for lists (matching row height/layout). Use shadcn-vue `Skeleton` component.
+- **Error (network/server):** Toast notification (shadcn-vue toast) with error message and retry option.
+- **401 Unauthorized:** Redirect to Keycloak login (token expired or invalid).
+- **Optimistic updates:** Mark actions complete optimistically (checkbox fills immediately), roll back on API failure with error toast.
 
 ### Routing
 ```
-/login              → LoginView (no sidebar)
-/signup             → SignUpView (no sidebar)
-/otp                → OTPVerificationView (no sidebar)
+/login              → Redirects to Keycloak authorization endpoint
+/callback           → Handles OAuth2 callback, exchanges code for tokens
 
-/ (SidebarLayout)
+/ (SidebarLayout, requires auth)
   /inbox            → InboxView
   /next-actions     → NextActionsView
   /projects         → ProjectsView
@@ -305,23 +350,31 @@ web/src/
 
 Default route `/` redirects to `/inbox`.
 
+### Settings Page
+
+**Content:** User profile display (name, email from Keycloak token claims), notification preferences, theme toggle (if applicable), logout button.
+
+**Logout:** Initiates OIDC logout — redirects to Keycloak's end-session endpoint, then back to `/login`.
+
 ### Cleanup from Scaffolding
 Remove existing placeholder content:
 - Delete `views/DashboardView.vue`
 - Delete `views/users/` directory
 - Delete `views/InboxItem.vue`
+- Delete `views/LoginView.vue`, `views/SignUpView.vue`, `views/OTPVerificationView.vue` (replaced by OAuth2 redirect flow)
 - Delete `components/HelloWorld.vue`, `TheWelcome.vue`, `WelcomeItem.vue`
 - Delete `components/icons/IconCommunity.vue`, `IconDocumentation.vue`, `IconEcosystem.vue`, `IconSupport.vue`, `IconTooling.vue`
 - Delete `stores/counter.ts`
 - Delete `components/__tests__/HelloWorld.spec.ts`
-- Update router to remove dashboard and users routes
+- Delete `services/` directory (old auth service)
+- Update router to remove dashboard, users, signup, otp routes
 
 ## Build Order
 
 ### Phase 1 — Core Shell
-1. Auth (login, signup, OTP, JWT token management, route guards)
-2. App shell (sidebar navigation with all items, routing, SidebarLayout update)
-3. API client with auth interceptor
+1. Auth (OAuth2/PKCE flow with Keycloak, token management, route guards, callback handler)
+2. App shell (sidebar navigation with all items, routing, SidebarLayout update, dashboard badge counts)
+3. API client with JWT interceptor + scaffolding cleanup
 
 ### Phase 2 — GTD Core
 4. Inbox (list, inline add task, triage processing)
