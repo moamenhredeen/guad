@@ -39,6 +39,20 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-turkis-dark: #094954;
+  --color-turkis: #309AAF;
+  --color-turkis-surface: #e8f4f6;
+  --color-gelb: #FFFC00;
+  --color-orange: #DD6F06;
+  --color-rot: #FD4D4D;
+  --color-schwarz: #2A2623;
+  --color-grau-5: #6D6766;
+  --color-grau-3: #BBB6B5;
+  --color-grau-2: #E4E0E0;
+  --color-grau-1: #F4F3F3;
+  --color-grun: #609D0F;
+  --color-blau: #508CF1;
+  --color-lila: #C761EC;
 }
 
 :root {
@@ -49,15 +63,15 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.45 0.1 200);          /* Türkis Hell */
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: oklch(0.65 0.2 25);       /* Rot Hell */
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -68,9 +82,9 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: oklch(0.24 0.06 200); /* Türkis Dunkel */
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent: oklch(0.94 0.01 200);  /* Türkis Surface */
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
@@ -116,5 +130,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+    color: #2A2623;
   }
 }
