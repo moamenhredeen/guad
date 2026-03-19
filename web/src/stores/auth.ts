@@ -1,85 +1,157 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { authService, type Admin, apiClient } from '@/services/api'
+import { ref, computed } from 'vue'
+import type { UserInfo } from '@/types'
+import { setTokenProvider, setUnauthorizedHandler } from '@/api/client'
+
+const KEYCLOAK_URL = import.meta.env.VITE_KEYCLOAK_URL ?? 'http://localhost:8081/realms/master'
+const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID ?? 'guad-web'
+const REDIRECT_URI = import.meta.env.VITE_KEYCLOAK_REDIRECT_URI ?? `${window.location.origin}/callback`
+
+function generateCodeVerifier(): string {
+  const array = new Uint8Array(32)
+  crypto.getRandomValues(array)
+  return btoa(String.fromCharCode(...array))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+async function generateCodeChallenge(verifier: string): Promise<string> {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(verifier)
+  const digest = await crypto.subtle.digest('SHA-256', data)
+  return btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+function parseJwtPayload(token: string): Record<string, unknown> {
+  const base64 = token.split('.')[1]!.replace(/-/g, '+').replace(/_/g, '/')
+  return JSON.parse(atob(base64))
+}
 
 export const useAuthStore = defineStore('auth', () => {
-  const admin = ref<Admin | null>(null)
-  const token = ref<string | null>(null)
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
+  const accessToken = ref<string | null>(null)
+  const refreshToken = ref<string | null>(null)
+  const user = ref<UserInfo | null>(null)
+  const isAuthenticated = computed(() => !!accessToken.value)
 
-  const isAuthenticated = computed(() => !!token.value && !!admin.value)
+  // Wire up API client
+  setTokenProvider(() => accessToken.value)
+  setUnauthorizedHandler(() => login())
 
-  async function login(email: string, password: string) {
-    isLoading.value = true
-    error.value = null
-    try {
-      const response = await authService.login({ email, password })
-      token.value = response.token
-      admin.value = response.admin
-      apiClient.setToken(response.token) // Sync with API client
-      return response
-    } catch (err: any) {
-      error.value = err.message || 'Login failed'
-      throw err
-    } finally {
-      isLoading.value = false
+  function extractUser(token: string): UserInfo {
+    const payload = parseJwtPayload(token)
+    return {
+      id: payload.sub as string,
+      username: (payload.preferred_username as string) ?? '',
+      email: (payload.email as string) ?? '',
     }
   }
 
-  async function verifyOTP(otp: string) {
-    isLoading.value = true
-    error.value = null
-    try {
-      const response = await authService.verifyOTP(otp)
-      token.value = response.token
-      admin.value = response.admin
-      apiClient.setToken(response.token) // Sync with API client
-      return response
-    } catch (err: any) {
-      error.value = err.message || 'OTP verification failed'
-      throw err
-    } finally {
-      isLoading.value = false
+  function setTokens(access: string, refresh: string | null) {
+    accessToken.value = access
+    refreshToken.value = refresh
+    user.value = extractUser(access)
+    if (refresh) {
+      localStorage.setItem('guad_refresh_token', refresh)
     }
   }
 
-  async function fetchCurrentAdmin() {
-    isLoading.value = true
-    error.value = null
+  function clearTokens() {
+    accessToken.value = null
+    refreshToken.value = null
+    user.value = null
+    localStorage.removeItem('guad_refresh_token')
+    sessionStorage.removeItem('pkce_verifier')
+  }
+
+  async function login() {
+    const verifier = generateCodeVerifier()
+    const challenge = await generateCodeChallenge(verifier)
+    sessionStorage.setItem('pkce_verifier', verifier)
+
+    const params = new URLSearchParams({
+      client_id: CLIENT_ID,
+      response_type: 'code',
+      scope: 'openid profile email',
+      redirect_uri: REDIRECT_URI,
+      code_challenge: challenge,
+      code_challenge_method: 'S256',
+    })
+
+    window.location.href = `${KEYCLOAK_URL}/protocol/openid-connect/auth?${params}`
+  }
+
+  async function handleCallback(code: string): Promise<boolean> {
+    const verifier = sessionStorage.getItem('pkce_verifier')
+    if (!verifier) return false
+
+    const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: CLIENT_ID,
+        code,
+        redirect_uri: REDIRECT_URI,
+        code_verifier: verifier,
+      }),
+    })
+
+    if (!response.ok) return false
+
+    const data = await response.json()
+    setTokens(data.access_token, data.refresh_token ?? null)
+    sessionStorage.removeItem('pkce_verifier')
+    return true
+  }
+
+  async function tryRefresh(): Promise<boolean> {
+    const stored = refreshToken.value ?? localStorage.getItem('guad_refresh_token')
+    if (!stored) return false
+
     try {
-      admin.value = await authService.getCurrentAdmin()
-    } catch (err: any) {
-      error.value = err.message || 'Failed to fetch admin info'
-      throw err
-    } finally {
-      isLoading.value = false
+      const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          client_id: CLIENT_ID,
+          refresh_token: stored,
+        }),
+      })
+
+      if (!response.ok) {
+        clearTokens()
+        return false
+      }
+
+      const data = await response.json()
+      setTokens(data.access_token, data.refresh_token ?? null)
+      return true
+    } catch {
+      clearTokens()
+      return false
     }
   }
 
-  async function logout() {
-    await authService.logout()
-    admin.value = null
-    token.value = null
-    error.value = null
-    apiClient.setToken(null) // Clear token from API client
-  }
-
-  function clearError() {
-    error.value = null
+  function logout() {
+    const idToken = accessToken.value
+    clearTokens()
+    const params = new URLSearchParams({
+      client_id: CLIENT_ID,
+      post_logout_redirect_uri: `${window.location.origin}/login`,
+    })
+    if (idToken) params.set('id_token_hint', idToken)
+    window.location.href = `${KEYCLOAK_URL}/protocol/openid-connect/logout?${params}`
   }
 
   return {
-    admin,
-    token,
-    isLoading,
-    error,
+    accessToken,
+    user,
     isAuthenticated,
     login,
-    verifyOTP,
-    fetchCurrentAdmin,
+    handleCallback,
+    tryRefresh,
     logout,
-    clearError,
+    clearTokens,
   }
 })
-

@@ -1,36 +1,20 @@
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { dashboardService, type DashboardStats } from '@/services/api'
+import { ref } from 'vue'
+import type { DashboardResponse } from '@/types'
+import { dashboardApi } from '@/api/dashboard'
 
 export const useDashboardStore = defineStore('dashboard', () => {
-  const stats = ref<DashboardStats | null>(null)
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
+  const data = ref<DashboardResponse | null>(null)
+  const loading = ref(false)
 
-  async function fetchStats() {
-    isLoading.value = true
-    error.value = null
+  async function fetch() {
+    loading.value = true
     try {
-      stats.value = await dashboardService.getStats()
-      return stats.value
-    } catch (err: any) {
-      error.value = err.message || 'Failed to fetch dashboard stats'
-      throw err
+      data.value = await dashboardApi.get()
     } finally {
-      isLoading.value = false
+      loading.value = false
     }
   }
 
-  function clearError() {
-    error.value = null
-  }
-
-  return {
-    stats,
-    isLoading,
-    error,
-    fetchStats,
-    clearError,
-  }
+  return { data, loading, fetch }
 })
-
