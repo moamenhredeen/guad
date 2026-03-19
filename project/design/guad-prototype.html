@@ -316,23 +316,308 @@
     <!-- ─── Tab Screens ──────────────────────────────────────────── -->
 
     <div id="screen-inbox" class="screen active">
-      <!-- Inbox screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="screen-header">
+        <div class="screen-title">Inbox</div>
+        <div class="screen-subtitle">5 items to process</div>
+      </div>
+      <div class="screen-content">
+        <div class="task-row" onclick="showDetail('screen-process')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Call Hans about project deadline</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Added today</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-process')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Buy new running shoes</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Added today</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-process')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Research vacation spots for summer</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Added yesterday</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-process')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Fix leaking kitchen faucet</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Added 2 days ago</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-process')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Review quarterly budget report</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Added 3 days ago</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;background:var(--grau-1);border-radius:12px;padding:12px 16px;text-align:center;font-size:13px;color:var(--grau-5);">
+          ← Someday &nbsp;|&nbsp; Tap to triage &nbsp;|&nbsp; Next Action →
+        </div>
+      </div>
     </div>
 
     <div id="screen-next" class="screen">
-      <!-- Next Actions screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="screen-header">
+        <div class="screen-title">Next Actions</div>
+        <div class="screen-subtitle">12 actions across 4 contexts</div>
+      </div>
+      <div style="padding:0 20px 8px;display:flex;gap:8px;overflow-x:auto;flex-shrink:0;">
+        <span style="padding:6px 14px;border-radius:20px;font-size:13px;white-space:nowrap;background:var(--turkis-dark);color:white;">All</span>
+        <span style="padding:6px 14px;border-radius:20px;font-size:13px;white-space:nowrap;background:var(--grau-1);color:var(--schwarz);">@Office</span>
+        <span style="padding:6px 14px;border-radius:20px;font-size:13px;white-space:nowrap;background:var(--grau-1);color:var(--schwarz);">@Home</span>
+        <span style="padding:6px 14px;border-radius:20px;font-size:13px;white-space:nowrap;background:var(--grau-1);color:var(--schwarz);">@Calls</span>
+        <span style="padding:6px 14px;border-radius:20px;font-size:13px;white-space:nowrap;background:var(--grau-1);color:var(--schwarz);">@Errands</span>
+      </div>
+      <div class="screen-content">
+        <div class="section-header" style="padding:10px 0 4px;">@Office</div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Draft proposal for client meeting</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Website Relaunch · Due Fri</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Review PR from Sarah</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Mobile App v2</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Update team wiki with new process</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Team Ops</div>
+          </div>
+        </div>
+        <div class="section-header" style="padding:10px 0 4px;">@Home</div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Fix leaking kitchen faucet</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Home Maintenance</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Organize garage shelves</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Home Maintenance</div>
+          </div>
+        </div>
+        <div class="section-header" style="padding:10px 0 4px;">@Calls</div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Call Hans about project deadline</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Website Relaunch</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Schedule dentist appointment</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Health</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="screen-projects" class="screen">
-      <!-- Projects screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="screen-header">
+        <div class="screen-title">Projects</div>
+        <div class="screen-subtitle">8 active projects</div>
+      </div>
+      <div class="screen-content">
+        <div class="section-header" style="padding:10px 0 4px;">Work</div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-project-detail')">
+          <div>
+            <div style="font-size:15px;font-weight:500;">Website Relaunch</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">3 next actions</div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-project-detail')">
+          <div>
+            <div style="font-size:15px;font-weight:500;">Mobile App v2</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">2 next actions</div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-project-detail')">
+          <div>
+            <div style="font-size:15px;font-weight:500;">Team Ops</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">1 next action</div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+        <div class="section-header" style="padding:10px 0 4px;">Personal</div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-project-detail')">
+          <div>
+            <div style="font-size:15px;font-weight:500;">Summer Vacation</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">2 next actions</div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-project-detail')">
+          <div>
+            <div style="font-size:15px;font-weight:500;">Home Maintenance</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">2 next actions</div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+        <div class="section-header" style="padding:10px 0 4px;">Health</div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-project-detail')">
+          <div>
+            <div style="font-size:15px;font-weight:500;">Marathon Training</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">1 next action</div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-project-detail')">
+          <div>
+            <div style="font-size:15px;font-weight:500;">Nutrition Plan</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">1 next action</div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+      </div>
     </div>
 
     <div id="screen-waiting" class="screen">
-      <!-- Waiting For screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="screen-header">
+        <div class="screen-title">Waiting For</div>
+        <div class="screen-subtitle">4 items delegated</div>
+      </div>
+      <div class="screen-content">
+        <div style="padding:14px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="font-size:15px;font-weight:500;">Design mockups from Lisa</div>
+          <div style="font-size:12px;color:var(--grau-5);margin-top:3px;">Website Relaunch</div>
+          <div style="display:flex;gap:8px;margin-top:5px;align-items:center;">
+            <span style="font-size:12px;color:var(--blau);font-weight:500;">👤 Lisa</span>
+            <span style="font-size:12px;color:var(--grau-5);">Delegated Mar 12</span>
+          </div>
+        </div>
+        <div style="padding:14px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="font-size:15px;font-weight:500;">Budget approval from Thomas</div>
+          <div style="font-size:12px;color:var(--grau-5);margin-top:3px;">Team Ops</div>
+          <div style="display:flex;gap:8px;margin-top:5px;align-items:center;">
+            <span style="font-size:12px;color:var(--blau);font-weight:500;">👤 Thomas</span>
+            <span style="font-size:12px;color:var(--orange);">Delegated Mar 5 · 14 days</span>
+          </div>
+        </div>
+        <div style="padding:14px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="font-size:15px;font-weight:500;">Electrician quote for garage</div>
+          <div style="font-size:12px;color:var(--grau-5);margin-top:3px;">Home Maintenance</div>
+          <div style="display:flex;gap:8px;margin-top:5px;align-items:center;">
+            <span style="font-size:12px;color:var(--blau);font-weight:500;">👤 Müller Elektro</span>
+            <span style="font-size:12px;color:var(--grau-5);">Delegated Mar 15</span>
+          </div>
+        </div>
+        <div style="padding:14px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="font-size:15px;font-weight:500;">API docs review from Sarah</div>
+          <div style="font-size:12px;color:var(--grau-5);margin-top:3px;">Mobile App v2</div>
+          <div style="display:flex;gap:8px;margin-top:5px;align-items:center;">
+            <span style="font-size:12px;color:var(--blau);font-weight:500;">👤 Sarah</span>
+            <span style="font-size:12px;color:var(--grau-5);">Delegated Mar 17</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="screen-more" class="screen">
-      <!-- More screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="screen-header">
+        <div class="screen-title">More</div>
+      </div>
+      <div class="screen-content">
+        <div class="section-header" style="padding:10px 0 4px;">GTD Lists</div>
+        <div class="task-row" style="justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:#f3e8ff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">💭</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;">Someday/Maybe</div>
+              <div style="font-size:12px;color:var(--grau-5);margin-top:1px;">Ideas for later</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="background:var(--grau-1);color:var(--grau-5);font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;">14</span>
+            <span style="font-size:20px;color:var(--grau-3);">›</span>
+          </div>
+        </div>
+        <div class="task-row" style="justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--turkis-surface);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🏷️</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;">Contexts</div>
+              <div style="font-size:12px;color:var(--grau-5);margin-top:1px;">@Office, @Home, @Calls...</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="background:var(--grau-1);color:var(--grau-5);font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;">6</span>
+            <span style="font-size:20px;color:var(--grau-3);">›</span>
+          </div>
+        </div>
+        <div class="task-row" style="justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📋</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;">Reference</div>
+              <div style="font-size:12px;color:var(--grau-5);margin-top:1px;">Non-actionable info</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="background:var(--grau-1);color:var(--grau-5);font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;">8</span>
+            <span style="font-size:20px;color:var(--grau-3);">›</span>
+          </div>
+        </div>
+        <div class="section-header" style="padding:10px 0 4px;">Review</div>
+        <div class="task-row" style="justify-content:space-between;" onclick="showDetail('screen-review')">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🔄</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;">Weekly Review</div>
+              <div style="font-size:12px;color:var(--grau-5);margin-top:1px;">Last done: 5 days ago</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="background:#fef3c7;color:#92400e;font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;">Due</span>
+            <span style="font-size:20px;color:var(--grau-3);">›</span>
+          </div>
+        </div>
+        <div class="section-header" style="padding:10px 0 4px;">App</div>
+        <div class="task-row" style="justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--grau-1);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🏔️</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;">Areas of Responsibility</div>
+              <div style="font-size:12px;color:var(--grau-5);margin-top:1px;">Manage life areas</div>
+            </div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+        <div class="task-row" style="justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--grau-1);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⚙️</div>
+            <div>
+              <div style="font-size:15px;font-weight:500;">Settings</div>
+              <div style="font-size:12px;color:var(--grau-5);margin-top:1px;">Theme, notifications, account</div>
+            </div>
+          </div>
+          <span style="font-size:20px;color:var(--grau-3);">›</span>
+        </div>
+      </div>
     </div>
 
     <!-- ─── Detail Screens ───────────────────────────────────────── -->
