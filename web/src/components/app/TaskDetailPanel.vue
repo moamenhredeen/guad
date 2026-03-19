@@ -78,7 +78,7 @@ function formatDueDate(date: string | null | undefined) {
           <div class="flex items-center justify-between py-3">
             <span class="text-[13px] text-grau-5">Context</span>
             <span v-if="selectedAction.contexts.length" class="rounded-full bg-turkis-surface px-2.5 py-0.5 text-xs font-medium text-turkis-dark">
-              {{ selectedAction.contexts[0].name }}
+              {{ selectedAction.contexts[0]!.name }}
             </span>
             <span v-else class="text-[13px]">—</span>
           </div>

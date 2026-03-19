@@ -76,7 +76,7 @@ async function startOrAdvance() {
         <!-- Next button -->
         <Button class="mt-6 w-full bg-turkis-dark text-white hover:bg-turkis-dark/90" @click="startOrAdvance">
           <template v-if="store.currentStepIndex < 4">
-            Next: {{ store.STEP_LABELS[store.STEP_ORDER[store.currentStepIndex + 1]] }} →
+            Next: {{ store.STEP_LABELS[store.STEP_ORDER[store.currentStepIndex + 1]!] }} →
           </template>
           <template v-else>Complete Review</template>
         </Button>

@@ -23,7 +23,7 @@ async function generateCodeChallenge(verifier: string): Promise<string> {
 }
 
 function parseJwtPayload(token: string): Record<string, unknown> {
-  const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+  const base64 = token.split('.')[1]!.replace(/-/g, '+').replace(/_/g, '/')
   return JSON.parse(atob(base64))
 }
 

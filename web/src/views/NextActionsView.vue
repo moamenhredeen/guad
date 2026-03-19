@@ -23,7 +23,7 @@ const filteredActions = computed(() => {
 const groupedByContext = computed(() => {
   const groups = new Map<string, typeof actions.items>()
   for (const action of filteredActions.value) {
-    const ctxName = action.contexts.length > 0 ? action.contexts[0].name : 'No Context'
+    const ctxName = action.contexts.length > 0 ? action.contexts[0]!.name : 'No Context'
     if (!groups.has(ctxName)) groups.set(ctxName, [])
     groups.get(ctxName)!.push(action)
   }

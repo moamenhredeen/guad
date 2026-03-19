@@ -33,13 +33,13 @@ export const useActionsStore = defineStore('actions', () => {
 
   async function complete(id: string) {
     const idx = items.value.findIndex(i => i.id === id)
-    if (idx >= 0) items.value[idx] = { ...items.value[idx], status: 'COMPLETED' }
+    if (idx >= 0) items.value[idx] = { ...items.value[idx]!, status: 'COMPLETED' as const }
     try {
       await actionsApi.complete(id)
       items.value = items.value.filter(i => i.id !== id)
       useDashboardStore().fetch()
     } catch {
-      if (idx >= 0) items.value[idx] = { ...items.value[idx], status: 'NEXT' }
+      if (idx >= 0) items.value[idx] = { ...items.value[idx]!, status: 'NEXT' as const }
     }
   }
 
