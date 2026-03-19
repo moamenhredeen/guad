@@ -40,7 +40,7 @@ spring:
             issuer-uri: http://localhost:8081/realms/master
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/master/
+          issuer-uri: http://localhost:8081/realms/master
   cloud:
     aws:
       credentials:
