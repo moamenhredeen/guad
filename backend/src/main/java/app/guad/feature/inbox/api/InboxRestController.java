@@ -3,6 +3,7 @@ package app.guad.feature.inbox.api;
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.inbox.InboxItem;
 import app.guad.feature.inbox.InboxItemStatus;
+import app.guad.feature.inbox.InboxProcessingService;
 import app.guad.feature.inbox.InboxRepository;
 import app.guad.feature.inbox.InboxService;
 import app.guad.security.AuthenticatedUser;
@@ -21,10 +22,13 @@ class InboxRestController {
 
     private final InboxService inboxService;
     private final InboxRepository inboxRepository;
+    private final InboxProcessingService inboxProcessingService;
 
-    InboxRestController(InboxService inboxService, InboxRepository inboxRepository) {
+    InboxRestController(InboxService inboxService, InboxRepository inboxRepository,
+                        InboxProcessingService inboxProcessingService) {
         this.inboxService = inboxService;
         this.inboxRepository = inboxRepository;
+        this.inboxProcessingService = inboxProcessingService;
     }
 
     @PostMapping
@@ -63,5 +67,14 @@ class InboxRestController {
             .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id));
         inboxService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/process")
+    ResponseEntity<Void> process(@PathVariable Long id,
+                                 @Valid @RequestBody ProcessInboxItemRequest request,
+                                 @AuthenticationPrincipal Jwt jwt) {
+        var userId = AuthenticatedUser.from(jwt).id();
+        inboxProcessingService.process(id, request, userId);
+        return ResponseEntity.ok().build();
     }
 }

@@ -44,6 +44,7 @@ public class InboxService {
         inboxItemFromDb.setTitle(inboxItem.getTitle());
         inboxItemFromDb.setDescription(inboxItem.getDescription());
         inboxItemFromDb.setStatus(inboxItem.getStatus());
+        inboxItemFromDb.setProcessedDate(inboxItem.getProcessedDate());
         inboxItemFromDb.setUserId(inboxItem.getUserId());
         // Preserve attachments if they were set on the inboxItem
         if (inboxItem.getAttachments() != null) {
