@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { ProjectResponse, ProjectDetailResponse, CreateProjectRequest } from '@/types'
+import type { ProjectResponse, ProjectDetailResponse } from '@/types'
 import { projectsApi } from '@/api/projects'
 import { useDashboardStore } from './dashboard'
 
