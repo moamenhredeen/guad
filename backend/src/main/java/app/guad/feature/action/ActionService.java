@@ -6,7 +6,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ActionService {
@@ -56,6 +59,34 @@ public class ActionService {
 
     public void deleteById(long id) {
         this.actionRepository.deleteById(id);
+    }
+
+    public List<Action> findAllByUserIdAndStatus(UUID userId, ActionStatus status) {
+        return actionRepository.findAllByUserIdAndStatus(userId, status);
+    }
+
+    public Optional<Action> findByIdAndUserId(Long id, UUID userId) {
+        return actionRepository.findByIdAndUserId(id, userId);
+    }
+
+    @Transactional
+    public Action completeAction(Long id, UUID userId) {
+        var action = actionRepository.findByIdAndUserId(id, userId)
+            .orElseThrow(() -> new IllegalArgumentException("Action not found"));
+        action.setStatus(ActionStatus.COMPLETED);
+        action.setCompletedDate(Instant.now());
+        return actionRepository.save(action);
+    }
+
+    @Transactional
+    public Action updateStatus(Long id, UUID userId, ActionStatus status) {
+        var action = actionRepository.findByIdAndUserId(id, userId)
+            .orElseThrow(() -> new IllegalArgumentException("Action not found"));
+        action.setStatus(status);
+        if (status == ActionStatus.COMPLETED) {
+            action.setCompletedDate(Instant.now());
+        }
+        return actionRepository.save(action);
     }
 }
 
