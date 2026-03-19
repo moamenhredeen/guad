@@ -30,7 +30,7 @@ spring:
             provider: keycloak
             client-name: Keycloak
             client-id: keycloak
-            client-secret: p56JlkSbHTN4XUY8eiyIoMN0GLpanOrm
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
             scope: [ openid, profile]
             client-authentication-method: client_secret_basic
             authorization-grant-type: authorization_code
@@ -44,8 +44,8 @@ spring:
   cloud:
     aws:
       credentials:
-        access-key: ${AWS_ACCESS_KEY_ID:AKIA4IPYLWN7DA3ACHV5}
-        secret-key: ${AWS_SECRET_ACCESS_KEY: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}
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
       s3:
         region: ${AWS_REGION:us-east-1}
         bucket: ${AWS_S3_BUCKET_NAME:aws-s3-tue-bucket}
