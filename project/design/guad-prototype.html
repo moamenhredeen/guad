@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guad — Interactive Prototype</title>
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────────── */
+    :root {
+      --turkis-dark: #094954;
+      --turkis: #309AAF;
+      --turkis-surface: #e8f4f6;
+      --gelb: #FFFC00;
+      --orange: #DD6F06;
+      --rot: #FD4D4D;
+      --schwarz: #2A2623;
+      --grau-5: #6D6766;
+      --grau-3: #BBB6B5;
+      --grau-2: #E4E0E0;
+      --grau-1: #F4F3F3;
+      --weiss: #FFFFFF;
+      --grun: #609D0F;
+      --blau: #508CF1;
+      --lila: #C761EC;
+      --font-serif: Georgia, 'Times New Roman', serif;
+      --font-sans: -apple-system, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ─── Body ──────────────────────────────────────────────────── */
+    body {
+      background: #E4E0E0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      color: var(--schwarz);
+    }
+
+    /* ─── Phone Frame ───────────────────────────────────────────── */
+    .phone-frame {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      background: var(--weiss);
+    }
+
+    /* ─── Status Bar ────────────────────────────────────────────── */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--weiss);
+      flex-shrink: 0;
+    }
+
+    /* ─── Screen Containers ─────────────────────────────────────── */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-bottom: 72px;
+      background: var(--weiss);
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* Detail screens sit above tab screens */
+    .detail-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-bottom: 72px;
+      background: var(--weiss);
+      z-index: 50;
+    }
+
+    .detail-screen.active {
+      display: flex;
+    }
+
+    /* ─── Screen Title ───────────────────────────────────────────── */
+    .screen-title {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--schwarz);
+    }
+
+    /* ─── Section Header ─────────────────────────────────────────── */
+    .section-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: #309AAF;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── Task Row ───────────────────────────────────────────────── */
+    .task-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 4px;
+      border-bottom: 1px solid #F4F3F3;
+      cursor: pointer;
+    }
+
+    .task-row:hover {
+      background: var(--grau-1);
+    }
+
+    /* ─── Checkbox ───────────────────────────────────────────────── */
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #BBB6B5;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── Tab Bar ────────────────────────────────────────────────── */
+    .tab-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #E4E0E0;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0 24px;
+      z-index: 100;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border: none;
+      background: none;
+      font-family: var(--font-sans);
+      color: #BBB6B5;
+      transition: color 0.15s ease;
+    }
+
+    .tab-item.active {
+      color: #309AAF;
+    }
+
+    .tab-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .tab-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    /* ─── FAB ────────────────────────────────────────────────────── */
+    .fab {
+      position: absolute;
+      bottom: 80px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background: #FFFC00;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--schwarz);
+      line-height: 1;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .fab:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    /* ─── Overlay ────────────────────────────────────────────────── */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(42, 38, 35, 0.4);
+      z-index: 200;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    /* ─── Bottom Sheet ───────────────────────────────────────────── */
+    .bottom-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 20px 20px 0 0;
+      padding: 12px 20px 32px;
+    }
+
+    .bottom-sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--grau-3);
+      border-radius: 2px;
+      margin: 0 auto 16px;
+    }
+
+    /* ─── Nav Back ───────────────────────────────────────────────── */
+    .nav-back {
+      color: #309AAF;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border: none;
+      background: none;
+      font-family: var(--font-sans);
+      padding: 0;
+    }
+
+    .nav-back::before {
+      content: '‹';
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    /* ─── Screen Header ──────────────────────────────────────────── */
+    .screen-header {
+      padding: 12px 20px 8px;
+      flex-shrink: 0;
+    }
+
+    .screen-content {
+      padding: 0 20px;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+
+    <!-- ─── Tab Screens ──────────────────────────────────────────── -->
+
+    <div id="screen-inbox" class="screen active">
+      <!-- Inbox screen — content added in later tasks -->
+    </div>
+
+    <div id="screen-next" class="screen">
+      <!-- Next Actions screen — content added in later tasks -->
+    </div>
+
+    <div id="screen-projects" class="screen">
+      <!-- Projects screen — content added in later tasks -->
+    </div>
+
+    <div id="screen-waiting" class="screen">
+      <!-- Waiting For screen — content added in later tasks -->
+    </div>
+
+    <div id="screen-more" class="screen">
+      <!-- More screen — content added in later tasks -->
+    </div>
+
+    <!-- ─── Detail Screens ───────────────────────────────────────── -->
+
+    <div id="screen-process" class="detail-screen">
+      <!-- Process item detail screen — content added in later tasks -->
+    </div>
+
+    <div id="screen-task-detail" class="detail-screen">
+      <!-- Task detail screen — content added in later tasks -->
+    </div>
+
+    <div id="screen-project-detail" class="detail-screen">
+      <!-- Project detail screen — content added in later tasks -->
+    </div>
+
+    <div id="screen-review" class="detail-screen">
+      <!-- Review screen — content added in later tasks -->
+    </div>
+
+    <!-- ─── Quick Capture Overlay ────────────────────────────────── -->
+
+    <div id="overlay-capture" class="overlay" role="dialog" aria-modal="true" aria-label="Quick Capture">
+      <div class="bottom-sheet" id="capture-sheet">
+        <div class="bottom-sheet-handle"></div>
+        <!-- Quick capture content added in later tasks -->
+      </div>
+    </div>
+
+    <!-- ─── Tab Bar ──────────────────────────────────────────────── -->
+
+    <nav class="tab-bar" aria-label="Main navigation">
+      <button class="tab-item active" data-tab="inbox" onclick="showScreen('inbox')" aria-label="Inbox">
+        <span class="tab-icon">📥</span>
+        <span class="tab-label">Inbox</span>
+      </button>
+      <button class="tab-item" data-tab="next" onclick="showScreen('next')" aria-label="Next Actions">
+        <span class="tab-icon">⚡</span>
+        <span class="tab-label">Next</span>
+      </button>
+      <button class="tab-item" data-tab="projects" onclick="showScreen('projects')" aria-label="Projects">
+        <span class="tab-icon">📁</span>
+        <span class="tab-label">Projects</span>
+      </button>
+      <button class="tab-item" data-tab="waiting" onclick="showScreen('waiting')" aria-label="Waiting For">
+        <span class="tab-icon">⏳</span>
+        <span class="tab-label">Waiting</span>
+      </button>
+      <button class="tab-item" data-tab="more" onclick="showScreen('more')" aria-label="More">
+        <span class="tab-icon">•••</span>
+        <span class="tab-label">More</span>
+      </button>
+    </nav>
+
+    <!-- ─── FAB ─────────────────────────────────────────────────── -->
+
+    <button class="fab" onclick="openCapture()" aria-label="Quick capture">+</button>
+
+  </div><!-- /.phone-frame -->
+
+  <script>
+    // ─── State ────────────────────────────────────────────────────
+    let currentTab = 'inbox';
+    let detailStack = []; // stack of open detail screen ids
+
+    // ─── Tab Navigation ───────────────────────────────────────────
+    function showScreen(tabId) {
+      // Close any open detail screens
+      detailStack.forEach(id => {
+        const el = document.getElementById('screen-' + id);
+        if (el) el.classList.remove('active');
+      });
+      detailStack = [];
+
+      // Deactivate all tab screens
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+
+      // Activate the target screen
+      const target = document.getElementById('screen-' + tabId);
+      if (target) target.classList.add('active');
+
+      // Update tab bar state
+      document.querySelectorAll('.tab-item').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+
+      currentTab = tabId;
+
+      // Close overlay if open
+      closeCapture();
+    }
+
+    // ─── Detail Screen Navigation ──────────────────────────────────
+    function showDetail(detailId) {
+      // Hide all detail screens first
+      document.querySelectorAll('.detail-screen').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById('screen-' + detailId);
+      if (target) {
+        target.classList.add('active');
+        detailStack.push(detailId);
+      }
+    }
+
+    function goBack(tabId) {
+      // Pop the topmost detail screen
+      if (detailStack.length > 0) {
+        const topId = detailStack.pop();
+        const el = document.getElementById('screen-' + topId);
+        if (el) el.classList.remove('active');
+      }
+
+      // If there are more detail screens in the stack, re-show the previous one
+      if (detailStack.length > 0) {
+        const prevId = detailStack[detailStack.length - 1];
+        const prev = document.getElementById('screen-' + prevId);
+        if (prev) prev.classList.add('active');
+      } else if (tabId) {
+        // Go back to a specific tab
+        showScreen(tabId);
+      } else {
+        // Fallback: go back to current tab
+        showScreen(currentTab);
+      }
+    }
+
+    // ─── Quick Capture Overlay ────────────────────────────────────
+    function openCapture() {
+      const overlay = document.getElementById('overlay-capture');
+      overlay.classList.add('active');
+    }
+
+    function closeCapture() {
+      const overlay = document.getElementById('overlay-capture');
+      overlay.classList.remove('active');
+    }
+
+    // Dismiss overlay on backdrop click (not on sheet itself)
+    document.getElementById('overlay-capture').addEventListener('click', function (e) {
+      if (e.target === this) {
+        closeCapture();
+      }
+    });
+  </script>
+</body>
+</html>
