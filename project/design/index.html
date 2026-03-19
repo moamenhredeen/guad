@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guad — Design Mockups</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+      background: #FFFFFF;
+      color: #2A2623;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 48px 32px 32px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-family: Georgia, serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #2A2623;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 15px;
+      color: #6D6766;
+      line-height: 1.6;
+    }
+
+    .color-bar {
+      display: flex;
+      gap: 0;
+      margin-top: 20px;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 6px;
+    }
+
+    .color-bar span {
+      flex: 1;
+    }
+
+    nav {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 32px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 4px;
+      border-bottom: 1px solid #F4F3F3;
+      text-decoration: none;
+      color: #2A2623;
+      transition: background 0.15s;
+      border-radius: 8px;
+    }
+
+    nav a:hover {
+      background: #F4F3F3;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .num {
+      width: 32px;
+      height: 32px;
+      background: #e8f4f6;
+      color: #094954;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .link-content {
+      flex: 1;
+    }
+
+    .link-content strong {
+      font-size: 15px;
+      font-weight: 500;
+      display: block;
+    }
+
+    .link-content span {
+      font-size: 13px;
+      color: #BBB6B5;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .chevron {
+      color: #BBB6B5;
+      font-size: 16px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #309AAF;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 24px 4px 8px;
+    }
+
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 32px 48px;
+      font-size: 13px;
+      color: #BBB6B5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Guad</h1>
+    <p>Design mockups for the GTD task management app. Swabian warmth meets Baden-Württemberg clarity.</p>
+    <div class="color-bar">
+      <span style="background: #094954;"></span>
+      <span style="background: #309AAF;"></span>
+      <span style="background: #FFFC00;"></span>
+      <span style="background: #DD6F06;"></span>
+      <span style="background: #2A2623;"></span>
+    </div>
+  </header>
+
+  <nav>
+    <div class="section-label">Foundation</div>
+
+    <a href="mockups/01-design-overview.html">
+      <div class="num">1</div>
+      <div class="link-content">
+        <strong>Design Overview</strong>
+        <span>App structure, color palette, typography, screen map</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <a href="mockups/02-bw-identity.html">
+      <div class="num">2</div>
+      <div class="link-content">
+        <strong>BW / Swabian Identity</strong>
+        <span>Baden-Württemberg design language adapted for Guad</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <div class="section-label">Tab Screens</div>
+
+    <a href="mockups/03-inbox.html">
+      <div class="num">3</div>
+      <div class="link-content">
+        <strong>Inbox</strong>
+        <span>Populated and empty states, swipe hints</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <a href="mockups/04-next-actions-projects.html">
+      <div class="num">4</div>
+      <div class="link-content">
+        <strong>Next Actions + Projects</strong>
+        <span>Context-grouped actions, area-grouped projects</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <a href="mockups/05-projects-alternatives.html">
+      <div class="num">5</div>
+      <div class="link-content">
+        <strong>Projects — Design Alternatives</strong>
+        <span>Four card style options (clean rows selected)</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <a href="mockups/06-waiting-more.html">
+      <div class="num">6</div>
+      <div class="link-content">
+        <strong>Waiting For + More</strong>
+        <span>Delegated items tracking, overflow menu</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <div class="section-label">Overlays & Detail</div>
+
+    <a href="mockups/07-overlays.html">
+      <div class="num">7</div>
+      <div class="link-content">
+        <strong>Quick Capture + Process + Task Detail</strong>
+        <span>Bottom sheet, triage flow, full task editing</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <a href="mockups/08-quick-capture-final.html">
+      <div class="num">8</div>
+      <div class="link-content">
+        <strong>Quick Capture — Final</strong>
+        <span>Flat, borderless input design</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+
+    <a href="mockups/09-project-detail-review.html">
+      <div class="num">9</div>
+      <div class="link-content">
+        <strong>Project Detail + Weekly Review</strong>
+        <span>Project drill-down, guided review wizard</span>
+      </div>
+      <div class="chevron">›</div>
+    </a>
+  </nav>
+
+  <footer>
+    Guad — "good" in Swabian. Made in Baden-Württemberg.
+  </footer>
+
+</body>
+</html>

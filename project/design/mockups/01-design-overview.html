@@ -1,0 +1,153 @@
+<h2>Guad — Design Overview</h2>
+<p class="subtitle">Interactive prototype structure and visual foundation</p>
+
+<div class="section">
+  <h3>App Structure</h3>
+  <div class="mockup">
+    <div class="mockup-header">Screen Map</div>
+    <div class="mockup-body" style="padding: 24px; font-family: system-ui, sans-serif; font-size: 14px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+
+        <!-- Top level -->
+        <div style="text-align: center;">
+          <div style="display: inline-block; background: #0d9488; color: white; padding: 8px 20px; border-radius: 8px; font-weight: 600;">App Shell</div>
+          <div style="color: #888; font-size: 12px; margin-top: 4px;">Bottom tab bar + FAB + Status bar</div>
+        </div>
+
+        <div style="text-align: center; color: #888;">↓</div>
+
+        <!-- Tab screens -->
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <div style="background: #f0fdfa; border: 2px solid #0d9488; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #0d9488;">Inbox</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">Capture & Process</div>
+          </div>
+          <div style="background: #f0fdfa; border: 2px solid #0d9488; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #0d9488;">Next Actions</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">By context</div>
+          </div>
+          <div style="background: #f0fdfa; border: 2px solid #0d9488; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #0d9488;">Projects</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">By area</div>
+          </div>
+          <div style="background: #f0fdfa; border: 2px solid #0d9488; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #0d9488;">Waiting For</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">Delegated items</div>
+          </div>
+          <div style="background: #f0fdfa; border: 2px solid #0d9488; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #0d9488;">More</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">Someday · Review · Settings</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; color: #888;">↓</div>
+
+        <!-- Overlays / Flows -->
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <div style="background: #fef3c7; border: 2px solid #d97706; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #92400e;">Quick Capture</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">FAB → Bottom sheet</div>
+          </div>
+          <div style="background: #fef3c7; border: 2px solid #d97706; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #92400e;">Process Item</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">Swipe or tap to triage</div>
+          </div>
+          <div style="background: #fef3c7; border: 2px solid #d97706; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #92400e;">Weekly Review</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">Guided wizard</div>
+          </div>
+          <div style="background: #fef3c7; border: 2px solid #d97706; padding: 12px 16px; border-radius: 8px; text-align: center; min-width: 110px;">
+            <div style="font-weight: 600; color: #92400e;">Task Detail</div>
+            <div style="font-size: 11px; color: #666; margin-top: 4px;">Edit / full view</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Visual Foundation</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+    <div class="mockup">
+      <div class="mockup-header">Color Palette</div>
+      <div class="mockup-body" style="padding: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 8px; font-family: system-ui; font-size: 13px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 8px; background: #0d9488;"></div>
+            <div><strong>Primary</strong> — Teal 600 (#0d9488)</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 8px; background: #f0fdfa;"></div>
+            <div><strong>Surface</strong> — Teal 50 (#f0fdfa)</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 8px; background: #ffffff; border: 1px solid #e5e7eb;"></div>
+            <div><strong>Background</strong> — White</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 8px; background: #111827;"></div>
+            <div><strong>Text Primary</strong> — Gray 900</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 8px; background: #6b7280;"></div>
+            <div><strong>Text Secondary</strong> — Gray 500</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 8px; background: #ef4444;"></div>
+            <div><strong>Destructive</strong> — Red 500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup">
+      <div class="mockup-header">Typography & Spacing</div>
+      <div class="mockup-body" style="padding: 16px; font-family: system-ui;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <div style="font-size: 24px; font-weight: 700; color: #111827;">Screen Title</div>
+            <div style="font-size: 11px; color: #9ca3af;">24px / Bold</div>
+          </div>
+          <div>
+            <div style="font-size: 17px; font-weight: 600; color: #111827;">Section Header</div>
+            <div style="font-size: 11px; color: #9ca3af;">17px / Semibold</div>
+          </div>
+          <div>
+            <div style="font-size: 15px; color: #111827;">Task item text</div>
+            <div style="font-size: 11px; color: #9ca3af;">15px / Regular</div>
+          </div>
+          <div>
+            <div style="font-size: 13px; color: #6b7280;">Supporting text</div>
+            <div style="font-size: 11px; color: #9ca3af;">13px / Regular / Gray</div>
+          </div>
+          <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
+            <div style="font-size: 12px; color: #9ca3af;">Spacing: 8px base unit (8, 12, 16, 24, 32)</div>
+            <div style="font-size: 12px; color: #9ca3af;">Radius: 12px cards, 8px inputs, 24px FAB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Screens to Design (10 total)</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-family: system-ui; font-size: 14px;">
+    <div style="padding: 12px; background: #f9fafb; border-radius: 8px;">
+      <strong>1.</strong> Inbox (empty + populated)<br>
+      <strong>2.</strong> Next Actions (grouped by context)<br>
+      <strong>3.</strong> Projects (grouped by area)<br>
+      <strong>4.</strong> Waiting For<br>
+      <strong>5.</strong> More menu
+    </div>
+    <div style="padding: 12px; background: #f9fafb; border-radius: 8px;">
+      <strong>6.</strong> Quick Capture (bottom sheet)<br>
+      <strong>7.</strong> Process/Triage (swipe actions)<br>
+      <strong>8.</strong> Task Detail / Edit<br>
+      <strong>9.</strong> Project Detail<br>
+      <strong>10.</strong> Weekly Review wizard
+    </div>
+  </div>
+</div>
