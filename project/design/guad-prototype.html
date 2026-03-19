@@ -623,19 +623,230 @@
     <!-- ─── Detail Screens ───────────────────────────────────────── -->
 
     <div id="screen-process" class="detail-screen">
-      <!-- Process item detail screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="nav-bar">
+        <button class="nav-back" onclick="goBack('screen-inbox')">Inbox</button>
+      </div>
+      <div style="padding:0 20px 20px;">
+        <div style="font-family:Georgia,serif;font-size:22px;font-weight:700;margin-bottom:4px;">Buy birthday gift for Mama</div>
+        <div style="font-size:13px;color:var(--grau-5);margin-bottom:20px;">Added today</div>
+
+        <div style="background:var(--turkis-surface);border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+          <div style="color:var(--turkis-dark);font-weight:500;font-size:15px;">What's the next action?</div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;font-size:14px;">
+          <span style="color:var(--lila);">💭 ← Someday</span>
+          <span style="color:var(--grau-3);">|</span>
+          <span style="color:var(--turkis);">⚡ Next Action →</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+          <div style="border:1px solid var(--grau-2);border-radius:12px;padding:14px;text-align:center;cursor:pointer;">
+            <div style="font-size:22px;margin-bottom:4px;">📁</div>
+            <div style="font-size:13px;font-weight:500;">Add to Project</div>
+          </div>
+          <div style="border:1px solid var(--grau-2);border-radius:12px;padding:14px;text-align:center;cursor:pointer;">
+            <div style="font-size:22px;margin-bottom:4px;">⏳</div>
+            <div style="font-size:13px;font-weight:500;">Waiting For</div>
+          </div>
+          <div style="border:1px solid var(--grau-2);border-radius:12px;padding:14px;text-align:center;cursor:pointer;">
+            <div style="font-size:22px;margin-bottom:4px;">📋</div>
+            <div style="font-size:13px;font-weight:500;">Reference</div>
+          </div>
+          <div style="border:1px solid var(--grau-2);border-radius:12px;padding:14px;text-align:center;cursor:pointer;">
+            <div style="font-size:22px;margin-bottom:4px;">🗑️</div>
+            <div style="font-size:13px;font-weight:500;">Trash</div>
+          </div>
+        </div>
+
+        <div style="background:#fef3c7;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.5;">
+          ⚡ Takes less than 2 minutes? <strong>Just do it now.</strong>
+        </div>
+      </div>
     </div>
 
     <div id="screen-task-detail" class="detail-screen">
-      <!-- Task detail screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="nav-bar">
+        <button class="nav-back" onclick="goBack('screen-next')">Next Actions</button>
+        <span class="nav-action">Save</span>
+      </div>
+      <div style="padding:0 20px 20px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <div class="checkbox" style="width:24px;height:24px;flex-shrink:0;"></div>
+          <div style="font-size:20px;font-weight:600;">Draft proposal for client meeting</div>
+        </div>
+
+        <div style="border-bottom:1px solid var(--grau-1);padding:10px 0;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;color:var(--grau-5);">Project</span>
+          <span style="font-size:14px;font-weight:500;">Website Relaunch ›</span>
+        </div>
+        <div style="border-bottom:1px solid var(--grau-1);padding:10px 0;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;color:var(--grau-5);">Context</span>
+          <span style="background:var(--turkis-surface);color:var(--turkis-dark);border-radius:16px;padding:4px 12px;font-size:13px;font-weight:500;">@Office</span>
+        </div>
+        <div style="border-bottom:1px solid var(--grau-1);padding:10px 0;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;color:var(--grau-5);">Due date</span>
+          <span style="font-size:14px;color:var(--orange);font-weight:500;">Friday, Mar 21</span>
+        </div>
+        <div style="border-bottom:1px solid var(--grau-1);padding:10px 0;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;color:var(--grau-5);">Area</span>
+          <span style="font-size:14px;">Work</span>
+        </div>
+        <div style="border-bottom:1px solid var(--grau-1);padding:10px 0;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;color:var(--grau-5);">Energy</span>
+          <span style="font-size:14px;">High</span>
+        </div>
+        <div style="border-bottom:1px solid var(--grau-1);padding:10px 0;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:14px;color:var(--grau-5);">Time needed</span>
+          <span style="font-size:14px;">30 min</span>
+        </div>
+
+        <div style="margin-top:20px;">
+          <div style="font-size:14px;color:var(--grau-5);margin-bottom:8px;">Notes</div>
+          <div style="background:var(--grau-1);border-radius:12px;padding:12px 16px;font-size:14px;line-height:1.5;">
+            Include Q2 projections and the updated timeline. Check with Sarah for the latest figures.
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:28px;font-size:14px;color:var(--rot);cursor:pointer;">Delete Task</div>
+      </div>
     </div>
 
     <div id="screen-project-detail" class="detail-screen">
-      <!-- Project detail screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div class="nav-bar">
+        <button class="nav-back" onclick="goBack('screen-projects')">Projects</button>
+        <span class="nav-action">Edit</span>
+      </div>
+      <div style="padding:0 20px 20px;">
+        <div style="font-family:Georgia,serif;font-size:24px;font-weight:700;margin-bottom:2px;">Website Relaunch</div>
+        <div style="font-size:13px;color:var(--grau-5);margin-bottom:6px;">Work</div>
+        <div style="font-size:14px;color:var(--grau-5);font-style:italic;line-height:1.5;margin-bottom:20px;">New company website live with updated branding and portfolio section.</div>
+
+        <div class="section-header" style="padding:4px 0 8px;">Next Actions</div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Draft proposal for client meeting</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">@Office · Due Fri</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Review PR from Sarah</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">@Office</div>
+          </div>
+        </div>
+        <div class="task-row" onclick="showDetail('screen-task-detail')">
+          <div class="checkbox"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:500;">Call Hans about project deadline</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">@Calls</div>
+          </div>
+        </div>
+
+        <div style="font-size:13px;font-weight:600;color:var(--blau);text-transform:uppercase;letter-spacing:0.5px;padding:14px 0 8px;">Waiting For</div>
+        <div style="padding:14px 4px;border-bottom:1px solid var(--grau-1);">
+          <div style="font-size:15px;font-weight:500;margin-bottom:4px;">Design mockups from Lisa</div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span style="font-size:12px;color:var(--blau);font-weight:500;">👤 Lisa</span>
+            <span style="font-size:12px;color:var(--grau-5);">Delegated Mar 12</span>
+          </div>
+        </div>
+
+        <div style="font-size:13px;font-weight:600;color:var(--grun);text-transform:uppercase;letter-spacing:0.5px;padding:14px 0 8px;">Completed</div>
+        <div style="padding:14px 4px;border-bottom:1px solid var(--grau-1);display:flex;align-items:center;gap:12px;">
+          <div class="checkbox checkbox--done" style="flex-shrink:0;">✓</div>
+          <div style="flex:1;">
+            <div style="font-size:15px;text-decoration:line-through;color:var(--grau-3);">Set up staging environment</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Completed Mar 10</div>
+          </div>
+        </div>
+        <div style="padding:14px 4px;border-bottom:1px solid var(--grau-1);display:flex;align-items:center;gap:12px;">
+          <div class="checkbox checkbox--done" style="flex-shrink:0;">✓</div>
+          <div style="flex:1;">
+            <div style="font-size:15px;text-decoration:line-through;color:var(--grau-3);">Gather brand assets</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">Completed Mar 8</div>
+          </div>
+        </div>
+
+        <div style="border:1px dashed var(--grau-3);border-radius:12px;text-align:center;padding:12px;font-size:14px;color:var(--grau-5);margin-top:16px;cursor:pointer;">+ Add next action</div>
+      </div>
     </div>
 
     <div id="screen-review" class="detail-screen">
-      <!-- Review screen — content added in later tasks -->
+      <div class="status-bar"><span>9:41</span><span>●●● ▐▌ 🔋</span></div>
+      <div style="padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <span onclick="goBack('screen-more')" style="color:var(--turkis);font-size:15px;cursor:pointer;">Exit</span>
+        <span style="font-size:14px;color:var(--grau-5);">Step 3 of 6</span>
+      </div>
+      <div style="padding:0 20px 4px;">
+        <div style="height:4px;background:var(--grau-1);border-radius:2px;overflow:hidden;margin-bottom:20px;">
+          <div style="height:100%;width:50%;background:var(--turkis);border-radius:2px;"></div>
+        </div>
+        <div style="font-family:Georgia,serif;font-size:24px;font-weight:700;margin-bottom:8px;">Review Projects</div>
+        <div style="font-size:14px;color:var(--grau-5);line-height:1.5;margin-bottom:20px;">Is each project still relevant? Does every active project have a next action?</div>
+
+        <!-- Reviewed items -->
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="width:22px;height:22px;border-radius:6px;background:var(--grun);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;flex-shrink:0;">✓</div>
+          <div style="flex:1;">
+            <div style="font-size:15px;color:var(--grau-3);text-decoration:line-through;">Website Relaunch</div>
+            <div style="font-size:12px;color:var(--grau-3);margin-top:2px;">3 next actions · Work</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="width:22px;height:22px;border-radius:6px;background:var(--grun);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;flex-shrink:0;">✓</div>
+          <div style="flex:1;">
+            <div style="font-size:15px;color:var(--grau-3);text-decoration:line-through;">Mobile App v2</div>
+            <div style="font-size:12px;color:var(--grau-3);margin-top:2px;">2 next actions · Work</div>
+          </div>
+        </div>
+
+        <!-- Current item -->
+        <div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;background:#fefce8;margin:4px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="width:22px;height:22px;border-radius:6px;border:2px solid var(--grau-3);flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:700;">Team Ops</div>
+            <div style="font-size:12px;color:var(--grau-5);margin-top:2px;">1 next action · Work</div>
+          </div>
+          <span style="font-size:18px;color:var(--grau-5);">›</span>
+        </div>
+
+        <!-- Pending items -->
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="width:22px;height:22px;border-radius:6px;border:2px solid var(--grau-2);flex-shrink:0;"></div>
+          <div style="font-size:15px;">Summer Vacation</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="width:22px;height:22px;border-radius:6px;border:2px solid var(--grau-2);flex-shrink:0;"></div>
+          <div style="font-size:15px;">Home Maintenance</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--grau-1);">
+          <div style="width:22px;height:22px;border-radius:6px;border:2px solid var(--grau-2);flex-shrink:0;"></div>
+          <div style="font-size:15px;">Marathon Training</div>
+        </div>
+
+        <!-- Step breadcrumbs -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;margin-bottom:16px;font-size:12px;align-items:center;">
+          <span style="color:var(--grun);font-weight:500;">✓ Inbox</span>
+          <span style="color:var(--grau-3);">·</span>
+          <span style="color:var(--grun);font-weight:500;">✓ Next</span>
+          <span style="color:var(--grau-3);">·</span>
+          <span style="color:var(--schwarz);font-weight:700;">Projects</span>
+          <span style="color:var(--grau-3);">·</span>
+          <span style="color:var(--grau-5);">Waiting</span>
+          <span style="color:var(--grau-3);">·</span>
+          <span style="color:var(--grau-5);">Someday</span>
+          <span style="color:var(--grau-3);">·</span>
+          <span style="color:var(--grau-5);">Done</span>
+        </div>
+
+        <div style="background:var(--turkis-dark);color:white;border-radius:12px;padding:14px;text-align:center;font-weight:600;font-size:15px;cursor:pointer;">Next: Review Waiting For →</div>
+      </div>
     </div>
 
     <!-- ─── Quick Capture Overlay ────────────────────────────────── -->
@@ -643,7 +854,10 @@
     <div id="overlay-capture" class="overlay" role="dialog" aria-modal="true" aria-label="Quick Capture">
       <div class="bottom-sheet" id="capture-sheet">
         <div class="bottom-sheet-handle"></div>
-        <!-- Quick capture content added in later tasks -->
+        <div style="font-family:Georgia,serif;font-size:20px;font-weight:700;margin-bottom:16px;">Quick Capture</div>
+        <div style="font-size:17px;margin-bottom:10px;border:none;background:none;width:100%;outline:none;">Buy birthday gift for Mama</div>
+        <div style="font-size:14px;color:var(--grau-5);border:none;background:none;width:100%;outline:none;margin-bottom:20px;">Add a note...</div>
+        <div onclick="closeCapture()" style="background:var(--gelb);border-radius:12px;padding:14px;text-align:center;font-weight:600;font-size:15px;cursor:pointer;">Save to Inbox</div>
       </div>
     </div>
 
