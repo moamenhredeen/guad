@@ -28,7 +28,8 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain adminFilterChain(
             HttpSecurity http,
-            ClientRegistrationRepository clientRegistrationRepository
+            ClientRegistrationRepository clientRegistrationRepository,
+            KeycloakGrantedAuthoritiesMapper authoritiesMapper
     ) {
         return http
                 .securityMatcher("/admin/**", "/oauth2/**", "/login/oauth2/**")
@@ -36,10 +37,12 @@ public class SecurityConfiguration {
                         .requestMatchers("/*.css", "/*.woff2", "/admin/auth/login*", "/oauth2/**", "/login/oauth2/**")
                         .permitAll()
                         .anyRequest()
-                        .authenticated())
+                        .hasRole("ADMIN"))
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/admin/auth/login")
-                        .defaultSuccessUrl("/admin/dashboard", true))
+                        .defaultSuccessUrl("/admin/dashboard", true)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userAuthoritiesMapper(authoritiesMapper)))
                 .logout(logout -> logout
                         .logoutUrl("/admin/auth/logout")
                         .logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)))
