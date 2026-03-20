@@ -35,3 +35,4 @@ build/
 
 ### Dev ###
 .env
+application-local.yml
