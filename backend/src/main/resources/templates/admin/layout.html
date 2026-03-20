@@ -3,33 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/pico.min.css}">
-    <style>
-        button, a[role="button"] {
-            max-width: 150px;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/admin.css}">
     <title th:replace="${title}">Guad</title>
 </head>
-<body class="container">
+<body>
 
-<nav>
-    <ul>
-        <li><a th:href="@{/admin/dashboard}"><strong>Guad</strong></a></li>
-        <li><a th:href="@{/admin/areas}">Areas</a></li>
-        <li><a th:href="@{/admin/projects}">Projects</a></li>
-        <li><a th:href="@{/admin/contexts}">Contexts</a></li>
-        <li><a th:href="@{/admin/inbox}">Inbox</a></li>
-        <li><a th:href="@{/admin/actions}">Actions</a></li>
-        <li><a th:href="@{/admin/documents}">Documents</a></li>
-        <li><a th:href="@{/admin/attachments}">Attachments</a></li>
-        <li><a th:href="@{/admin/auth/logout}">Logout</a></li>
-    </ul>
-</nav>
+<div class="admin-layout">
+    <aside class="sidebar">
+        <a th:href="@{/admin/dashboard}" class="sidebar-brand">Guad</a>
 
-<!-- main content  -->
-<main th:replace="${content}"></main>
+        <div class="sidebar-group">
+            <div class="sidebar-group-label">GTD</div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/admin/inbox}" th:classappend="${currentUri.startsWith('/admin/inbox')} ? 'active'">Inbox</a></li>
+                <li><a th:href="@{/admin/actions}" th:classappend="${currentUri.startsWith('/admin/actions')} ? 'active'">Actions</a></li>
+                <li><a th:href="@{/admin/projects}" th:classappend="${currentUri.startsWith('/admin/projects')} ? 'active'">Projects</a></li>
+            </ul>
+        </div>
 
+        <div class="sidebar-group">
+            <div class="sidebar-group-label">Organization</div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/admin/areas}" th:classappend="${currentUri.startsWith('/admin/areas')} ? 'active'">Areas</a></li>
+                <li><a th:href="@{/admin/contexts}" th:classappend="${currentUri.startsWith('/admin/contexts')} ? 'active'">Contexts</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-group">
+            <div class="sidebar-group-label">Content</div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/admin/documents}" th:classappend="${currentUri.startsWith('/admin/documents')} ? 'active'">Documents</a></li>
+                <li><a th:href="@{/admin/attachments}" th:classappend="${currentUri.startsWith('/admin/attachments')} ? 'active'">Attachments</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <a th:href="@{/admin/auth/logout}" class="sidebar-logout">Logout</a>
+            <div th:if="${currentUserName}" class="sidebar-user" th:text="${currentUserName}"></div>
+        </div>
+    </aside>
+
+    <main class="main-content" th:replace="${content}"></main>
+</div>
 
 </body>
 </html>

@@ -1,48 +1,45 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/pico.min.css}">
+    <link rel="stylesheet" th:href="@{/admin.css}">
     <title>Guad - Login</title>
 </head>
 <body>
-<main class="container">
-
-    <hgroup class="text-center">
-        <h1>Guad</h1>
-        <h3>GTD-based task manager</h3>
-    </hgroup>
-
-    <article th:if="${param.error != null}">
-        <p>Error</p>
-    </article>
-    <article th:if="${param.logout}">
-        <p>You have been logged out.</p>
-    </article>
-
-    <form method="post" th:action="@{/admin/auth/login}">
-        <article>
-            <header>Login</header>
-            <input id="username" type="text" name="username" placeholder="Enter your name" required autofocus
-                   autocomplete="username"/>
-            <input id="password" type="password" name="password" required placeholder="Enter your name"/>
-            <input type="checkbox" id="remember-me" name="remember-me"/>
-            <footer>
-                <button type="submit">Sign in</button>
-            </footer>
-        </article>
-    </form>
-
-    <article th:if="${not #lists.isEmpty(oauth2Providers)}">
-        <header>Or sign in with</header>
-        <div th:each="provider : ${oauth2Providers}">
-            <a th:href="@{${provider.url}}" role="button" class="secondary outline"
-               style="width: 100%; text-align: center; margin-bottom: 0.5rem;"
-               th:text="${'Sign in with ' + provider.name}">
-            </a>
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="brand">
+            <h1>Guad</h1>
+            <p>GTD-based task manager</p>
         </div>
-    </article>
-</main>
+
+        <div th:if="${param.error != null}" class="auth-message error">
+            Invalid username or password.
+        </div>
+        <div th:if="${param.logout}" class="auth-message info">
+            You have been logged out.
+        </div>
+
+        <form method="post" th:action="@{/admin/auth/login}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" placeholder="Enter your username" required autofocus autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+            </div>
+            <button type="submit">Sign in</button>
+        </form>
+
+        <div th:if="${not #lists.isEmpty(oauth2Providers)}">
+            <div class="divider">or</div>
+            <div th:each="provider : ${oauth2Providers}">
+                <a th:href="@{${provider.url}}" class="oauth-btn" th:text="${'Sign in with ' + provider.name}"></a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

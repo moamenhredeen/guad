@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-  <title>Guad - Dashboard</title>
+    <title>Guad - Area Details</title>
 </head>
 <body>
 
-<main>
-  <h1>Area Details</h1>
+<main class="main-content">
+    <h1>Area Details</h1>
 
-  <ul>
-    <li>Id: <span th:text="${area.id()}"></span></li>
-    <li>Name: <span th:text="${area.name()}"></span></li>
-    <li>Description: <span th:text="${area.description()}"></span></li>
-    <li>Order: <span th:text="${area.order()}"></span></li>
-  </ul>
+    <dl class="detail-list">
+        <dt>Id</dt>
+        <dd th:text="${area.id()}"></dd>
+        <dt>Name</dt>
+        <dd th:text="${area.name()}"></dd>
+        <dt>Description</dt>
+        <dd th:text="${area.description()}"></dd>
+        <dt>Order</dt>
+        <dd th:text="${area.order()}"></dd>
+    </dl>
 </main>
 
 </body>
 </html>
-

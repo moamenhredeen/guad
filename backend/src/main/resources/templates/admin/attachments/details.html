@@ -1,62 +1,52 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-  <title>Guad - Attachment Details</title>
+    <title>Guad - Attachment Details</title>
 </head>
 <body>
 
-<main>
-  <h1>Attachment Details</h1>
+<main class="main-content">
+    <h1>Attachment Details</h1>
 
-  <ul>
-    <li>Id: <span th:text="${attachment.id()}"></span></li>
-    <li>Filename: <span th:text="${attachment.filename()}"></span></li>
-    <li>Size: <span th:text="${#numbers.formatDecimal(attachment.fileSize() / 1024.0, 1, 2)} + ' KB'"></span></li>
-    <li>MIME Type: <span th:text="${attachment.mimeType()}"></span></li>
-    <li>Uploaded Date: <span th:text="${attachment.uploadedDate() != null ? #temporals.format(attachment.uploadedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></li>
-    <li>Download: <a th:href="${attachment.downloadUrl()}" target="_blank">Download File</a></li>
-  </ul>
+    <dl class="detail-list">
+        <dt>Id</dt>
+        <dd th:text="${attachment.id()}"></dd>
+        <dt>Filename</dt>
+        <dd th:text="${attachment.filename()}"></dd>
+        <dt>Size</dt>
+        <dd th:text="${#numbers.formatDecimal(attachment.fileSize() / 1024.0, 1, 2)} + ' KB'"></dd>
+        <dt>MIME Type</dt>
+        <dd th:text="${attachment.mimeType()}"></dd>
+        <dt>Uploaded</dt>
+        <dd th:text="${attachment.uploadedDate() != null ? #temporals.format(attachment.uploadedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></dd>
+        <dt>Download</dt>
+        <dd><a th:href="${attachment.downloadUrl()}" target="_blank">Download File</a></dd>
+    </dl>
 
-  <div style="margin-top: 2rem;">
-    <h2>Preview</h2>
-    <div th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('image/')}"
-         style="text-align: center; padding: 1rem; background-color: var(--pico-muted-border-color); border-radius: 4px;">
-      <img th:src="${attachment.downloadUrl()}"
-           th:alt="${attachment.filename()}"
-           style="max-width: 100%; max-height: 600px; object-fit: contain; border-radius: 4px;">
+    <div class="mt-4">
+        <h2>Preview</h2>
+        <div class="media-preview" th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('image/')}">
+            <img th:src="${attachment.downloadUrl()}" th:alt="${attachment.filename()}">
+        </div>
+        <div class="media-preview" th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('video/')}">
+            <video th:src="${attachment.downloadUrl()}" controls>Your browser does not support the video tag.</video>
+        </div>
+        <div class="media-preview" th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('audio/')}">
+            <audio th:src="${attachment.downloadUrl()}" controls>Your browser does not support the audio tag.</audio>
+        </div>
+        <div class="media-preview" th:if="${attachment.mimeType() != null and attachment.mimeType() == 'application/pdf'}">
+            <iframe th:src="${attachment.downloadUrl()}">
+                <p>Your browser does not support iframes. <a th:href="${attachment.downloadUrl()}" target="_blank">Download PDF</a></p>
+            </iframe>
+        </div>
+        <div class="media-preview" th:if="${attachment.mimeType() == null or (!attachment.mimeType().startsWith('image/') and !attachment.mimeType().startsWith('video/') and !attachment.mimeType().startsWith('audio/') and attachment.mimeType() != 'application/pdf')}"
+             style="padding: 3rem;">
+            <span style="font-size: 5rem; display: block; margin-bottom: 1rem;">📄</span>
+            <p>Preview not available for this file type.</p>
+            <a th:href="${attachment.downloadUrl()}" target="_blank" class="btn btn-primary mt-2">Download File</a>
+        </div>
     </div>
-    <div th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('video/')}"
-         style="text-align: center; padding: 1rem; background-color: var(--pico-muted-border-color); border-radius: 4px;">
-      <video th:src="${attachment.downloadUrl()}"
-             controls 
-             style="max-width: 100%; max-height: 600px; border-radius: 4px;">
-        Your browser does not support the video tag.
-      </video>
-    </div>
-    <div th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('audio/')}"
-         style="text-align: center; padding: 1rem; background-color: var(--pico-muted-border-color); border-radius: 4px;">
-      <audio th:src="${attachment.downloadUrl()}"
-             controls 
-             style="width: 100%;">
-        Your browser does not support the audio tag.
-      </audio>
-    </div>
-    <div th:if="${attachment.mimeType() != null and attachment.mimeType() == 'application/pdf'}"
-         style="text-align: center; padding: 1rem; background-color: var(--pico-muted-border-color); border-radius: 4px;">
-      <iframe th:src="${attachment.downloadUrl()}"
-              style="width: 100%; height: 600px; border: none; border-radius: 4px;">
-        <p>Your browser does not support iframes. <a th:href="${attachment.downloadUrl()}" target="_blank">Download PDF</a></p>
-      </iframe>
-    </div>
-    <div th:if="${attachment.mimeType() == null or (!attachment.mimeType().startsWith('image/') and !attachment.mimeType().startsWith('video/') and !attachment.mimeType().startsWith('audio/') and attachment.mimeType() != 'application/pdf')}"
-         style="text-align: center; padding: 3rem; background-color: var(--pico-muted-border-color); border-radius: 4px;">
-      <span style="font-size: 5rem; display: block; margin-bottom: 1rem;">📄</span>
-      <p>Preview not available for this file type.</p>
-      <a th:href="${attachment.downloadUrl()}" target="_blank" role="button">Download File</a>
-    </div>
-  </div>
 </main>
 
 </body>
 </html>
-

@@ -1,46 +1,59 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-  <title>Guad - Action Details</title>
+    <title>Guad - Action Details</title>
 </head>
 <body>
 
-<main>
-  <h1>Action Details</h1>
+<main class="main-content">
+    <h1>Action Details</h1>
 
-  <ul>
-    <li>Id: <span th:text="${action.id()}"></span></li>
-    <li>Description: <span th:text="${action.description()}"></span></li>
-    <li>Notes: <span th:text="${action.notes()}"></span></li>
-    <li>Status: <span th:text="${action.status()}"></span></li>
-    <li>Time Specific: <span th:text="${action.isTimeSpecific()}"></span></li>
-    <li>Estimated Duration: <span th:text="${action.estimatedDuration()}"></span> minutes</li>
-    <li>Energy Level: <span th:text="${action.energyLevel()}"></span></li>
-    <li>Location: <span th:text="${action.location()}"></span></li>
-    <li>Created Date: <span th:text="${action.createdDate()}"></span></li>
-    <li>Updated Date: <span th:text="${action.updatedDate()}"></span></li>
-    <li>Completed Date: <span th:text="${action.completedDate()}"></span></li>
-    <li>Scheduled Date: <span th:text="${action.scheduledDate()}"></span></li>
-    <li>Due Date: <span th:text="${action.dueDate()}"></span></li>
-    <li>Project: <a th:if="${action.projectId() != null}"
-                     th:href="@{/admin/projects/{id}(id=${action.projectId()})}"
-                     th:text="${action.projectName()}"></a>
-        <span th:if="${action.projectId() == null}">None</span></li>
-    <li>Area: <a th:if="${action.areaId() != null}"
-                 th:href="@{/admin/areas/{id}(id=${action.areaId()})}"
-                 th:text="${action.areaName()}"></a>
-        <span th:if="${action.areaId() == null}">None</span></li>
-    <li>Contexts:
-        <ul th:if="${action.contextNames() != null and !action.contextNames().isEmpty()}">
-            <li th:each="contextName : ${action.contextNames()}" th:text="${contextName}"></li>
-        </ul>
-        <span th:if="${action.contextNames() == null or action.contextNames().isEmpty()}">None</span>
-    </li>
-  </ul>
+    <dl class="detail-list">
+        <dt>Id</dt>
+        <dd th:text="${action.id()}"></dd>
+        <dt>Description</dt>
+        <dd th:text="${action.description()}"></dd>
+        <dt>Notes</dt>
+        <dd th:text="${action.notes()}"></dd>
+        <dt>Status</dt>
+        <dd th:text="${action.status()}"></dd>
+        <dt>Time Specific</dt>
+        <dd th:text="${action.isTimeSpecific()}"></dd>
+        <dt>Duration</dt>
+        <dd><span th:if="${action.estimatedDuration()}" th:text="${action.estimatedDuration()} + ' minutes'"></span></dd>
+        <dt>Energy Level</dt>
+        <dd th:text="${action.energyLevel()}"></dd>
+        <dt>Location</dt>
+        <dd th:text="${action.location()}"></dd>
+        <dt>Created</dt>
+        <dd th:text="${action.createdDate()}"></dd>
+        <dt>Updated</dt>
+        <dd th:text="${action.updatedDate()}"></dd>
+        <dt>Completed</dt>
+        <dd th:text="${action.completedDate()}"></dd>
+        <dt>Scheduled</dt>
+        <dd th:text="${action.scheduledDate()}"></dd>
+        <dt>Due Date</dt>
+        <dd th:text="${action.dueDate()}"></dd>
+        <dt>Project</dt>
+        <dd>
+            <a th:if="${action.projectId() != null}" th:href="@{/admin/projects/{id}(id=${action.projectId()})}" th:text="${action.projectName()}"></a>
+            <span th:if="${action.projectId() == null}" class="text-muted">None</span>
+        </dd>
+        <dt>Area</dt>
+        <dd>
+            <a th:if="${action.areaId() != null}" th:href="@{/admin/areas/{id}(id=${action.areaId()})}" th:text="${action.areaName()}"></a>
+            <span th:if="${action.areaId() == null}" class="text-muted">None</span>
+        </dd>
+        <dt>Contexts</dt>
+        <dd>
+            <span th:if="${action.contextNames() != null and !action.contextNames().isEmpty()}" th:text="${#strings.listJoin(action.contextNames(), ', ')}"></span>
+            <span th:if="${action.contextNames() == null or action.contextNames().isEmpty()}" class="text-muted">None</span>
+        </dd>
+    </dl>
 
-  <div th:replace="~{admin/fragments/attachments :: attachment-grid(${action.attachments()})}"></div>
+    <div th:replace="~{admin/fragments/attachments :: attachment-grid(${action.attachments()})}"></div>
 </main>
 
 </body>
 </html>
-

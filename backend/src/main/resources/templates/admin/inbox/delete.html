@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-  <title>Guad - Dashboard</title>
+    <title>Guad - Delete Inbox Item</title>
 </head>
 <body>
-
-<main>
-  <h1>Are you sure you want to delete the inbox item <strong th:text="${inboxItem.title()}"></strong></h1>
-
-  <form method="post" th:action="@{/admin/inbox/delete/{id}(id=${inboxItem.id()})}">
-    <button type="submit">Delete</button>
-  </form>
-
+<main class="main-content">
+    <h1>Delete Inbox Item</h1>
+    <div class="delete-card">
+        <p>Are you sure you want to delete inbox item "<strong th:text="${inboxItem.title()}"></strong>"?</p>
+        <div class="delete-actions">
+            <form method="post" th:action="@{/admin/inbox/delete/{id}(id=${inboxItem.id()})}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <a th:href="@{/admin/inbox}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
 </main>
-
 </body>
 </html>
-
-

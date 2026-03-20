@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-  <title>Guad - Not Found</title>
+    <title>Guad - Not Found</title>
 </head>
 <body>
-
-<main>
-  <h1>Not Found</h1>
-  <p th:if="${message}" th:text="${message}"></p>
-  <p th:unless="${message}">The page or resource you're looking for doesn't exist.</p>
-  <a href="/admin/dashboard" th:href="@{/admin/dashboard}" role="button">Back to Dashboard</a>
+<main class="main-content">
+    <div class="error-page">
+        <h1>Not Found</h1>
+        <p th:if="${message}" th:text="${message}"></p>
+        <p th:unless="${message}">The page or resource you're looking for doesn't exist.</p>
+        <a th:href="@{/admin/dashboard}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
 </main>
-
 </body>
 </html>

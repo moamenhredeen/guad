@@ -1,46 +1,44 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-    <title>Guad - Dashboard</title>
+    <title>Guad - Areas</title>
 </head>
 <body>
 
-<main>
-    <h1>Area List</h1>
+<main class="main-content">
+    <h1>Areas</h1>
 
-    <form method="get" th:action="@{/admin/areas}">
-        <div class="grid">
-            <input type="text" 
-                   name="search" 
-                   placeholder="Search by name, description, user, or ID..."
-                   th:value="${search}">
-            <button type="submit">Search</button>
-        </div>
+    <form method="get" th:action="@{/admin/areas}" class="search-toolbar">
+        <input type="text" name="search" placeholder="Search by name..." th:value="${search}">
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
-    <table>
+    <table class="admin-table">
         <thead>
         <tr>
             <th>Id</th>
             <th>Name</th>
             <th>Description</th>
             <th>Order</th>
+            <th class="actions">Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="area : ${areas}">
-            <td>
-                <a th:href="@{/admin/areas/{id}(id=${area.id()})}"
-                   th:text="${area.id()}"></a>
-            </td>
+            <td th:text="${area.id()}"></td>
             <td th:text="${area.name()}"></td>
             <td th:text="${area.description()}"></td>
             <td th:text="${area.order()}"></td>
+            <td class="actions">
+                <a th:href="@{/admin/areas/{id}(id=${area.id()})}">View</a>
+                <a th:href="@{/admin/areas/delete/{id}(id=${area.id()})}" class="delete-link">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
+
+    <div th:replace="~{admin/fragments/pagination :: pagination}"></div>
 </main>
 
 </body>
 </html>
-

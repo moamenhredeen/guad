@@ -1,54 +1,48 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-    <title>Guad - Dashboard</title>
+    <title>Guad - Inbox</title>
 </head>
 <body>
 
-<main>
-    <h1>Inbox Item List</h1>
+<main class="main-content">
+    <h1>Inbox</h1>
 
-    <form method="get" th:action="@{/admin/inbox}">
-        <div class="grid">
-            <input type="text" 
-                   name="search" 
-                   placeholder="Search by title or ID..."
-                   th:value="${search}">
-            <select name="status">
-                <option value="">All Statuses</option>
-                <option th:each="s : ${statuses}"
-                        th:value="${s.name()}"
-                        th:selected="${s == status}"
-                        th:text="${s}"></option>
-            </select>
-            <button type="submit">Search</button>
-        </div>
+    <form method="get" th:action="@{/admin/inbox}" class="search-toolbar">
+        <input type="text" name="search" placeholder="Search by title..." th:value="${search}">
+        <select name="status">
+            <option value="">All Statuses</option>
+            <option th:each="s : ${statuses}" th:value="${s}" th:selected="${s == status}" th:text="${s}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
-    <table>
+    <table class="admin-table">
         <thead>
         <tr>
             <th>Id</th>
             <th>Title</th>
             <th>Description</th>
             <th>Status</th>
+            <th class="actions">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="inboxItem : ${inboxItems}">
-            <td>
-                <a th:href="@{/admin/inbox/{id}(id=${inboxItem.id()})}"
-                   th:text="${inboxItem.id()}"></a>
+        <tr th:each="item : ${inboxItems}">
+            <td th:text="${item.id()}"></td>
+            <td th:text="${item.title()}"></td>
+            <td th:text="${item.description()}"></td>
+            <td th:text="${item.status()}"></td>
+            <td class="actions">
+                <a th:href="@{/admin/inbox/{id}(id=${item.id()})}">View</a>
+                <a th:href="@{/admin/inbox/delete/{id}(id=${item.id()})}" class="delete-link">Delete</a>
             </td>
-            <td th:text="${inboxItem.title()}"></td>
-            <td th:text="${inboxItem.description()}"></td>
-            <td th:text="${inboxItem.status()}"></td>
         </tr>
         </tbody>
     </table>
+
+    <div th:replace="~{admin/fragments/pagination :: pagination}"></div>
 </main>
 
 </body>
 </html>
-
-

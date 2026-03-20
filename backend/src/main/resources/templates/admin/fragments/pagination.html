@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+
+<div th:fragment="pagination" class="pagination" th:if="${totalPages != null && totalPages > 1}">
+    <a th:if="${currentPage > 0}"
+       th:href="@{''(page=${currentPage - 1}, size=${@environment.getProperty('spring.data.web.pageable.default-page-size', '25')})}"
+       class="btn-secondary">Previous</a>
+    <span th:if="${currentPage <= 0}" class="disabled">Previous</span>
+
+    <span class="page-info" th:text="'Page ' + ${currentPage + 1} + ' of ' + ${totalPages}"></span>
+
+    <a th:if="${currentPage < totalPages - 1}"
+       th:href="@{''(page=${currentPage + 1}, size=${@environment.getProperty('spring.data.web.pageable.default-page-size', '25')})}"
+       class="btn-secondary">Next</a>
+    <span th:if="${currentPage >= totalPages - 1}" class="disabled">Next</span>
+</div>
+
+</body>
+</html>

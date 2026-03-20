@@ -1,46 +1,44 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-    <title>Guad - Dashboard</title>
+    <title>Guad - Attachments</title>
 </head>
 <body>
 
-<main>
-    <h1>Attachment List</h1>
+<main class="main-content">
+    <h1>Attachments</h1>
 
-    <form method="get" th:action="@{/admin/attachments}">
-        <div class="grid">
-            <input type="text" 
-                   name="search" 
-                   placeholder="Search by filename, MIME type, user, or ID..."
-                   th:value="${search}">
-            <button type="submit">Search</button>
-        </div>
+    <form method="get" th:action="@{/admin/attachments}" class="search-toolbar">
+        <input type="text" name="search" placeholder="Search by filename..." th:value="${search}">
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
-    <table>
+    <table class="admin-table">
         <thead>
         <tr>
             <th>Id</th>
             <th>Filename</th>
             <th>Size</th>
             <th>Type</th>
+            <th class="actions">Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="attachment : ${attachments}">
-            <td>
-                <a th:href="@{/admin/attachments/{id}(id=${attachment.id()})}"
-                   th:text="${attachment.id()}"></a>
-            </td>
+            <td th:text="${attachment.id()}"></td>
             <td th:text="${attachment.filename()}"></td>
             <td th:text="${#numbers.formatDecimal(attachment.fileSize() / 1024.0, 1, 2)} + ' KB'"></td>
             <td th:text="${attachment.mimeType()}"></td>
+            <td class="actions">
+                <a th:href="@{/admin/attachments/{id}(id=${attachment.id()})}">View</a>
+                <a th:href="@{/admin/attachments/delete/{id}(id=${attachment.id()})}" class="delete-link">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
+
+    <div th:replace="~{admin/fragments/pagination :: pagination}"></div>
 </main>
 
 </body>
 </html>
-

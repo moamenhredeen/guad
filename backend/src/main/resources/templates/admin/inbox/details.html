@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-  <title>Guad - Dashboard</title>
+    <title>Guad - Inbox Item Details</title>
 </head>
 <body>
 
-<main>
-  <h1>Inbox Item Details</h1>
+<main class="main-content">
+    <h1>Inbox Item Details</h1>
 
-  <ul>
-    <li>Id: <span th:text="${inboxItem.id()}"></span></li>
-    <li>Title: <span th:text="${inboxItem.title()}"></span></li>
-    <li>Description: <span th:text="${inboxItem.description()}"></span></li>
-    <li>Status: <span th:text="${inboxItem.status()}"></span></li>
-    <li>Created Date: <span th:text="${inboxItem.createdDate() != null ? #temporals.format(inboxItem.createdDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></li>
-    <li>Updated Date: <span th:text="${inboxItem.updatedDate() != null ? #temporals.format(inboxItem.updatedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></li>
-    <li>Processed Date: <span th:text="${inboxItem.processedDate() != null ? #temporals.format(inboxItem.processedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span></li>
-  </ul>
+    <dl class="detail-list">
+        <dt>Id</dt>
+        <dd th:text="${inboxItem.id()}"></dd>
+        <dt>Title</dt>
+        <dd th:text="${inboxItem.title()}"></dd>
+        <dt>Description</dt>
+        <dd th:text="${inboxItem.description()}"></dd>
+        <dt>Status</dt>
+        <dd th:text="${inboxItem.status()}"></dd>
+    </dl>
 
-  <div th:replace="~{admin/fragments/attachments :: attachment-grid(${inboxItem.attachments()})}"></div>
+    <div th:replace="~{admin/fragments/attachments :: attachment-grid(${inboxItem.attachments()})}"></div>
 
-  <div style="margin-top: 2rem;">
-    <a th:href="@{/admin/inbox/{id}/create-action(id=${inboxItem.id()})}"
-       style="display: inline-block; padding: 0.5rem 1rem; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px;">
-      Create Action from this Item
-    </a>
-  </div>
+    <div class="mt-4">
+        <a th:href="@{/admin/inbox/{id}/create-action(id=${inboxItem.id()})}" class="btn btn-primary">Create Action from this Item</a>
+    </div>
 </main>
 
 </body>
 </html>
-

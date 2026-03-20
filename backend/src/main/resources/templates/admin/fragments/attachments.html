@@ -2,29 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
 
-<div th:fragment="attachment-grid(attachments)" style="margin-top: 2rem;">
+<div th:fragment="attachment-grid(attachments)" class="mt-4">
   <h2>Attachments</h2>
-  <div th:if="${attachments != null && !attachments.isEmpty()}"
-       class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
-    <article th:each="attachment : ${attachments}" style="padding: 1rem; border: 1px solid var(--pico-border-color); border-radius: 4px;">
-      <a th:href="@{/admin/attachments/{id}(id=${attachment.id()})}" style="text-decoration: none; color: inherit;">
-        <div th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('image/')}" style="text-align: center; margin-bottom: 0.5rem;">
-          <img th:src="${attachment.downloadUrl()}"
-               th:alt="${attachment.filename()}"
-               style="max-width: 100%; max-height: 150px; object-fit: contain; border-radius: 4px;">
-        </div>
-        <div th:if="${attachment.mimeType() == null or !attachment.mimeType().startsWith('image/')}" style="text-align: center; margin-bottom: 0.5rem; padding: 2rem; background-color: var(--pico-muted-border-color); border-radius: 4px;">
-          <span style="font-size: 3rem;">📄</span>
-        </div>
-        <h6 style="margin: 0.5rem 0 0.25rem 0; word-break: break-word;" th:text="${attachment.filename()}"></h6>
-        <small style="color: var(--pico-muted-color);">
-          <span th:text="${#numbers.formatDecimal(attachment.fileSize() / 1024.0, 1, 2)} + ' KB'"></span>
-          <span th:if="${attachment.mimeType() != null}" th:text="' · ' + ${attachment.mimeType()}"></span>
-        </small>
-      </a>
-    </article>
+  <div th:if="${attachments != null && !attachments.isEmpty()}" class="attachment-grid">
+    <a th:each="attachment : ${attachments}"
+       th:href="@{/admin/attachments/{id}(id=${attachment.id()})}"
+       class="attachment-card">
+      <div th:if="${attachment.mimeType() != null and attachment.mimeType().startsWith('image/')}" class="preview">
+        <img th:src="${attachment.downloadUrl()}" th:alt="${attachment.filename()}">
+      </div>
+      <div th:if="${attachment.mimeType() == null or !attachment.mimeType().startsWith('image/')}" class="preview-placeholder">📄</div>
+      <h6 th:text="${attachment.filename()}"></h6>
+      <small>
+        <span th:text="${#numbers.formatDecimal(attachment.fileSize() / 1024.0, 1, 2)} + ' KB'"></span>
+        <span th:if="${attachment.mimeType() != null}" th:text="' · ' + ${attachment.mimeType()}"></span>
+      </small>
+    </a>
   </div>
-  <p th:if="${attachments == null || attachments.isEmpty()}">No attachments</p>
+  <p th:if="${attachments == null || attachments.isEmpty()}" class="text-muted">No attachments</p>
 </div>
 
 </body>

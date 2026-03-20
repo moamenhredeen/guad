@@ -1,23 +1,23 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{/pico.min.css}">
-    <title>Guad - Login</title>
+    <link rel="stylesheet" th:href="@{/admin.css}">
+    <title>Guad - Logout</title>
 </head>
 <body>
-<main class="container">
-
-    <hgroup class="text-center">
-        <h1>Guad</h1>
-        <h3>GTD-based task manager</h3>
-    </hgroup>
-
-
-    <form method="post" th:action="@{/admin/auth/logout}">
-        <button type="submit">Logout</button>
-    </form>
-</main>
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="brand">
+            <h1>Guad</h1>
+            <p>GTD-based task manager</p>
+        </div>
+        <p style="text-align: center; margin-bottom: 1rem;">Are you sure you want to log out?</p>
+        <form method="post" th:action="@{/admin/auth/logout}">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

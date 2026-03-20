@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
 <head>
-  <title>Guad - Document Details</title>
+    <title>Guad - Document Details</title>
 </head>
 <body>
 
-<main>
-  <h1>Document Details</h1>
+<main class="main-content">
+    <h1>Document Details</h1>
 
-  <ul>
-    <li>Id: <span th:text="${document.id()}"></span></li>
-    <li>Name: <span th:text="${document.name()}"></span></li>
-    <li>Content: <span th:text="${document.content()}"></span></li>
-  </ul>
+    <dl class="detail-list">
+        <dt>Id</dt>
+        <dd th:text="${document.id()}"></dd>
+        <dt>Name</dt>
+        <dd th:text="${document.name()}"></dd>
+        <dt>Content</dt>
+        <dd th:text="${document.content()}"></dd>
+    </dl>
 
-  <div th:replace="~{admin/fragments/attachments :: attachment-grid(${document.attachments()})}"></div>
+    <div th:replace="~{admin/fragments/attachments :: attachment-grid(${document.attachments()})}"></div>
 </main>
 
 </body>
 </html>
-

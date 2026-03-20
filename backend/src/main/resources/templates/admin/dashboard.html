@@ -5,8 +5,35 @@
 </head>
 <body>
 
-<main>
-    <h1>Admin Panel</h1>
+<main class="main-content">
+    <h1>Dashboard</h1>
+
+    <div class="stats-grid">
+        <a th:href="@{/admin/inbox}" class="stat-card">
+            <div class="stat-value" th:text="${inboxCount}">0</div>
+            <div class="stat-label">Unprocessed Inbox</div>
+        </a>
+        <a th:href="@{/admin/actions}" class="stat-card">
+            <div class="stat-value" th:text="${nextActionsCount}">0</div>
+            <div class="stat-label">Next Actions</div>
+        </a>
+        <a th:href="@{/admin/projects}" class="stat-card">
+            <div class="stat-value" th:text="${activeProjectsCount}">0</div>
+            <div class="stat-label">Active Projects</div>
+        </a>
+        <a class="stat-card">
+            <div class="stat-value" th:text="${waitingForCount}">0</div>
+            <div class="stat-label">Waiting For</div>
+        </a>
+        <a th:href="@{/admin/actions}" class="stat-card">
+            <div class="stat-value" th:text="${somedayMaybeCount}">0</div>
+            <div class="stat-label">Someday / Maybe</div>
+        </a>
+        <div th:classappend="${weeklyReviewDue} ? 'review-due' : 'review-ok'" class="stat-card">
+            <div class="stat-value" th:text="${weeklyReviewDue} ? 'Due' : 'Up to date'">-</div>
+            <div class="stat-label">Weekly Review</div>
+        </div>
+    </div>
 </main>
 
 </body>
