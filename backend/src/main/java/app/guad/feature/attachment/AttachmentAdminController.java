@@ -1,5 +1,6 @@
 package app.guad.feature.attachment;
 
+import app.guad.core.ResourceNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
@@ -46,32 +47,25 @@ public class AttachmentAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var attachment = this.attachmentService.getAttachmentById(id);
-        if (attachment.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("attachment", attachment.map(AttachmentMapper::toAttachmentDetailsViewModel).get());
+        var attachment = this.attachmentService.getAttachmentById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Attachment", id));
+        model.addAttribute("attachment", AttachmentMapper.toAttachmentDetailsViewModel(attachment));
         return "admin/attachments/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteAttachmentForm(@PathVariable Long id, Model model) {
-        var attachment = this.attachmentService.getAttachmentById(id);
-        if (attachment.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("attachment",
-                attachment.map(AttachmentMapper::toDeleteAttachmentViewModel).get());
-        return "/admin/attachments/delete";
+        var attachment = this.attachmentService.getAttachmentById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Attachment", id));
+        model.addAttribute("attachment", AttachmentMapper.toDeleteAttachmentViewModel(attachment));
+        return "admin/attachments/delete";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteAttachment(@PathVariable Long id) {
-        var attachment = this.attachmentService.getAttachmentById(id);
-        if (attachment.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        this.attachmentService.deleteAttachment(attachment.get());
+        var attachment = this.attachmentService.getAttachmentById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Attachment", id));
+        this.attachmentService.deleteAttachment(attachment);
         return "redirect:/admin/attachments";
     }
 }

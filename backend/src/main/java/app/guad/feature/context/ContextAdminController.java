@@ -1,5 +1,6 @@
 package app.guad.feature.context;
 
+import app.guad.core.ResourceNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,24 +39,18 @@ public class ContextAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var context = this.contextService.getContextById(id);
-        if (context.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        var viewModel = context.map(ContextMapper::toContextDetailsViewModel).get();
-        model.addAttribute("context", viewModel);
+        var context = this.contextService.getContextById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Context", id));
+        model.addAttribute("context", ContextMapper.toContextDetailsViewModel(context));
         return "admin/contexts/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteContextForm(@PathVariable Long id, Model model) {
-        var context = this.contextService.getContextById(id);
-        if (context.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        var viewModel = context.map(ContextMapper::toDeleteContextViewModel).get();
-        model.addAttribute("context", viewModel);
-        return "/admin/contexts/delete";
+        var context = this.contextService.getContextById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Context", id));
+        model.addAttribute("context", ContextMapper.toDeleteContextViewModel(context));
+        return "admin/contexts/delete";
     }
 
     @PostMapping("/delete/{id}")

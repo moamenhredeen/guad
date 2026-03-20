@@ -1,5 +1,6 @@
 package app.guad.feature.project;
 
+import app.guad.core.ResourceNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
@@ -47,22 +48,17 @@ public class ProjectAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var project = this.projectService.getProjectById(id);
-        if (project.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("project", toProjectDetailsViewModel(project.get()));
+        var project = this.projectService.getProjectById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project", id));
+        model.addAttribute("project", toProjectDetailsViewModel(project));
         return "admin/projects/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteProjectForm(@PathVariable Long id, Model model) {
-        var project = this.projectService.getProjectById(id);
-        if (project.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("viewModel",
-                project.map(p -> new DeleteProjectViewModel(p.getId(), p.getName())).get());
+        var project = this.projectService.getProjectById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project", id));
+        model.addAttribute("viewModel", new DeleteProjectViewModel(project.getId(), project.getName()));
         return "admin/projects/delete";
     }
 

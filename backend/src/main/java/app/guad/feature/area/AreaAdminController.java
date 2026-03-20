@@ -1,5 +1,6 @@
 package app.guad.feature.area;
 
+import app.guad.core.ResourceNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
@@ -45,23 +46,18 @@ public class AreaAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var area = this.areaService.getAreaById(id);
-        if (area.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        var viewModel = area.map(AreaMapper::toAreaDetailsViewModel).get();
-        model.addAttribute("area", viewModel);
+        var area = this.areaService.getAreaById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Area", id));
+        model.addAttribute("area", AreaMapper.toAreaDetailsViewModel(area));
         return "admin/areas/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteAreaForm(@PathVariable Long id, Model model) {
-        var area = this.areaService.getAreaById(id);
-        if (area.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("area", area.map(AreaMapper::toDeleteAreaViewModel).get());
-        return "/admin/areas/delete";
+        var area = this.areaService.getAreaById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Area", id));
+        model.addAttribute("area", AreaMapper.toDeleteAreaViewModel(area));
+        return "admin/areas/delete";
     }
 
     @PostMapping("/delete/{id}")

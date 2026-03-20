@@ -1,5 +1,6 @@
 package app.guad.feature.action;
 
+import app.guad.core.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -51,22 +52,18 @@ public class ActionAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var action = this.actionService.getActionById(id);
-        if (action.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("action", toActionDetailsViewModel(action.get()));
+        var action = this.actionService.getActionById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Action", id));
+        model.addAttribute("action", toActionDetailsViewModel(action));
         return "admin/actions/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteActionForm(@PathVariable Long id, Model model) {
-        var action = this.actionService.getActionById(id);
-        if (action.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("action", action.map(ActionMapper::toDeleteActionViewModel).get());
-        return "/admin/actions/delete";
+        var action = this.actionService.getActionById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Action", id));
+        model.addAttribute("action", ActionMapper.toDeleteActionViewModel(action));
+        return "admin/actions/delete";
     }
 
     @PostMapping("/delete/{id}")

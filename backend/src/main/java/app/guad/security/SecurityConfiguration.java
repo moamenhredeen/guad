@@ -32,9 +32,9 @@ public class SecurityConfiguration {
             KeycloakGrantedAuthoritiesMapper authoritiesMapper
     ) {
         return http
-                .securityMatcher("/admin/**", "/oauth2/**", "/login/oauth2/**")
+                .securityMatcher("/admin/**", "/oauth2/**", "/login/oauth2/**", "/error")
                 .authorizeHttpRequests(authZ -> authZ
-                        .requestMatchers("/*.css", "/*.woff2", "/admin/auth/login*", "/oauth2/**", "/login/oauth2/**")
+                        .requestMatchers("/*.css", "/*.woff2", "/admin/auth/login*", "/oauth2/**", "/login/oauth2/**", "/error")
                         .permitAll()
                         .anyRequest()
                         .hasRole("ADMIN"))

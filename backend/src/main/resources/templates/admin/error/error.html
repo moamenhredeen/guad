@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+  <title>Guad - Error</title>
+</head>
+<body>
+
+<main>
+  <h1>Something went wrong</h1>
+  <p>Status: <span th:text="${status}">500</span> — <span th:text="${error}">Internal Server Error</span></p>
+  <p th:if="${message}" th:text="${message}"></p>
+  <a href="/admin/dashboard" th:href="@{/admin/dashboard}" role="button">Back to Dashboard</a>
+</main>
+
+</body>
+</html>

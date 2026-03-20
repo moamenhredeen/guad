@@ -1,5 +1,6 @@
 package app.guad.feature.inbox.admin;
 
+import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.inbox.InboxItemStatus;
 import app.guad.feature.inbox.InboxService;
 import org.springframework.data.domain.Pageable;
@@ -48,23 +49,18 @@ class InboxAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var inboxItem = this.inboxService.getInboxItemById(id);
-        if (inboxItem.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("inboxItem", InboxItemMapper.toGetInboxItemViewModel(inboxItem.get()));
+        var inboxItem = this.inboxService.getInboxItemById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id));
+        model.addAttribute("inboxItem", InboxItemMapper.toGetInboxItemViewModel(inboxItem));
         return "admin/inbox/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteInboxItemForm(@PathVariable Long id, Model model) {
-        var inboxItem = this.inboxService.getInboxItemById(id);
-        if (inboxItem.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        var viewModel = inboxItem.map(InboxItemMapper::toDeleteInboxItemViewModel).get();
-        model.addAttribute("inboxItem", viewModel);
-        return "/admin/inbox/delete";
+        var inboxItem = this.inboxService.getInboxItemById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id));
+        model.addAttribute("inboxItem", InboxItemMapper.toDeleteInboxItemViewModel(inboxItem));
+        return "admin/inbox/delete";
     }
 
     @PostMapping("/delete/{id}")

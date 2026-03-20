@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+  <title>Guad - Access Denied</title>
+</head>
+<body>
+
+<main>
+  <h1>Access Denied</h1>
+  <p>You don't have permission to access this page. Contact an administrator if you believe this is a mistake.</p>
+  <a href="/admin/auth/login" th:href="@{/admin/auth/login}" role="button">Back to Login</a>
+</main>
+
+</body>
+</html>

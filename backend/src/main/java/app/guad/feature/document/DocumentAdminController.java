@@ -1,5 +1,6 @@
 package app.guad.feature.document;
 
+import app.guad.core.ResourceNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
@@ -40,22 +41,17 @@ public class DocumentAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var document = this.documentService.getDocumentById(id);
-        if (document.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        model.addAttribute("document", toDocumentDetailsViewModel(document.get()));
+        var document = this.documentService.getDocumentById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Document", id));
+        model.addAttribute("document", toDocumentDetailsViewModel(document));
         return "admin/documents/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteDocumentForm(@PathVariable Long id, Model model) {
-        var document = this.documentService.getDocumentById(id);
-        if (document.isEmpty()) {
-            return "redirect:/admin/not-found";
-        }
-        var viewModel = document.map(DocumentMapper::toDeleteDocumentViewModel).get();
-        model.addAttribute("document", viewModel);
+        var document = this.documentService.getDocumentById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Document", id));
+        model.addAttribute("document", DocumentMapper.toDeleteDocumentViewModel(document));
         return "admin/documents/delete";
     }
 
