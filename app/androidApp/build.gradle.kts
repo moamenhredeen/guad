@@ -1,7 +1,25 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+}
+
+kotlin {
+    target {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+
+    dependencies {
+        implementation(projects.composeApp)
+        implementation(libs.androidx.activity.compose)
+        implementation(libs.compose.material3)
+        implementation(projects.core.designsystem)
+    }
+
 }
 
 android {
@@ -32,14 +50,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-dependencies {
-    implementation(projects.composeApp)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.compose.material3)
-
-    implementation(projects.core.designsystem)
-
-    debugImplementation(libs.compose.uiTooling)
 }

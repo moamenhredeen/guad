@@ -3,9 +3,9 @@ package app.guad.previews
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+//import androidx.compose.ui.tooling.preview.Preview
+//import androidx.compose.ui.tooling.preview.PreviewLightDark
+//import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import app.guad.core.designsystem.components.brand.GuadLogo
 import app.guad.core.designsystem.layouts.GuadAdaptiveFormLayout
 import app.guad.core.designsystem.theme.GuadTheme
