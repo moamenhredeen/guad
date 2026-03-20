@@ -1,0 +1,75 @@
+<h2>Approach: How should we build this?</h2>
+<p class="subtitle">Three strategies for implementing the web GTD app on top of your existing Vue + shadcn-vue scaffolding</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)" style="border: 2px solid #309AAF;">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Recommended: Screen-by-Screen, API-Connected</h3>
+      <p>Build each page fully functional, one at a time. Each page gets its own Pinia store, API service, and components. Start with Inbox (core GTD loop), then expand outward.</p>
+      <div class="pros-cons" style="margin-top: 12px;">
+        <div class="pros"><h4>Pros</h4><ul><li>Usable after first page ships</li><li>Each page is independently testable</li><li>Matches your backend's REST structure</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Shared patterns may need refactoring as they emerge</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Foundation First</h3>
+      <p>Build all shared infrastructure upfront — API client, auth, stores, reusable task components, sidebar — then fill in each page. More planning, later payoff.</p>
+      <div class="pros-cons" style="margin-top: 12px;">
+        <div class="pros"><h4>Pros</h4><ul><li>Consistent from day one</li><li>Shared components designed holistically</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Nothing works until a lot is built</li><li>Risk of over-engineering shared layers</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Static UI First, Then Wire Up</h3>
+      <p>Build all pages with hardcoded mock data (like the HTML prototype), then connect APIs in a second pass. Visual progress fast, functionality later.</p>
+      <div class="pros-cons" style="margin-top: 12px;">
+        <div class="pros"><h4>Pros</h4><ul><li>Fast visual validation</li><li>Design issues caught early</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Rework when connecting real data</li><li>Two passes over every page</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 24px;">
+  <div class="mockup">
+    <div class="mockup-header">Proposed Build Order (Approach A)</div>
+    <div class="mockup-body" style="padding: 20px; font-size: 14px; line-height: 1.8;">
+      <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px;">
+          <strong style="color: #309AAF;">Phase 1 — Core Shell</strong>
+          <ol style="margin-top: 8px; padding-left: 20px;">
+            <li>Auth (login, signup, OTP, JWT handling)</li>
+            <li>App shell (sidebar nav, routing, layout)</li>
+            <li>API client + auth interceptor</li>
+          </ol>
+        </div>
+        <div style="flex: 1; min-width: 200px;">
+          <strong style="color: #309AAF;">Phase 2 — GTD Core</strong>
+          <ol start="4" style="margin-top: 8px; padding-left: 20px;">
+            <li>Inbox (capture + triage)</li>
+            <li>Next Actions (context groups + filters)</li>
+            <li>Task detail side panel</li>
+          </ol>
+        </div>
+        <div style="flex: 1; min-width: 200px;">
+          <strong style="color: #309AAF;">Phase 3 — Expand</strong>
+          <ol start="7" style="margin-top: 8px; padding-left: 20px;">
+            <li>Projects (list + detail)</li>
+            <li>Waiting For</li>
+            <li>Someday/Maybe</li>
+            <li>Weekly Review wizard</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

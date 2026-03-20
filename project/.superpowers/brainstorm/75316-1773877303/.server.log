@@ -1,0 +1,13 @@
+{"type":"server-started","port":55612,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:55612","screen_dir":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/design-overview.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/design-bw-identity.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-inbox.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-next-actions.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-projects-v2.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-waiting-more.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-overlays.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-capture-v2.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-capture-v3.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/screen-project-review.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/75316-1773877303/waiting.html"}
+{"type":"server-stopped","reason":"idle timeout"}

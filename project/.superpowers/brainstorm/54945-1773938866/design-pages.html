@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guad Web — Page Designs</title>
+<style>
+  :root {
+    --turkis-dark: #094954;
+    --turkis: #309AAF;
+    --turkis-surface: #e8f4f6;
+    --gelb: #FFFC00;
+    --orange: #DD6F06;
+    --rot: #FD4D4D;
+    --schwarz: #2A2623;
+    --grau-5: #6D6766;
+    --grau-3: #BBB6B5;
+    --grau-2: #E4E0E0;
+    --grau-1: #F4F3F3;
+    --weiss: #FFFFFF;
+    --grun: #609D0F;
+    --blau: #508CF1;
+    --lila: #C761EC;
+    --font-serif: Georgia, 'Times New Roman', serif;
+    --font-sans: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--schwarz);
+    background: var(--grau-1);
+    padding: 24px;
+  }
+
+  .page-title {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .page-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: var(--grau-5);
+    margin-bottom: 32px;
+  }
+
+  /* Main content mockup (no sidebar, just the content area) */
+  .content-frame {
+    max-width: 700px;
+    margin: 0 auto 48px;
+    background: var(--weiss);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border: 1px solid var(--grau-2);
+    overflow: hidden;
+  }
+
+  .content-header {
+    padding: 20px 28px 0;
+  }
+
+  .content-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .content-subtitle {
+    font-size: 13px;
+    color: var(--grau-5);
+    margin-top: 2px;
+  }
+
+  .content-body {
+    padding: 12px 28px 24px;
+  }
+
+  /* Shared elements */
+  .section-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--turkis);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 0 6px;
+  }
+
+  .task-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--grau-1);
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .task-row:hover { background: var(--grau-1); }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--grau-3);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .checkbox--done {
+    background: var(--grun);
+    border-color: var(--grun);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .task-title { font-size: 14px; }
+  .task-meta { font-size: 12px; color: var(--grau-3); margin-top: 2px; }
+  .task-due { margin-left: auto; font-size: 12px; color: var(--orange); font-weight: 500; flex-shrink: 0; }
+
+  .add-task-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 4px;
+    color: var(--turkis);
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .add-task-row:hover { background: var(--turkis-surface); }
+  .add-icon {
+    width: 20px; height: 20px;
+    border: 2px solid var(--turkis);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 300;
+  }
+
+  /* Inline add task expanded */
+  .add-task-expanded {
+    border: 1px solid var(--grau-2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 8px 0;
+  }
+  .add-task-input {
+    font-size: 15px;
+    color: var(--schwarz);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .add-task-note {
+    font-size: 13px;
+    color: var(--grau-3);
+    margin-bottom: 12px;
+  }
+  .add-task-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .toolbar-left {
+    display: flex;
+    gap: 6px;
+  }
+  .toolbar-btn {
+    padding: 4px 10px;
+    border: 1px solid var(--grau-2);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--grau-5);
+    cursor: pointer;
+    background: none;
+  }
+  .toolbar-submit {
+    padding: 6px 16px;
+    background: var(--turkis);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Triage bar (inbox specific) */
+  .triage-bar {
+    margin-top: 8px;
+    padding: 10px 16px;
+    background: var(--turkis-surface);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 13px;
+  }
+  .triage-action {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--turkis-dark);
+    font-weight: 500;
+  }
+  .triage-action:hover { text-decoration: underline; }
+
+  /* Filter chips */
+  .filter-chips {
+    display: flex;
+    gap: 6px;
+    padding: 12px 0;
+    flex-wrap: wrap;
+  }
+  .chip {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    background: var(--grau-1);
+    color: var(--schwarz);
+  }
+  .chip.active {
+    background: var(--turkis-dark);
+    color: white;
+  }
+
+  /* Project rows */
+  .project-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--grau-1);
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .project-row:hover { background: var(--grau-1); }
+  .project-name { font-size: 14px; font-weight: 500; }
+  .project-meta { font-size: 12px; color: var(--grau-3); margin-top: 2px; }
+  .chevron { color: var(--grau-3); font-size: 16px; }
+
+  /* Waiting for */
+  .wf-row {
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--grau-1);
+  }
+  .wf-title { font-size: 14px; }
+  .wf-project { font-size: 12px; color: var(--grau-5); margin-top: 2px; }
+  .wf-meta {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+  .person-tag { color: var(--blau); }
+  .date-old { color: var(--orange); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .empty-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--turkis-surface);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 16px;
+  }
+  .empty-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .empty-sub {
+    font-size: 14px;
+    color: var(--grau-5);
+  }
+
+  /* Weekly review wizard */
+  .review-progress {
+    height: 4px;
+    background: var(--grau-1);
+    border-radius: 2px;
+    margin: 16px 0;
+    overflow: hidden;
+  }
+  .review-progress-fill {
+    height: 100%;
+    background: var(--turkis);
+    border-radius: 2px;
+    width: 50%;
+  }
+  .review-question {
+    font-size: 14px;
+    color: var(--grau-5);
+    line-height: 1.5;
+    margin: 8px 0 16px;
+  }
+  .review-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--grau-1);
+  }
+  .review-check-done {
+    width: 20px; height: 20px;
+    background: var(--grun);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .review-check-empty {
+    width: 20px; height: 20px;
+    border: 2px solid var(--grau-2);
+    border-radius: 5px;
+    flex-shrink: 0;
+  }
+  .review-current {
+    background: #fefce8;
+    border-radius: 6px;
+    padding: 10px 8px;
+    margin: 0 -4px;
+  }
+  .review-current .review-check-empty {
+    border-color: var(--grau-3);
+  }
+  .review-breadcrumbs {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--grau-3);
+    margin-top: 24px;
+  }
+  .review-next-btn {
+    margin-top: 16px;
+    padding: 12px;
+    background: var(--turkis-dark);
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grau-3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 0;
+    margin-top: 8px;
+  }
+
+  /* Quick capture modal */
+  .modal-backdrop {
+    position: relative;
+    background: rgba(42,38,35,0.15);
+    border-radius: 12px;
+    padding: 40px 28px;
+    display: flex;
+    justify-content: center;
+  }
+  .modal {
+    background: var(--weiss);
+    border-radius: 12px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+    width: 480px;
+    padding: 24px;
+  }
+  .modal-title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">Guad Web — Page Designs</div>
+<p class="page-subtitle">Each main content area, shown without sidebar for clarity. Scroll down to see all pages.</p>
+
+<!-- ===================== INBOX ===================== -->
+<div class="section-label">Page 1</div>
+<div class="content-frame">
+  <div class="content-header">
+    <div class="content-title">Inbox</div>
+    <div class="content-subtitle">5 items to process</div>
+  </div>
+  <div class="content-body">
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Call Hans about project deadline</div><div class="task-meta">Added today</div></div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Draft proposal for client meeting</div><div class="task-meta">Added today</div></div>
+      <div class="task-due">Due Fri</div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Research vacation spots for summer</div><div class="task-meta">Added yesterday</div></div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Fix leaking kitchen faucet</div><div class="task-meta">Added 2 days ago</div></div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Review quarterly budget report</div><div class="task-meta">Added 3 days ago</div></div>
+    </div>
+
+    <!-- Inline add task (expanded) -->
+    <div class="add-task-expanded">
+      <div class="add-task-input">Buy birthday gift for Mama</div>
+      <div class="add-task-note">Add a note...</div>
+      <div class="add-task-toolbar">
+        <div class="toolbar-left">
+          <div class="toolbar-btn">📁 Project</div>
+          <div class="toolbar-btn">🏷️ Context</div>
+          <div class="toolbar-btn">📅 Due</div>
+        </div>
+        <div class="toolbar-submit">Add Task</div>
+      </div>
+    </div>
+
+    <!-- Triage actions for inbox -->
+    <div class="triage-bar">
+      <div class="triage-action">⚡ Next Action</div>
+      <div class="triage-action">📁 To Project</div>
+      <div class="triage-action">⏳ Waiting For</div>
+      <div class="triage-action">💭 Someday</div>
+      <div class="triage-action">🗑️ Trash</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== NEXT ACTIONS ===================== -->
+<div class="section-label">Page 2</div>
+<div class="content-frame">
+  <div class="content-header">
+    <div class="content-title">Next Actions</div>
+    <div class="content-subtitle">12 actions across 4 contexts</div>
+  </div>
+  <div class="content-body">
+    <div class="filter-chips">
+      <div class="chip active">All</div>
+      <div class="chip">@Office</div>
+      <div class="chip">@Home</div>
+      <div class="chip">@Calls</div>
+      <div class="chip">@Errands</div>
+    </div>
+
+    <div class="section-header">@Office</div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Draft proposal for client meeting</div><div class="task-meta">Website Relaunch</div></div>
+      <div class="task-due">Due Fri</div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Review PR from Sarah</div><div class="task-meta">Mobile App v2</div></div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Update team wiki with new process</div><div class="task-meta">Team Ops</div></div>
+    </div>
+
+    <div class="section-header">@Home</div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Fix leaking kitchen faucet</div><div class="task-meta">Home Maintenance</div></div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Organize garage shelves</div><div class="task-meta">Home Maintenance</div></div>
+    </div>
+
+    <div class="section-header">@Calls</div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Call Hans about project deadline</div><div class="task-meta">Website Relaunch</div></div>
+    </div>
+
+    <div class="add-task-row">
+      <div class="add-icon">+</div>
+      <span>Add task</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PROJECTS ===================== -->
+<div class="section-label">Page 3</div>
+<div class="content-frame">
+  <div class="content-header">
+    <div class="content-title">Projects</div>
+    <div class="content-subtitle">8 active projects</div>
+  </div>
+  <div class="content-body">
+    <div class="section-header">Work</div>
+    <div class="project-row">
+      <div><div class="project-name">Website Relaunch</div><div class="project-meta">3 next actions</div></div>
+      <div class="chevron">›</div>
+    </div>
+    <div class="project-row">
+      <div><div class="project-name">Mobile App v2</div><div class="project-meta">2 next actions</div></div>
+      <div class="chevron">›</div>
+    </div>
+    <div class="project-row">
+      <div><div class="project-name">Team Ops</div><div class="project-meta">1 next action</div></div>
+      <div class="chevron">›</div>
+    </div>
+
+    <div class="section-header">Personal</div>
+    <div class="project-row">
+      <div><div class="project-name">Summer Vacation</div><div class="project-meta">2 next actions</div></div>
+      <div class="chevron">›</div>
+    </div>
+    <div class="project-row">
+      <div><div class="project-name">Home Maintenance</div><div class="project-meta">2 next actions</div></div>
+      <div class="chevron">›</div>
+    </div>
+
+    <div class="section-header">Health</div>
+    <div class="project-row">
+      <div><div class="project-name">Marathon Training</div><div class="project-meta">1 next action</div></div>
+      <div class="chevron">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PROJECT DETAIL ===================== -->
+<div class="section-label">Page 3b — Project Detail (sub-page)</div>
+<div class="content-frame">
+  <div class="content-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="font-size: 14px; color: var(--turkis); cursor: pointer;">← Projects</div>
+      <div style="font-size: 14px; color: var(--turkis); font-weight: 600; cursor: pointer;">Edit</div>
+    </div>
+    <div class="content-title" style="margin-top: 8px;">Website Relaunch</div>
+    <div class="content-subtitle">Work</div>
+    <div style="font-size: 14px; font-style: italic; color: var(--grau-5); margin-top: 6px; line-height: 1.5;">
+      "New company website live with updated branding and portfolio section."
+    </div>
+  </div>
+  <div class="content-body">
+    <div class="section-header">Next Actions</div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Draft proposal for client meeting</div><div class="task-meta">@Office · Due Fri</div></div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Review PR from Sarah</div><div class="task-meta">@Office</div></div>
+    </div>
+    <div class="task-row">
+      <div class="checkbox"></div>
+      <div><div class="task-title">Call Hans about project deadline</div><div class="task-meta">@Calls</div></div>
+    </div>
+
+    <div class="section-header" style="color: var(--blau);">Waiting For</div>
+    <div class="wf-row">
+      <div class="wf-title">Design mockups from Lisa</div>
+      <div class="wf-meta">
+        <span class="person-tag">👤 Lisa</span>
+        <span style="color: var(--grau-3);">Delegated Mar 12</span>
+      </div>
+    </div>
+
+    <div class="section-header" style="color: var(--grun);">Completed</div>
+    <div class="task-row" style="opacity: 0.6;">
+      <div class="checkbox checkbox--done">✓</div>
+      <div><div class="task-title" style="text-decoration: line-through; color: var(--grau-3);">Set up staging environment</div><div class="task-meta">Completed Mar 10</div></div>
+    </div>
+    <div class="task-row" style="opacity: 0.6;">
+      <div class="checkbox checkbox--done">✓</div>
+      <div><div class="task-title" style="text-decoration: line-through; color: var(--grau-3);">Gather brand assets</div><div class="task-meta">Completed Mar 8</div></div>
+    </div>
+
+    <div class="add-task-row" style="margin-top: 8px; border: 1px dashed var(--grau-3); border-radius: 8px; justify-content: center; padding: 10px;">
+      <span>+ Add next action</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== WAITING FOR ===================== -->
+<div class="section-label">Page 4</div>
+<div class="content-frame">
+  <div class="content-header">
+    <div class="content-title">Waiting For</div>
+    <div class="content-subtitle">4 items delegated</div>
+  </div>
+  <div class="content-body">
+    <div class="wf-row">
+      <div class="wf-title">Design mockups from Lisa</div>
+      <div class="wf-project">Website Relaunch</div>
+      <div class="wf-meta">
+        <span class="person-tag">👤 Lisa</span>
+        <span style="color: var(--grau-3);">Delegated Mar 12</span>
+      </div>
+    </div>
+    <div class="wf-row">
+      <div class="wf-title">Budget approval from Thomas</div>
+      <div class="wf-project">Team Ops</div>
+      <div class="wf-meta">
+        <span class="person-tag">👤 Thomas</span>
+        <span class="date-old">Delegated Mar 5 · 14 days</span>
+      </div>
+    </div>
+    <div class="wf-row">
+      <div class="wf-title">Electrician quote for garage</div>
+      <div class="wf-project">Home Maintenance</div>
+      <div class="wf-meta">
+        <span class="person-tag">👤 Müller Elektro</span>
+        <span style="color: var(--grau-3);">Delegated Mar 15</span>
+      </div>
+    </div>
+    <div class="wf-row">
+      <div class="wf-title">API docs review from Sarah</div>
+      <div class="wf-project">Mobile App v2</div>
+      <div class="wf-meta">
+        <span class="person-tag">👤 Sarah</span>
+        <span style="color: var(--grau-3);">Delegated Mar 17</span>
+      </div>
+    </div>
+
+    <div class="add-task-row" style="margin-top: 8px;">
+      <div class="add-icon">+</div>
+      <span>Add waiting for item</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== WEEKLY REVIEW ===================== -->
+<div class="section-label">Page 5</div>
+<div class="content-frame">
+  <div class="content-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="font-size: 14px; color: var(--turkis); cursor: pointer;">Exit Review</div>
+      <div style="font-size: 13px; color: var(--grau-5);">Step 3 of 6</div>
+    </div>
+    <div class="review-progress"><div class="review-progress-fill"></div></div>
+    <div class="content-title">Review Projects</div>
+    <div class="review-question">Is each project still relevant? Does every active project have a next action?</div>
+  </div>
+  <div class="content-body">
+    <div class="review-item">
+      <div class="review-check-done">✓</div>
+      <div><div style="font-size: 14px; color: var(--grau-3);">Website Relaunch</div><div class="task-meta">3 next actions · Work</div></div>
+    </div>
+    <div class="review-item">
+      <div class="review-check-done">✓</div>
+      <div><div style="font-size: 14px; color: var(--grau-3);">Mobile App v2</div><div class="task-meta">2 next actions · Work</div></div>
+    </div>
+    <div class="review-item review-current">
+      <div class="review-check-empty"></div>
+      <div style="flex: 1;"><div style="font-size: 14px; font-weight: 500;">Team Ops</div><div class="task-meta">1 next action · Work</div></div>
+      <div class="chevron">›</div>
+    </div>
+    <div class="review-item">
+      <div class="review-check-empty"></div>
+      <div><div style="font-size: 14px;">Summer Vacation</div><div class="task-meta">2 next actions · Personal</div></div>
+    </div>
+    <div class="review-item">
+      <div class="review-check-empty"></div>
+      <div><div style="font-size: 14px;">Home Maintenance</div><div class="task-meta">2 next actions · Personal</div></div>
+    </div>
+
+    <div class="review-breadcrumbs">
+      <span style="color: var(--grun);">✓ Inbox</span>
+      <span style="color: var(--grun);">✓ Next</span>
+      <span style="color: var(--schwarz); font-weight: 600;">Projects</span>
+      <span>Waiting</span>
+      <span>Someday</span>
+      <span>Done</span>
+    </div>
+
+    <div class="review-next-btn">Next: Review Waiting For →</div>
+  </div>
+</div>
+
+<!-- ===================== QUICK CAPTURE MODAL ===================== -->
+<div class="section-label">Quick Capture Modal (Q shortcut)</div>
+<div class="content-frame" style="background: transparent; border: none; box-shadow: none;">
+  <div class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-title">Quick Capture</div>
+      <div class="add-task-expanded" style="border-color: var(--turkis);">
+        <div class="add-task-input">Buy birthday gift for Mama</div>
+        <div class="add-task-note">Add a note...</div>
+        <div class="add-task-toolbar">
+          <div class="toolbar-left">
+            <div class="toolbar-btn">📁 Project</div>
+            <div class="toolbar-btn">🏷️ Context</div>
+            <div class="toolbar-btn">📅 Due</div>
+          </div>
+          <div class="toolbar-submit">Save to Inbox</div>
+        </div>
+      </div>
+      <div style="text-align: center; font-size: 12px; color: var(--grau-3); margin-top: 12px;">Press <span style="font-family: monospace; background: var(--grau-1); padding: 2px 6px; border-radius: 4px;">Esc</span> to close · <span style="font-family: monospace; background: var(--grau-1); padding: 2px 6px; border-radius: 4px;">⌘ Enter</span> to save</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== EMPTY STATE ===================== -->
+<div class="section-label">Empty State (Inbox cleared)</div>
+<div class="content-frame">
+  <div class="content-body">
+    <div class="empty-state">
+      <div class="empty-icon">✓</div>
+      <div class="empty-title">Alles guad!</div>
+      <div class="empty-sub">Nix zum schaffe. Press <strong>Q</strong> to capture something new.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+{"type":"server-started","port":63852,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:63852","screen_dir":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/54945-1773938866"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/54945-1773938866/web-app-scope.html"}
+{"source":"user-event","type":"click","text":"A\n    \n      Full GTD Web App\n      Same features as mobile — Inbox, Next Actions, Projects, Waiting For, Weekly Review — but adapted for desktop with sidebar navigation. A complete standalone experience.","choice":"a","id":null,"timestamp":1773939053750}
+{"source":"user-event","type":"click","text":"A\n    \n      Full GTD Web App\n      Same features as mobile — Inbox, Next Actions, Projects, Waiting For, Weekly Review — but adapted for desktop with sidebar navigation. A complete standalone experience.","choice":"a","id":null,"timestamp":1773939060560}
+{"source":"user-event","type":"click","text":"A\n    \n      Full GTD Web App\n      Same features as mobile — Inbox, Next Actions, Projects, Waiting For, Weekly Review — but adapted for desktop with sidebar navigation. A complete standalone experience.","choice":"a","id":null,"timestamp":1773939060691}
+{"source":"user-event","type":"click","text":"A\n    \n      Full GTD Web App\n      Same features as mobile — Inbox, Next Actions, Projects, Waiting For, Weekly Review — but adapted for desktop with sidebar navigation. A complete standalone experience.","choice":"a","id":null,"timestamp":1773939061135}
+{"source":"user-event","type":"click","text":"A\n    \n      Full GTD Web App\n      Same features as mobile — Inbox, Next Actions, Projects, Waiting For, Weekly Review — but adapted for desktop with sidebar navigation. A complete standalone experience.","choice":"a","id":null,"timestamp":1773939061685}
+{"source":"user-event","type":"click","text":"A\n    \n      Full GTD Web App\n      Same features as mobile — Inbox, Next Actions, Projects, Waiting For, Weekly Review — but adapted for desktop with sidebar navigation. A complete standalone experience.","choice":"a","id":null,"timestamp":1773939062671}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/54945-1773938866/waiting-1.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/54945-1773938866/approach-overview.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/54945-1773938866/design-layout.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/54945-1773938866/design-pages.html"}
+{"type":"screen-added","file":"/home/moamen/git-repos/guad/project/.superpowers/brainstorm/54945-1773938866/waiting-2.html"}
+{"type":"server-stopped","reason":"idle timeout"}

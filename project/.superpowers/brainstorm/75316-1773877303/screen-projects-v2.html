@@ -1,0 +1,171 @@
+<h2>Projects — Design Alternatives</h2>
+<p class="subtitle">Same info (name + next action count), different visual treatments. Tap to select.</p>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+
+  <!-- Option A: Border-left accent -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>A — Left Border Accent</h3>
+      <p style="font-size: 13px; color: #6D6766; margin-bottom: 16px;">Thin colored left border per area. Clean, minimal depth.</p>
+      <div style="font-family: -apple-system, system-ui, sans-serif; max-width: 320px;">
+        <!-- Area: Work -->
+        <div style="padding: 4px 0 8px;">
+          <div style="font-size: 12px; font-weight: 600; color: #309AAF; text-transform: uppercase; letter-spacing: 0.5px;">Work</div>
+        </div>
+        <div style="border-left: 3px solid #309AAF; padding: 12px 16px; margin-bottom: 6px; background: white;">
+          <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Website Relaunch</div>
+          <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">3 next actions</div>
+        </div>
+        <div style="border-left: 3px solid #309AAF; padding: 12px 16px; margin-bottom: 6px; background: white;">
+          <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Mobile App v2</div>
+          <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+        </div>
+        <!-- Area: Personal -->
+        <div style="padding: 12px 0 8px;">
+          <div style="font-size: 12px; font-weight: 600; color: #309AAF; text-transform: uppercase; letter-spacing: 0.5px;">Personal</div>
+        </div>
+        <div style="border-left: 3px solid #DD6F06; padding: 12px 16px; margin-bottom: 6px; background: white;">
+          <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Summer Vacation</div>
+          <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+        </div>
+        <div style="border-left: 3px solid #DD6F06; padding: 12px 16px; margin-bottom: 6px; background: white;">
+          <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Home Maintenance</div>
+          <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B: Flat rows with dividers -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>B — Clean Rows</h3>
+      <p style="font-size: 13px; color: #6D6766; margin-bottom: 16px;">No cards at all. Simple rows with thin dividers, like iOS Settings.</p>
+      <div style="font-family: -apple-system, system-ui, sans-serif; max-width: 320px;">
+        <!-- Area: Work -->
+        <div style="padding: 4px 0 8px;">
+          <div style="font-size: 12px; font-weight: 600; color: #309AAF; text-transform: uppercase; letter-spacing: 0.5px;">Work</div>
+        </div>
+        <div style="padding: 14px 4px; border-bottom: 1px solid #F4F3F3; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Website Relaunch</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">3 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <div style="padding: 14px 4px; border-bottom: 1px solid #F4F3F3; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Mobile App v2</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <!-- Area: Personal -->
+        <div style="padding: 14px 0 8px;">
+          <div style="font-size: 12px; font-weight: 600; color: #309AAF; text-transform: uppercase; letter-spacing: 0.5px;">Personal</div>
+        </div>
+        <div style="padding: 14px 4px; border-bottom: 1px solid #F4F3F3; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Summer Vacation</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <div style="padding: 14px 4px; border-bottom: 1px solid #F4F3F3; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Home Maintenance</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option C: Outlined cards -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>C — Outlined Cards</h3>
+      <p style="font-size: 13px; color: #6D6766; margin-bottom: 16px;">White cards with subtle border. Light, airy, more structure than rows.</p>
+      <div style="font-family: -apple-system, system-ui, sans-serif; max-width: 320px;">
+        <!-- Area: Work -->
+        <div style="padding: 4px 0 8px;">
+          <div style="font-size: 12px; font-weight: 600; color: #309AAF; text-transform: uppercase; letter-spacing: 0.5px;">Work</div>
+        </div>
+        <div style="border: 1px solid #E4E0E0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; background: white; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Website Relaunch</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">3 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <div style="border: 1px solid #E4E0E0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; background: white; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Mobile App v2</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <!-- Area: Personal -->
+        <div style="padding: 12px 0 8px;">
+          <div style="font-size: 12px; font-weight: 600; color: #309AAF; text-transform: uppercase; letter-spacing: 0.5px;">Personal</div>
+        </div>
+        <div style="border: 1px solid #E4E0E0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; background: white; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Summer Vacation</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <div style="border: 1px solid #E4E0E0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; background: white; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 500; color: #2A2623;">Home Maintenance</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option D: Collapsible sections -->
+  <div class="card" data-choice="d" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>D — Collapsible Sections</h3>
+      <p style="font-size: 13px; color: #6D6766; margin-bottom: 16px;">Area headers act as toggles. Projects are indented rows. Compact.</p>
+      <div style="font-family: -apple-system, system-ui, sans-serif; max-width: 320px;">
+        <!-- Area: Work (expanded) -->
+        <div style="padding: 12px 4px; border-bottom: 1px solid #E4E0E0; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 14px; font-weight: 600; color: #2A2623;">Work</div>
+          <div style="font-size: 11px; color: #BBB6B5;">3 projects · ▾</div>
+        </div>
+        <div style="padding: 12px 4px 12px 20px; border-bottom: 1px solid #F4F3F3; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; color: #2A2623;">Website Relaunch</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">3 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <div style="padding: 12px 4px 12px 20px; border-bottom: 1px solid #F4F3F3; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; color: #2A2623;">Mobile App v2</div>
+            <div style="font-size: 12px; color: #BBB6B5; margin-top: 2px;">2 next actions</div>
+          </div>
+          <div style="font-size: 16px; color: #BBB6B5;">›</div>
+        </div>
+        <!-- Area: Personal (collapsed) -->
+        <div style="padding: 12px 4px; border-bottom: 1px solid #E4E0E0; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 14px; font-weight: 600; color: #2A2623;">Personal</div>
+          <div style="font-size: 11px; color: #BBB6B5;">2 projects · ▸</div>
+        </div>
+        <!-- Area: Health (collapsed) -->
+        <div style="padding: 12px 4px; border-bottom: 1px solid #E4E0E0; display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 14px; font-weight: 600; color: #2A2623;">Health</div>
+          <div style="font-size: 11px; color: #BBB6B5;">2 projects · ▸</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
