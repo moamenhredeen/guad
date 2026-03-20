@@ -32,7 +32,7 @@ async function onProcess(action: ProcessAction) {
 <template>
   <div>
     <h1 class="font-serif text-2xl font-bold text-schwarz">Inbox</h1>
-    <p class="mt-0.5 text-[13px] text-grau-5">{{ inbox.items.length }} items to process</p>
+    <p class="mt-0.5 text-[13px] text-grau-50">{{ inbox.items.length }} items to process</p>
 
     <!-- Loading -->
     <div v-if="inbox.loading" class="mt-4 space-y-3">
@@ -41,14 +41,14 @@ async function onProcess(action: ProcessAction) {
 
     <!-- Empty state -->
     <div v-else-if="inbox.items.length === 0" class="flex flex-col items-center py-16">
-      <div class="flex size-16 items-center justify-center rounded-full bg-turkis-surface text-2xl">✓</div>
+      <div class="flex size-16 items-center justify-center rounded-full bg-grau-5 text-2xl">✓</div>
       <h2 class="mt-4 font-serif text-xl font-bold">Alles guad!</h2>
-      <p class="mt-1 text-sm text-grau-5">Nix zum schaffe. Press <kbd class="rounded bg-grau-1 px-1.5 py-0.5 font-mono text-xs">Q</kbd> to capture something new.</p>
+      <p class="mt-1 text-sm text-grau-50">Nix zum schaffe. Press <kbd class="rounded bg-grau-5 px-1.5 py-0.5 font-mono text-xs">Q</kbd> to capture something new.</p>
     </div>
 
     <!-- Task list -->
     <div v-else class="mt-4">
-      <div class="divide-y divide-grau-1">
+      <div class="divide-y divide-grau-5">
         <TaskRow
           v-for="item in inbox.items"
           :key="item.id"

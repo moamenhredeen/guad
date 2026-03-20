@@ -53,10 +53,10 @@ function formatDueDate(date: string | null | undefined) {
 
 <template>
   <Transition name="slide">
-    <div v-if="isOpen && selectedAction" class="w-[340px] shrink-0 border-l border-grau-2 bg-white">
-      <div class="flex items-center justify-between border-b border-grau-1 px-5 py-4">
-        <button class="text-grau-3 hover:text-schwarz" @click="close"><X class="size-5" /></button>
-        <Button size="sm" variant="ghost" class="text-turkis font-semibold" @click="save">Save</Button>
+    <div v-if="isOpen && selectedAction" class="w-[340px] shrink-0 border-l border-grau-50 bg-white">
+      <div class="flex items-center justify-between border-b border-grau-5 px-5 py-4">
+        <button class="text-grau-20 hover:text-schwarz" @click="close"><X class="size-5" /></button>
+        <Button size="sm" variant="ghost" class="text-grau-80 font-semibold" @click="save">Save</Button>
       </div>
 
       <div class="overflow-y-auto p-5">
@@ -70,50 +70,50 @@ function formatDueDate(date: string | null | undefined) {
         </div>
 
         <!-- Metadata fields -->
-        <div class="divide-y divide-grau-1">
+        <div class="divide-y divide-grau-5">
           <div class="flex items-center justify-between py-3">
-            <span class="text-[13px] text-grau-5">Project</span>
+            <span class="text-[13px] text-grau-50">Project</span>
             <span class="text-[13px] font-medium">{{ selectedAction.projectName ?? '—' }}</span>
           </div>
           <div class="flex items-center justify-between py-3">
-            <span class="text-[13px] text-grau-5">Context</span>
-            <span v-if="selectedAction.contexts.length" class="rounded-full bg-turkis-surface px-2.5 py-0.5 text-xs font-medium text-turkis-dark">
+            <span class="text-[13px] text-grau-50">Context</span>
+            <span v-if="selectedAction.contexts.length" class="rounded-full bg-grau-5 px-2.5 py-0.5 text-xs font-medium text-schwarz">
               {{ selectedAction.contexts[0]!.name }}
             </span>
             <span v-else class="text-[13px]">—</span>
           </div>
           <div class="flex items-center justify-between py-3">
-            <span class="text-[13px] text-grau-5">Due date</span>
-            <span class="text-[13px]" :class="selectedAction.dueDate ? 'font-medium text-orange' : ''">
+            <span class="text-[13px] text-grau-50">Due date</span>
+            <span class="text-[13px]" :class="selectedAction.dueDate ? 'font-medium text-rot-50' : ''">
               {{ formatDueDate(selectedAction.dueDate) }}
             </span>
           </div>
           <div class="flex items-center justify-between py-3">
-            <span class="text-[13px] text-grau-5">Area</span>
+            <span class="text-[13px] text-grau-50">Area</span>
             <span class="text-[13px]">{{ selectedAction.areaName ?? '—' }}</span>
           </div>
           <div class="flex items-center justify-between py-3">
-            <span class="text-[13px] text-grau-5">Energy</span>
+            <span class="text-[13px] text-grau-50">Energy</span>
             <span class="text-[13px]">{{ selectedAction.energyLevel ?? '—' }}</span>
           </div>
           <div class="flex items-center justify-between py-3">
-            <span class="text-[13px] text-grau-5">Time needed</span>
+            <span class="text-[13px] text-grau-50">Time needed</span>
             <span class="text-[13px]">{{ selectedAction.estimatedDuration ?? '—' }}</span>
           </div>
         </div>
 
         <!-- Notes -->
         <div class="mt-4">
-          <label class="text-[13px] text-grau-5">Notes</label>
+          <label class="text-[13px] text-grau-50">Notes</label>
           <textarea
             v-model="form.notes"
-            class="mt-1.5 w-full rounded-lg bg-grau-1 p-3 text-[13px] leading-relaxed text-grau-5 outline-none min-h-[60px] resize-y"
+            class="mt-1.5 w-full rounded-lg bg-grau-5 p-3 text-[13px] leading-relaxed text-grau-50 outline-none min-h-[60px] resize-y"
             placeholder="Add notes..."
           />
         </div>
 
         <!-- Delete -->
-        <button class="mt-4 w-full py-3 text-center text-[13px] text-rot hover:underline" @click="onDelete">
+        <button class="mt-4 w-full py-3 text-center text-[13px] text-rot-80 hover:underline" @click="onDelete">
           Delete Task
         </button>
       </div>

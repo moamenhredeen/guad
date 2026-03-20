@@ -18,8 +18,8 @@ onMounted(() => store.fetch())
     </div>
 
     <div v-else-if="store.data" class="mt-4">
-      <h3 v-if="store.data.actions.length" class="text-xs font-semibold uppercase tracking-wide text-lila">Actions</h3>
-      <div class="mt-1 divide-y divide-grau-1">
+      <h3 v-if="store.data.actions.length" class="text-xs font-semibold uppercase tracking-wide text-violett-80">Actions</h3>
+      <div class="mt-1 divide-y divide-grau-5">
         <TaskRow
           v-for="action in store.data.actions"
           :key="action.id"
@@ -28,16 +28,16 @@ onMounted(() => store.fetch())
         />
       </div>
 
-      <h3 v-if="store.data.projects.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-lila">Projects</h3>
-      <div class="mt-1 divide-y divide-grau-1">
+      <h3 v-if="store.data.projects.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-violett-80">Projects</h3>
+      <div class="mt-1 divide-y divide-grau-5">
         <RouterLink
           v-for="p in store.data.projects"
           :key="p.id"
           :to="`/projects/${p.id}`"
-          class="flex items-center justify-between rounded-md px-1 py-3 hover:bg-grau-1 transition-colors"
+          class="flex items-center justify-between rounded-md px-1 py-3 hover:bg-grau-5 transition-colors"
         >
           <div class="text-sm font-medium text-schwarz">{{ p.name }}</div>
-          <ChevronRight class="size-4 text-grau-3" />
+          <ChevronRight class="size-4 text-grau-20" />
         </RouterLink>
       </div>
     </div>

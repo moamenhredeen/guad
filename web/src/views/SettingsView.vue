@@ -14,19 +14,19 @@ const auth = useAuthStore()
 
     <div class="mt-6 flex items-center gap-4">
       <Avatar class="size-12 rounded-lg">
-        <AvatarFallback class="rounded-lg bg-turkis text-white text-lg">
+        <AvatarFallback class="rounded-lg bg-schwarz text-white text-lg">
           {{ auth.user?.username?.charAt(0)?.toUpperCase() ?? '?' }}
         </AvatarFallback>
       </Avatar>
       <div>
         <div class="font-medium text-schwarz">{{ auth.user?.username ?? 'User' }}</div>
-        <div class="text-sm text-grau-5">{{ auth.user?.email ?? '' }}</div>
+        <div class="text-sm text-grau-50">{{ auth.user?.email ?? '' }}</div>
       </div>
     </div>
 
     <Separator class="my-6" />
 
-    <Button variant="outline" class="text-rot border-rot/30 hover:bg-rot/5" @click="auth.logout()">
+    <Button variant="outline" class="text-rot-80 border-rot-80/30 hover:bg-rot-80/5" @click="auth.logout()">
       <LogOut class="mr-2 size-4" /> Log out
     </Button>
   </div>

@@ -28,19 +28,19 @@ async function onAddAction(data: { title: string }) {
   </div>
 
   <div v-else-if="projects.detail">
-    <RouterLink to="/projects" class="mb-3 inline-flex items-center gap-1 text-sm text-turkis hover:underline">
+    <RouterLink to="/projects" class="mb-3 inline-flex items-center gap-1 text-sm text-grau-80 hover:underline">
       <ArrowLeft class="size-4" /> Projects
     </RouterLink>
 
     <h1 class="font-serif text-2xl font-bold text-schwarz">{{ projects.detail.name }}</h1>
-    <p class="mt-0.5 text-[13px] text-grau-5">{{ projects.detail.areaName }}</p>
-    <p v-if="projects.detail.desiredOutcome" class="mt-1.5 text-sm italic text-grau-5 leading-relaxed">
+    <p class="mt-0.5 text-[13px] text-grau-50">{{ projects.detail.areaName }}</p>
+    <p v-if="projects.detail.desiredOutcome" class="mt-1.5 text-sm italic text-grau-50 leading-relaxed">
       "{{ projects.detail.desiredOutcome }}"
     </p>
 
     <!-- Next Actions -->
-    <h3 class="mt-6 text-xs font-semibold uppercase tracking-wide text-turkis">Next Actions</h3>
-    <div class="mt-1 divide-y divide-grau-1">
+    <h3 class="mt-6 text-xs font-semibold uppercase tracking-wide text-grau-80">Next Actions</h3>
+    <div class="mt-1 divide-y divide-grau-5">
       <TaskRow
         v-for="action in projects.detail.nextActions"
         :key="action.id"
@@ -52,20 +52,20 @@ async function onAddAction(data: { title: string }) {
     </div>
 
     <!-- Waiting For -->
-    <h3 v-if="projects.detail.waitingForItems.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-blau">Waiting For</h3>
-    <div v-if="projects.detail.waitingForItems.length" class="mt-1 divide-y divide-grau-1">
+    <h3 v-if="projects.detail.waitingForItems.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-blau-50">Waiting For</h3>
+    <div v-if="projects.detail.waitingForItems.length" class="mt-1 divide-y divide-grau-5">
       <div v-for="wf in projects.detail.waitingForItems" :key="wf.id" class="py-3 px-1">
         <div class="text-sm text-schwarz">{{ wf.title }}</div>
         <div class="mt-1 flex gap-3 text-xs">
-          <span class="text-blau">👤 {{ wf.delegatedTo }}</span>
-          <span class="text-grau-3">Delegated {{ new Date(wf.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) }}</span>
+          <span class="text-blau-50">👤 {{ wf.delegatedTo }}</span>
+          <span class="text-grau-20">Delegated {{ new Date(wf.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) }}</span>
         </div>
       </div>
     </div>
 
     <!-- Completed -->
-    <h3 v-if="projects.detail.completedActions.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-grun">Completed</h3>
-    <div v-if="projects.detail.completedActions.length" class="mt-1 divide-y divide-grau-1 opacity-60">
+    <h3 v-if="projects.detail.completedActions.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-grun-80">Completed</h3>
+    <div v-if="projects.detail.completedActions.length" class="mt-1 divide-y divide-grau-5 opacity-60">
       <TaskRow
         v-for="action in projects.detail.completedActions"
         :key="action.id"

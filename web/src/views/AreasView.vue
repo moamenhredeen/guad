@@ -30,16 +30,16 @@ async function addArea() {
 
     <div v-if="showAdd" class="mt-3 flex gap-2">
       <Input v-model="newName" placeholder="Area name (e.g. Work)" class="flex-1" @keydown.enter="addArea" />
-      <Button size="sm" class="bg-turkis text-white" @click="addArea">Save</Button>
+      <Button size="sm" class="bg-schwarz text-white" @click="addArea">Save</Button>
     </div>
 
-    <div class="mt-4 divide-y divide-grau-1">
+    <div class="mt-4 divide-y divide-grau-5">
       <div v-for="area in areas.items" :key="area.id" class="flex items-center justify-between py-3 px-1">
         <div>
           <div class="text-sm font-medium text-schwarz">{{ area.name }}</div>
-          <div v-if="area.description" class="mt-0.5 text-xs text-grau-3">{{ area.description }}</div>
+          <div v-if="area.description" class="mt-0.5 text-xs text-grau-20">{{ area.description }}</div>
         </div>
-        <button class="text-grau-3 hover:text-rot" @click="areas.remove(area.id)">
+        <button class="text-grau-20 hover:text-rot-80" @click="areas.remove(area.id)">
           <Trash2 class="size-4" />
         </button>
       </div>

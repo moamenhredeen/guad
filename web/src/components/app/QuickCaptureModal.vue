@@ -27,29 +27,29 @@ async function submit() {
         <div class="absolute inset-0 bg-schwarz/15" />
         <div class="relative w-[480px] rounded-xl bg-white p-6 shadow-xl" @keydown.escape="close" @keydown.meta.enter="submit" @keydown.ctrl.enter="submit">
           <h2 class="font-serif text-lg font-bold mb-4">Quick Capture</h2>
-          <div class="rounded-lg border border-turkis p-3.5">
+          <div class="rounded-lg border border-schwarz p-3.5">
             <input
               ref="titleInput"
               v-model="title"
-              class="w-full text-[15px] font-medium text-schwarz outline-none placeholder:text-grau-3"
+              class="w-full text-[15px] font-medium text-schwarz outline-none placeholder:text-grau-20"
               placeholder="What's on your mind?"
               autofocus
               @keydown.enter.prevent="submit"
             />
             <input
               v-model="notes"
-              class="mt-1 w-full text-[13px] text-grau-5 outline-none placeholder:text-grau-3"
+              class="mt-1 w-full text-[13px] text-grau-50 outline-none placeholder:text-grau-20"
               placeholder="Add a note..."
             />
             <div class="mt-3 flex justify-end">
-              <Button size="sm" class="bg-turkis text-white hover:bg-turkis/90" :disabled="!title.trim()" @click="submit">
+              <Button size="sm" class="bg-schwarz text-white hover:bg-schwarz/90" :disabled="!title.trim()" @click="submit">
                 Save to Inbox
               </Button>
             </div>
           </div>
-          <p class="mt-3 text-center text-xs text-grau-3">
-            Press <kbd class="rounded bg-grau-1 px-1 py-0.5 font-mono">Esc</kbd> to close ·
-            <kbd class="rounded bg-grau-1 px-1 py-0.5 font-mono">⌘ Enter</kbd> to save
+          <p class="mt-3 text-center text-xs text-grau-20">
+            Press <kbd class="rounded bg-grau-5 px-1 py-0.5 font-mono">Esc</kbd> to close ·
+            <kbd class="rounded bg-grau-5 px-1 py-0.5 font-mono">⌘ Enter</kbd> to save
           </p>
         </div>
       </div>

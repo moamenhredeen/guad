@@ -3,61 +3,61 @@ export class ApiError extends Error {
     public status: number,
     message: string,
   ) {
-    super(message)
+    super(message);
   }
 }
 
-let getAccessToken: (() => string | null) | null = null
+let getAccessToken: (() => string | null) | null = null;
 
 export function setTokenProvider(provider: () => string | null) {
-  getAccessToken = provider
+  getAccessToken = provider;
 }
 
-let onUnauthorized: (() => void) | null = null
+let onUnauthorized: (() => void) | null = null;
 
 export function setUnauthorizedHandler(handler: () => void) {
-  onUnauthorized = handler
+  onUnauthorized = handler;
 }
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api'
+const BASE_URL = "http://localhost:8080/api";
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  }
+    "Content-Type": "application/json",
+  };
 
-  const token = getAccessToken?.()
+  const token = getAccessToken?.();
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
   const response = await fetch(`${BASE_URL}${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
-  })
+  });
 
   if (response.status === 401) {
-    onUnauthorized?.()
-    throw new ApiError(401, 'Unauthorized')
+    onUnauthorized?.();
+    throw new ApiError(401, "Unauthorized");
   }
 
   if (!response.ok) {
-    const text = await response.text().catch(() => 'Request failed')
-    throw new ApiError(response.status, text)
+    const text = await response.text().catch(() => "Request failed");
+    throw new ApiError(response.status, text);
   }
 
-  if (response.status === 204 || response.headers.get('content-length') === '0') {
-    return undefined as T
+  if (response.status === 204 || response.headers.get("content-length") === "0") {
+    return undefined as T;
   }
 
-  return response.json()
+  return response.json();
 }
 
 export const api = {
-  get: <T>(path: string) => request<T>('GET', path),
-  post: <T>(path: string, body?: unknown) => request<T>('POST', path, body),
-  put: <T>(path: string, body?: unknown) => request<T>('PUT', path, body),
-  patch: <T>(path: string, body?: unknown) => request<T>('PATCH', path, body),
-  delete: <T>(path: string) => request<T>('DELETE', path),
-}
+  get: <T>(path: string) => request<T>("GET", path),
+  post: <T>(path: string, body?: unknown) => request<T>("POST", path, body),
+  put: <T>(path: string, body?: unknown) => request<T>("PUT", path, body),
+  patch: <T>(path: string, body?: unknown) => request<T>("PATCH", path, body),
+  delete: <T>(path: string) => request<T>("DELETE", path),
+};

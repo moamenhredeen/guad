@@ -48,20 +48,20 @@ async function onAdd(data: { title: string; notes: string }) {
 <template>
   <div>
     <h1 class="font-serif text-2xl font-bold text-schwarz">Next Actions</h1>
-    <p class="mt-0.5 text-[13px] text-grau-5">{{ filteredActions.length }} actions across {{ groupedByContext.size }} contexts</p>
+    <p class="mt-0.5 text-[13px] text-grau-50">{{ filteredActions.length }} actions across {{ groupedByContext.size }} contexts</p>
 
     <!-- Filter chips -->
     <div class="mt-3 flex flex-wrap gap-1.5">
       <button
         class="rounded-full px-3.5 py-1 text-[13px] transition-colors"
-        :class="activeContextId === null ? 'bg-turkis-dark text-white' : 'bg-grau-1 text-schwarz hover:bg-grau-2'"
+        :class="activeContextId === null ? 'bg-schwarz text-white' : 'bg-grau-5 text-schwarz hover:bg-grau-10'"
         @click="activeContextId = null"
       >All</button>
       <button
         v-for="ctx in contexts.items"
         :key="ctx.id"
         class="rounded-full px-3.5 py-1 text-[13px] transition-colors"
-        :class="activeContextId === ctx.id ? 'bg-turkis-dark text-white' : 'bg-grau-1 text-schwarz hover:bg-grau-2'"
+        :class="activeContextId === ctx.id ? 'bg-schwarz text-white' : 'bg-grau-5 text-schwarz hover:bg-grau-10'"
         @click="activeContextId = activeContextId === ctx.id ? null : ctx.id"
       >{{ ctx.name }}</button>
     </div>
@@ -74,8 +74,8 @@ async function onAdd(data: { title: string; notes: string }) {
     <!-- Grouped tasks -->
     <div v-else class="mt-4">
       <div v-for="[contextName, contextActions] in groupedByContext" :key="contextName" class="mb-4">
-        <h3 class="text-xs font-semibold uppercase tracking-wide text-turkis">{{ contextName }}</h3>
-        <div class="mt-1 divide-y divide-grau-1">
+        <h3 class="text-xs font-semibold uppercase tracking-wide text-grau-80">{{ contextName }}</h3>
+        <div class="mt-1 divide-y divide-grau-5">
           <TaskRow
             v-for="action in contextActions"
             :key="action.id"

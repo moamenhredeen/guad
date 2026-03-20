@@ -8,6 +8,6 @@ onMounted(() => auth.login())
 
 <template>
   <div class="flex min-h-screen items-center justify-center">
-    <p class="text-grau-5 text-sm">Redirecting to login...</p>
+    <p class="text-grau-50 text-sm">Redirecting to login...</p>
   </div>
 </template>

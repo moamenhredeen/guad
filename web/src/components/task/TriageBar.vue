@@ -16,11 +16,11 @@ const actions: { label: string; icon: string; action: ProcessAction }[] = [
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center justify-center gap-4 rounded-lg bg-turkis-surface px-4 py-2.5">
+  <div class="flex flex-wrap items-center justify-center gap-4 rounded-lg bg-grau-5 px-4 py-2.5">
     <button
       v-for="a in actions"
       :key="a.action"
-      class="flex items-center gap-1.5 text-[13px] font-medium text-turkis-dark hover:underline transition-colors"
+      class="flex items-center gap-1.5 text-[13px] font-medium text-schwarz hover:underline transition-colors"
       @click="$emit('process', a.action)"
     >
       <span>{{ a.icon }}</span> {{ a.label }}

@@ -71,7 +71,7 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" as-child>
             <RouterLink to="/inbox">
-              <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-turkis-dark text-white font-serif font-bold text-sm">
+              <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-gelb text-schwarz font-serif font-bold text-sm">
                 G
               </div>
               <div class="grid flex-1 text-left text-sm leading-tight">
@@ -85,7 +85,7 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
 
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton class="text-turkis font-medium">
+          <SidebarMenuButton class="text-gelb font-medium">
             <Plus class="size-4" />
             <span>Add Task</span>
             <kbd class="ml-auto text-[10px] text-muted-foreground font-mono">Q</kbd>
@@ -165,7 +165,7 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
             <DropdownMenuTrigger as-child>
               <SidebarMenuButton size="lg">
                 <Avatar class="h-8 w-8 rounded-lg">
-                  <AvatarFallback class="rounded-lg bg-turkis text-white text-xs">
+                  <AvatarFallback class="rounded-lg bg-schwarz text-white text-xs">
                     {{ auth.user?.username?.charAt(0)?.toUpperCase() ?? '?' }}
                   </AvatarFallback>
                 </Avatar>
