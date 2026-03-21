@@ -1,5 +1,6 @@
-package app.guad.feature.dashboard;
+package app.guad.feature.dashboard.admin;
 
+import app.guad.feature.dashboard.DashboardService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
