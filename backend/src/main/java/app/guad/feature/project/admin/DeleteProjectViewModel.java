@@ -1,4 +1,4 @@
-package app.guad.feature.project;
+package app.guad.feature.project.admin;
 
 public record DeleteProjectViewModel(
         Long id,

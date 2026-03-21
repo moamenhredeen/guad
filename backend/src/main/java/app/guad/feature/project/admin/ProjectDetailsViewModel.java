@@ -1,4 +1,4 @@
-package app.guad.feature.project;
+package app.guad.feature.project.admin;
 
 import app.guad.feature.attachment.AttachmentListItemViewModel;
 

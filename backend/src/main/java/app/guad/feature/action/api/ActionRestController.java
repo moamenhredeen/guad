@@ -7,7 +7,7 @@ import app.guad.feature.action.ActionStatus;
 import app.guad.feature.area.AreaService;
 import app.guad.feature.context.Context;
 import app.guad.feature.context.ContextService;
-import app.guad.feature.project.ProjectRepository;
+import app.guad.feature.project.ProjectService;
 import app.guad.security.AuthenticatedUser;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +25,15 @@ import java.util.Map;
 class ActionRestController {
 
     private final ActionService actionService;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
     private final AreaService areaService;
     private final ContextService contextService;
 
     ActionRestController(ActionService actionService,
-                          ProjectRepository projectRepository, AreaService areaService,
+                          ProjectService projectService, AreaService areaService,
                           ContextService contextService) {
         this.actionService = actionService;
-        this.projectRepository = projectRepository;
+        this.projectService = projectService;
         this.areaService = areaService;
         this.contextService = contextService;
     }
@@ -72,7 +72,7 @@ class ActionRestController {
         action.setScheduledDate(request.scheduledDate());
         action.setUserId(userId);
         if (request.projectId() != null) {
-            projectRepository.findById(request.projectId()).ifPresent(action::setProject);
+            projectService.findById(request.projectId()).ifPresent(action::setProject);
         }
         if (request.areaId() != null) {
             areaService.getAreaById(request.areaId()).ifPresent(action::setArea);
@@ -110,7 +110,7 @@ class ActionRestController {
         action.setDueDate(request.dueDate());
         action.setScheduledDate(request.scheduledDate());
         if (request.projectId() != null) {
-            projectRepository.findById(request.projectId()).ifPresent(action::setProject);
+            projectService.findById(request.projectId()).ifPresent(action::setProject);
         }
         if (request.areaId() != null) {
             areaService.getAreaById(request.areaId()).ifPresent(action::setArea);

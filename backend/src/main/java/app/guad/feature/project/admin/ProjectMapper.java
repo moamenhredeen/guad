@@ -1,4 +1,6 @@
-package app.guad.feature.project;
+package app.guad.feature.project.admin;
+
+import app.guad.feature.project.Project;
 
 import java.util.List;
 
@@ -24,8 +26,8 @@ public final class ProjectMapper {
                 project.getDescription(),
                 project.getDesired_outcome(),
                 project.getStatus() != null ? project.getStatus().name() : null,
-                project.getCreatedDate(),
-                project.getUpdatedDate(),
+                project.getAudit().getCreatedAt(),
+                project.getAudit().getUpdatedAt(),
                 project.getCompletedDate(),
                 project.getColor(),
                 project.getArea() != null ? project.getArea().getId() : null,

@@ -3,7 +3,7 @@ package app.guad.feature.somedaymaybe.api;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.action.api.ActionResponse;
-import app.guad.feature.project.ProjectRepository;
+import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
 import app.guad.feature.project.api.ProjectResponse;
 import app.guad.security.AuthenticatedUser;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 class SomedayMaybeRestController {
 
     private final ActionService actionService;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
-    SomedayMaybeRestController(ActionService actionService, ProjectRepository projectRepository) {
+    SomedayMaybeRestController(ActionService actionService, ProjectService projectService) {
         this.actionService = actionService;
-        this.projectRepository = projectRepository;
+        this.projectService = projectService;
     }
 
     @GetMapping
@@ -30,7 +30,7 @@ class SomedayMaybeRestController {
         var userId = AuthenticatedUser.from(jwt).id();
         var actions = actionService.findAllByUserIdAndStatus(userId, ActionStatus.SOMEDAY_MAYBE)
             .stream().map(ActionResponse::from).toList();
-        var projects = projectRepository.findAllByUserIdAndStatus(userId, ProjectStatus.SOMEDAY_MAYBE)
+        var projects = projectService.findAllByUserIdAndStatus(userId, ProjectStatus.SOMEDAY_MAYBE)
             .stream().map(p -> ProjectResponse.from(p, 0)).toList();
         return new SomedayMaybeResponse(actions, projects);
     }

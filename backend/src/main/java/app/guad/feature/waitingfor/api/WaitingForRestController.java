@@ -2,7 +2,7 @@ package app.guad.feature.waitingfor.api;
 
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.ActionService;
-import app.guad.feature.project.ProjectRepository;
+import app.guad.feature.project.ProjectService;
 import app.guad.feature.waitingfor.WaitingForItem;
 import app.guad.feature.waitingfor.WaitingForItemStatus;
 import app.guad.feature.waitingfor.WaitingForRepository;
@@ -25,14 +25,14 @@ class WaitingForRestController {
     private final WaitingForService waitingForService;
     private final WaitingForRepository waitingForRepository;
     private final ActionService actionService;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
     WaitingForRestController(WaitingForService waitingForService, WaitingForRepository waitingForRepository,
-                              ActionService actionService, ProjectRepository projectRepository) {
+                              ActionService actionService, ProjectService projectService) {
         this.waitingForService = waitingForService;
         this.waitingForRepository = waitingForRepository;
         this.actionService = actionService;
-        this.projectRepository = projectRepository;
+        this.projectService = projectService;
     }
 
     @GetMapping
@@ -58,7 +58,7 @@ class WaitingForRestController {
             actionService.getActionById(request.actionId()).ifPresent(item::setAction);
         }
         if (request.projectId() != null) {
-            projectRepository.findById(request.projectId()).ifPresent(item::setProject);
+            projectService.findById(request.projectId()).ifPresent(item::setProject);
         }
         var saved = waitingForService.save(item);
         return ResponseEntity.created(URI.create("/api/waiting-for/" + saved.getId()))
@@ -88,7 +88,7 @@ class WaitingForRestController {
             actionService.getActionById(request.actionId()).ifPresent(item::setAction);
         }
         if (request.projectId() != null) {
-            projectRepository.findById(request.projectId()).ifPresent(item::setProject);
+            projectService.findById(request.projectId()).ifPresent(item::setProject);
         }
         return WaitingForResponse.from(waitingForService.save(item));
     }

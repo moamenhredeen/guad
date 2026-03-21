@@ -27,7 +27,7 @@ public record ProjectDetailResponse(
             nextActions.stream().map(ActionResponse::from).toList(),
             waitingFor.stream().map(WaitingForResponse::from).toList(),
             completed.stream().map(ActionResponse::from).toList(),
-            project.getCreatedDate()
+            project.getAudit().getCreatedAt()
         );
     }
 }

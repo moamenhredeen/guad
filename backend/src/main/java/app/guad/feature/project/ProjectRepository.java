@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ProjectRepository extends
+interface ProjectRepository extends
         CrudRepository<Project, Long>,
         PagingAndSortingRepository<Project, Long>,
         JpaSpecificationExecutor<Project> {
+    List<Project> findAllByUserId(UUID userId);
     List<Project> findAllByUserIdAndStatus(UUID userId, ProjectStatus status);
     Optional<Project> findByIdAndUserId(Long id, UUID userId);
     long countByUserIdAndStatus(UUID userId, ProjectStatus status);

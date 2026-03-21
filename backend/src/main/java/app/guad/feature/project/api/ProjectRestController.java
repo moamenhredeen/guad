@@ -6,7 +6,6 @@ import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.area.AreaService;
 import app.guad.feature.project.Project;
-import app.guad.feature.project.ProjectRepository;
 import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
 import app.guad.feature.waitingfor.WaitingForItemStatus;
@@ -27,16 +26,14 @@ import java.util.Map;
 class ProjectRestController {
 
     private final ProjectService projectService;
-    private final ProjectRepository projectRepository;
     private final ActionService actionService;
     private final AreaService areaService;
     private final WaitingForRepository waitingForRepository;
 
-    ProjectRestController(ProjectService projectService, ProjectRepository projectRepository,
+    ProjectRestController(ProjectService projectService,
                            ActionService actionService,
                            AreaService areaService, WaitingForRepository waitingForRepository) {
         this.projectService = projectService;
-        this.projectRepository = projectRepository;
         this.actionService = actionService;
         this.areaService = areaService;
         this.waitingForRepository = waitingForRepository;
@@ -45,7 +42,7 @@ class ProjectRestController {
     @GetMapping
     List<ProjectResponse> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return projectRepository.findAllByUserIdAndStatus(userId, ProjectStatus.ACTIVE).stream()
+        return projectService.findAllByUserIdAndStatus(userId, ProjectStatus.ACTIVE).stream()
             .map(p -> {
                 int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, p.getId())
                     .stream().filter(a -> a.getStatus() == ActionStatus.NEXT).count();
@@ -75,7 +72,7 @@ class ProjectRestController {
     @GetMapping("/{id}")
     ProjectDetailResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var project = projectRepository.findByIdAndUserId(id, userId)
+        var project = projectService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         var allActions = actionService.findAllByUserIdAndProjectId(userId, id);
         var nextActions = allActions.stream()
@@ -94,7 +91,7 @@ class ProjectRestController {
     ProjectResponse update(@PathVariable Long id, @Valid @RequestBody CreateProjectRequest request,
                             @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var project = projectRepository.findByIdAndUserId(id, userId)
+        var project = projectService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         project.setName(request.name());
         project.setDescription(request.description());
@@ -112,7 +109,7 @@ class ProjectRestController {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        projectRepository.findByIdAndUserId(id, userId)
+        projectService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         projectService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -123,7 +120,7 @@ class ProjectRestController {
                                     @Valid @RequestBody Map<String, String> body,
                                     @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var project = projectRepository.findByIdAndUserId(id, userId)
+        var project = projectService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         var action = new Action();
         action.setDescription(body.get("description"));
@@ -138,7 +135,7 @@ class ProjectRestController {
     ProjectResponse changeStatus(@PathVariable Long id, @RequestBody Map<String, String> body,
                                   @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var project = projectRepository.findByIdAndUserId(id, userId)
+        var project = projectService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         project.setStatus(ProjectStatus.valueOf(body.get("status")));
         var saved = projectService.save(project);

@@ -1,15 +1,14 @@
-package app.guad.feature.project;
+package app.guad.feature.project.admin;
 
 import app.guad.core.ResourceNotFoundException;
+import app.guad.feature.project.ProjectService;
+import app.guad.feature.project.ProjectStatus;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static app.guad.feature.project.ProjectSpecifications.byName;
-import static app.guad.feature.project.ProjectSpecifications.byStatus;
-import static app.guad.feature.project.ProjectMapper.toProjectDetailsViewModel;
+import static app.guad.feature.project.admin.ProjectMapper.toProjectDetailsViewModel;
 
 @Controller
 @RequestMapping("/admin/projects")
@@ -28,12 +27,7 @@ public class ProjectAdminController {
             @RequestParam(required = false) ProjectStatus status,
             @RequestParam(required = false) String search
     ) {
-        var paginatedData = this.projectService.search(
-                Specification.allOf(
-                        byName(search),
-                        byStatus(status)
-                ),
-                pageable);
+        var paginatedData = this.projectService.search(search, status, pageable);
         var projects = paginatedData
                 .getContent()
                 .stream()
@@ -48,7 +42,7 @@ public class ProjectAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var project = this.projectService.getProjectById(id)
+        var project = this.projectService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         model.addAttribute("project", toProjectDetailsViewModel(project));
         return "admin/projects/details";
@@ -56,7 +50,7 @@ public class ProjectAdminController {
 
     @GetMapping("/delete/{id}")
     public String deleteProjectForm(@PathVariable Long id, Model model) {
-        var project = this.projectService.getProjectById(id)
+        var project = this.projectService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         model.addAttribute("viewModel", new DeleteProjectViewModel(project.getId(), project.getName()));
         return "admin/projects/delete";
@@ -68,4 +62,3 @@ public class ProjectAdminController {
         return "redirect:/admin/projects";
     }
 }
-

@@ -5,7 +5,7 @@ import app.guad.feature.action.ActionStatus;
 import app.guad.feature.dashboard.api.DashboardResponse;
 import app.guad.feature.inbox.InboxItemStatus;
 import app.guad.feature.inbox.InboxService;
-import app.guad.feature.project.ProjectRepository;
+import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
 import app.guad.feature.review.WeeklyReviewService;
 import app.guad.feature.waitingfor.WaitingForItemStatus;
@@ -22,16 +22,16 @@ public class DashboardService {
 
     private final InboxService inboxService;
     private final ActionService actionService;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
     private final WaitingForRepository waitingForRepository;
     private final WeeklyReviewService weeklyReviewService;
 
     public DashboardService(InboxService inboxService, ActionService actionService,
-                             ProjectRepository projectRepository, WaitingForRepository waitingForRepository,
+                             ProjectService projectService, WaitingForRepository waitingForRepository,
                              WeeklyReviewService weeklyReviewService) {
         this.inboxService = inboxService;
         this.actionService = actionService;
-        this.projectRepository = projectRepository;
+        this.projectService = projectService;
         this.waitingForRepository = waitingForRepository;
         this.weeklyReviewService = weeklyReviewService;
     }
@@ -40,7 +40,7 @@ public class DashboardService {
     public DashboardResponse getDashboard(UUID userId) {
         long inboxCount = inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
         long nextActionsCount = actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT);
-        long activeProjectsCount = projectRepository.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE);
+        long activeProjectsCount = projectService.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE);
         long waitingForCount = waitingForRepository.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING);
         long somedayMaybeCount = actionService.countByUserIdAndStatus(userId, ActionStatus.SOMEDAY_MAYBE);
 

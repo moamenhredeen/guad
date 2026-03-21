@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class ProjectService {
@@ -19,17 +21,32 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Page<Project> getProjects(Pageable pageable) {
-        return this.projectRepository.findAll(pageable);
-    }
-
-
-    public Page<Project> search(Specification<Project> spec, Pageable pageable) {
-        return this.projectRepository.findAll(spec, pageable);
-    }
-
-    public Optional<Project> getProjectById(long id) {
+    public Optional<Project> findById(Long id) {
         return this.projectRepository.findById(id);
+    }
+
+    public List<Project> findAllByUserId(UUID userId) {
+        return this.projectRepository.findAllByUserId(userId);
+    }
+
+    public Optional<Project> findByIdAndUserId(Long id, UUID userId) {
+        return this.projectRepository.findByIdAndUserId(id, userId);
+    }
+
+    public List<Project> findAllByUserIdAndStatus(UUID userId, ProjectStatus status) {
+        return this.projectRepository.findAllByUserIdAndStatus(userId, status);
+    }
+
+    public long countByUserIdAndStatus(UUID userId, ProjectStatus status) {
+        return this.projectRepository.countByUserIdAndStatus(userId, status);
+    }
+
+    public Page<Project> search(String name, ProjectStatus status, Pageable pageable) {
+        var spec = Specification.allOf(
+            ProjectSpecifications.byName(name),
+            ProjectSpecifications.byStatus(status)
+        );
+        return this.projectRepository.findAll(spec, pageable);
     }
 
     @Transactional

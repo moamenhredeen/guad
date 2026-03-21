@@ -59,7 +59,7 @@ public class InboxProcessingService {
                 action.setStatus(ActionStatus.NEXT);
                 action.setUserId(userId);
                 if (request.projectId() != null) {
-                    projectService.getProjectById(request.projectId())
+                    projectService.findById(request.projectId())
                         .ifPresent(action::setProject);
                 }
                 if (request.contextIds() != null && !request.contextIds().isEmpty()) {
@@ -87,7 +87,7 @@ public class InboxProcessingService {
                 wfi.setStatus(WaitingForItemStatus.WAITING);
                 wfi.setUserId(userId);
                 if (request.projectId() != null) {
-                    projectService.getProjectById(request.projectId())
+                    projectService.findById(request.projectId())
                         .ifPresent(wfi::setProject);
                 }
                 yield waitingForService.save(wfi);

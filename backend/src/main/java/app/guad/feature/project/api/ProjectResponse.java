@@ -14,7 +14,8 @@ public record ProjectResponse(
             project.getDesired_outcome(), project.getStatus().name(),
             project.getArea() != null ? project.getArea().getName() : null,
             project.getArea() != null ? project.getArea().getId() : null,
-            project.getColor(), nextActionCount, project.getCreatedDate()
+            project.getColor(), nextActionCount,
+            project.getAudit().getCreatedAt()
         );
     }
 }
