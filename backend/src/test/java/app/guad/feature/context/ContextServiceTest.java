@@ -112,13 +112,17 @@ class ContextServiceTest {
     }
 
     @Test
-    void getContextById_found_returnsContext() {
+    void search_delegatesToRepository() {
+        var pageable = org.springframework.data.domain.PageRequest.of(0, 10);
         var context = new Context();
-        context.setId(1L);
-        when(contextRepository.findById(1L)).thenReturn(Optional.of(context));
+        context.setName("Office");
+        var page = new org.springframework.data.domain.PageImpl<>(List.of(context), pageable, 1);
+        when(contextRepository.findAll(any(org.springframework.data.jpa.domain.Specification.class), eq(pageable)))
+            .thenReturn(page);
 
-        var result = contextService.getContextById(1L);
-        assertTrue(result.isPresent());
+        var result = contextService.search("Off", pageable);
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Office", result.getContent().getFirst().getName());
     }
 
     @Test

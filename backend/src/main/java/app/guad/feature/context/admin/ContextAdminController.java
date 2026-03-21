@@ -39,7 +39,7 @@ public class ContextAdminController {
 
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
-        var context = this.contextService.getContextById(id)
+        var context = this.contextService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Context", id));
         model.addAttribute("context", ContextMapper.toContextDetailsViewModel(context));
         return "admin/contexts/details";
@@ -47,7 +47,7 @@ public class ContextAdminController {
 
     @GetMapping("/delete/{id}")
     public String deleteContextForm(@PathVariable Long id, Model model) {
-        var context = this.contextService.getContextById(id)
+        var context = this.contextService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Context", id));
         model.addAttribute("context", ContextMapper.toDeleteContextViewModel(context));
         return "admin/contexts/delete";

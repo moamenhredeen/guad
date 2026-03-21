@@ -37,10 +37,6 @@ public class ContextService {
         return contextRepository.findById(id);
     }
 
-    public Optional<Context> getContextById(long id) {
-        return this.contextRepository.findById(id);
-    }
-
     @Transactional
     public Context save(Context context) {
         if (context.getId() == null) {
