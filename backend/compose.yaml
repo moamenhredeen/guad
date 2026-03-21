@@ -17,6 +17,8 @@ services:
   keycloak:
     image: "quay.io/keycloak/keycloak:latest"
     command: start-dev
+    volumes:
+      - "./keycloak/themes/guad:/opt/keycloak/themes/guad"
     networks:
       - guad_network
     ports:

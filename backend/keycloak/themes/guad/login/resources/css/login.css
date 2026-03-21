@@ -1,0 +1,35 @@
+/* Guad - Keycloak Login Theme */
+/* Extends the default Keycloak theme with Guad branding */
+
+/* Override colors to match Guad's BW-themed admin panel */
+:root {
+    --pf-v5-global--primary-color--100: #2A2623;
+    --pf-v5-global--primary-color--200: #3a3633;
+}
+
+body {
+    background-color: #f5f4f2;
+}
+
+/* Login card */
+#kc-login {
+    background: #fff;
+}
+
+/* Primary button */
+.pf-v5-c-button.pf-m-primary,
+input[type="submit"].pf-v5-c-button.pf-m-primary {
+    background-color: #2A2623;
+    border-color: #2A2623;
+}
+
+.pf-v5-c-button.pf-m-primary:hover {
+    background-color: #3a3633;
+    border-color: #3a3633;
+}
+
+/* Header/brand area */
+#kc-header-wrapper {
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #2A2623;
+}
