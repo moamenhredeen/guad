@@ -1,4 +1,4 @@
-package app.guad.feature.context;
+package app.guad.feature.context.admin;
 
 public record GetContextViewModel(
         Long id,
@@ -7,4 +7,3 @@ public record GetContextViewModel(
         String color
 ) {
 }
-

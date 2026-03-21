@@ -1,4 +1,4 @@
-package app.guad.feature.context;
+package app.guad.feature.context.admin;
 
 public record ContextDetailsViewModel(
         Long id,
@@ -8,4 +8,3 @@ public record ContextDetailsViewModel(
         String iconKey
 ) {
 }
-

@@ -1,17 +1,23 @@
 package app.guad.feature.context;
 
+import app.guad.core.AuditMetadata;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
 
 /// Tags representing location, tool, or circumstances needed to do work
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "contexts")
 public class Context {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     @Column(nullable = false)
     private String name;
@@ -75,5 +81,13 @@ public class Context {
 
     public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+    public AuditMetadata getAudit() {
+        return audit;
+    }
+
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
     }
 }

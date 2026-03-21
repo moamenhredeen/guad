@@ -5,7 +5,7 @@ import app.guad.feature.action.Action;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.context.Context;
-import app.guad.feature.context.ContextRepository;
+import app.guad.feature.context.ContextService;
 import app.guad.feature.document.Document;
 import app.guad.feature.document.DocumentService;
 import app.guad.feature.inbox.api.ProcessInboxItemRequest;
@@ -31,19 +31,19 @@ public class InboxProcessingService {
     private final ProjectService projectService;
     private final WaitingForService waitingForService;
     private final DocumentService documentService;
-    private final ContextRepository contextRepository;
+    private final ContextService contextService;
 
     public InboxProcessingService(InboxRepository inboxRepository, InboxService inboxService,
                                    ActionService actionService, ProjectService projectService,
                                    WaitingForService waitingForService, DocumentService documentService,
-                                   ContextRepository contextRepository) {
+                                   ContextService contextService) {
         this.inboxRepository = inboxRepository;
         this.inboxService = inboxService;
         this.actionService = actionService;
         this.projectService = projectService;
         this.waitingForService = waitingForService;
         this.documentService = documentService;
-        this.contextRepository = contextRepository;
+        this.contextService = contextService;
     }
 
     @Transactional
@@ -65,7 +65,7 @@ public class InboxProcessingService {
                 if (request.contextIds() != null && !request.contextIds().isEmpty()) {
                     var contexts = new HashSet<Context>();
                     for (var ctxId : request.contextIds()) {
-                        contextRepository.findById(ctxId).ifPresent(contexts::add);
+                        contextService.findById(ctxId).ifPresent(contexts::add);
                     }
                     action.setContexts(contexts);
                 }

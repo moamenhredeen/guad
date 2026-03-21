@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ContextRepository extends
+interface ContextRepository extends
         CrudRepository<Context, Long>,
         PagingAndSortingRepository<Context, Long>,
         JpaSpecificationExecutor<Context> {

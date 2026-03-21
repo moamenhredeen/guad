@@ -1,4 +1,6 @@
-package app.guad.feature.context;
+package app.guad.feature.context.admin;
+
+import app.guad.feature.context.Context;
 
 public final class ContextMapper {
     private ContextMapper(){}
@@ -26,4 +28,3 @@ public final class ContextMapper {
         return new DeleteContextViewModel(context.getId(), context.getName());
     }
 }
-

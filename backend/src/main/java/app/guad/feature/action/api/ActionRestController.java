@@ -6,7 +6,7 @@ import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.area.AreaService;
 import app.guad.feature.context.Context;
-import app.guad.feature.context.ContextRepository;
+import app.guad.feature.context.ContextService;
 import app.guad.feature.project.ProjectRepository;
 import app.guad.security.AuthenticatedUser;
 import jakarta.validation.Valid;
@@ -27,15 +27,15 @@ class ActionRestController {
     private final ActionService actionService;
     private final ProjectRepository projectRepository;
     private final AreaService areaService;
-    private final ContextRepository contextRepository;
+    private final ContextService contextService;
 
     ActionRestController(ActionService actionService,
                           ProjectRepository projectRepository, AreaService areaService,
-                          ContextRepository contextRepository) {
+                          ContextService contextService) {
         this.actionService = actionService;
         this.projectRepository = projectRepository;
         this.areaService = areaService;
-        this.contextRepository = contextRepository;
+        this.contextService = contextService;
     }
 
     @GetMapping
@@ -80,7 +80,7 @@ class ActionRestController {
         if (request.contextIds() != null && !request.contextIds().isEmpty()) {
             var contexts = new HashSet<Context>();
             for (var ctxId : request.contextIds()) {
-                contextRepository.findById(ctxId).ifPresent(contexts::add);
+                contextService.findById(ctxId).ifPresent(contexts::add);
             }
             action.setContexts(contexts);
         }
@@ -118,7 +118,7 @@ class ActionRestController {
         if (request.contextIds() != null) {
             var contexts = new HashSet<Context>();
             for (var ctxId : request.contextIds()) {
-                contextRepository.findById(ctxId).ifPresent(contexts::add);
+                contextService.findById(ctxId).ifPresent(contexts::add);
             }
             action.setContexts(contexts);
         }

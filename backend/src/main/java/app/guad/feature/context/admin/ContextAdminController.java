@@ -1,12 +1,12 @@
-package app.guad.feature.context;
+package app.guad.feature.context.admin;
 
 import app.guad.core.ResourceNotFoundException;
+import app.guad.feature.context.ContextService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static app.guad.feature.context.ContextSpecifications.byName;
 import static app.guad.core.PaginationUtils.addPaginationData;
 
 @Controller
@@ -25,7 +25,7 @@ public class ContextAdminController {
             Pageable pageable,
             @RequestParam(required = false) String search
     ) {
-        var paginatedData = this.contextService.search(byName(search), pageable);
+        var paginatedData = this.contextService.search(search, pageable);
         var contexts = paginatedData
                 .stream()
                 .map(ContextMapper::toGetContextViewModel)

@@ -2,7 +2,6 @@ package app.guad.feature.context.api;
 
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.context.Context;
-import app.guad.feature.context.ContextRepository;
 import app.guad.feature.context.ContextService;
 import app.guad.security.AuthenticatedUser;
 import jakarta.validation.Valid;
@@ -19,17 +18,15 @@ import java.util.List;
 class ContextRestController {
 
     private final ContextService contextService;
-    private final ContextRepository contextRepository;
 
-    ContextRestController(ContextService contextService, ContextRepository contextRepository) {
+    ContextRestController(ContextService contextService) {
         this.contextService = contextService;
-        this.contextRepository = contextRepository;
     }
 
     @GetMapping
     List<ContextResponse> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return contextRepository.findAllByUserId(userId).stream()
+        return contextService.findAllByUserId(userId).stream()
             .map(ContextResponse::from).toList();
     }
 
@@ -52,7 +49,7 @@ class ContextRestController {
     ContextResponse update(@PathVariable Long id, @Valid @RequestBody CreateContextRequest request,
                            @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var context = contextRepository.findByIdAndUserId(id, userId)
+        var context = contextService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Context", id));
         context.setName(request.name());
         context.setDescription(request.description());
@@ -64,7 +61,7 @@ class ContextRestController {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        contextRepository.findByIdAndUserId(id, userId)
+        contextService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Context", id));
         contextService.deleteById(id);
         return ResponseEntity.noContent().build();
