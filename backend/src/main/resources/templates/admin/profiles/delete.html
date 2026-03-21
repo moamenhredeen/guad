@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+    <title>Guad - Delete User Profile</title>
+</head>
+<body>
+<main class="main-content">
+    <h1>Delete User Profile</h1>
+    <div class="delete-card">
+        <p>Are you sure you want to delete the profile for "<strong th:text="${profile.displayName()}"></strong>" (<span th:text="${profile.email()}"></span>)?</p>
+        <div class="delete-actions">
+            <form method="post" th:action="@{/admin/profiles/delete/{id}(id=${profile.id()})}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            <a th:href="@{/admin/profiles}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

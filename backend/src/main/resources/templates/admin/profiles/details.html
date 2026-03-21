@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+    <title>Guad - User Profile Details</title>
+</head>
+<body>
+
+<main class="main-content">
+    <h1>User Profile Details</h1>
+
+    <dl class="detail-list">
+        <dt>Id</dt>
+        <dd th:text="${profile.id()}"></dd>
+        <dt>Keycloak Id</dt>
+        <dd th:text="${profile.keycloakId()}"></dd>
+        <dt>Email</dt>
+        <dd th:text="${profile.email()}"></dd>
+        <dt>Display Name</dt>
+        <dd th:text="${profile.displayName()}"></dd>
+        <dt>Timezone</dt>
+        <dd th:text="${profile.timezone()}"></dd>
+        <dt>Default Review Day</dt>
+        <dd th:text="${profile.defaultReviewDay()}"></dd>
+        <dt>Energy Tracking</dt>
+        <dd th:text="${profile.energyTrackingEnabled()} ? 'Enabled' : 'Disabled'"></dd>
+        <dt>Email Digests</dt>
+        <dd th:text="${profile.emailDigestsEnabled()} ? 'Enabled' : 'Disabled'"></dd>
+        <dt>Reminder Notifications</dt>
+        <dd th:text="${profile.reminderNotificationsEnabled()} ? 'Enabled' : 'Disabled'"></dd>
+        <dt>Created</dt>
+        <dd th:text="${profile.createdDate() != null ? #temporals.format(profile.createdDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></dd>
+        <dt>Updated</dt>
+        <dd th:text="${profile.updatedDate() != null ? #temporals.format(profile.updatedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></dd>
+    </dl>
+</main>
+
+</body>
+</html>

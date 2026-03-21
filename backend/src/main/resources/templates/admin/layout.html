@@ -37,6 +37,13 @@
             </ul>
         </div>
 
+        <div class="sidebar-group">
+            <div class="sidebar-group-label">Users</div>
+            <ul class="sidebar-nav">
+                <li><a th:href="@{/admin/profiles}" th:classappend="${currentUri.startsWith('/admin/profiles')} ? 'active'">Profiles</a></li>
+            </ul>
+        </div>
+
         <div class="sidebar-footer">
             <a th:href="@{/admin/auth/logout}" class="sidebar-logout">Logout</a>
             <div th:if="${currentUserName}" class="sidebar-user" th:text="${currentUserName}"></div>

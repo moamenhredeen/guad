@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/layout :: layout(~{::title}, ~{::main})}" lang="en">
+<head>
+    <title>Guad - User Profiles</title>
+</head>
+<body>
+
+<main class="main-content">
+    <h1>User Profiles</h1>
+
+    <form method="get" th:action="@{/admin/profiles}" class="search-toolbar">
+        <input type="text" name="search" placeholder="Search by email or name..." th:value="${search}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <table class="admin-table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Display Name</th>
+            <th>Timezone</th>
+            <th>Created</th>
+            <th class="actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="profile : ${profiles}">
+            <td th:text="${profile.id()}"></td>
+            <td th:text="${profile.email()}"></td>
+            <td th:text="${profile.displayName()}"></td>
+            <td th:text="${profile.timezone()}"></td>
+            <td th:text="${profile.createdDate() != null ? #temporals.format(profile.createdDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></td>
+            <td class="actions">
+                <a th:href="@{/admin/profiles/{id}(id=${profile.id()})}">View</a>
+                <a th:href="@{/admin/profiles/delete/{id}(id=${profile.id()})}" class="delete-link">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:replace="~{admin/fragments/pagination :: pagination}"></div>
+</main>
+
+</body>
+</html>
