@@ -1,4 +1,4 @@
-package app.guad.feature.area;
+package app.guad.feature.area.admin;
 
 public record GetAreaViewModel(
         Long id,
@@ -7,4 +7,3 @@ public record GetAreaViewModel(
         Integer order
 ) {
 }
-

@@ -1,11 +1,14 @@
 package app.guad.feature.area;
 
+import app.guad.core.AuditMetadata;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
 
 /// Ongoing areas of life/work you're responsible for maintaining
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "areas")
 public class Area {
 
@@ -25,6 +28,9 @@ public class Area {
 
     @Column
     private UUID userId;
+
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     public Long getId() {
         return id;
@@ -64,5 +70,13 @@ public class Area {
 
     public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+    public AuditMetadata getAudit() {
+        return audit;
+    }
+
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
     }
 }

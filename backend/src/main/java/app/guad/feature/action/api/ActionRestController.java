@@ -4,7 +4,7 @@ import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.Action;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
-import app.guad.feature.area.AreaRepository;
+import app.guad.feature.area.AreaService;
 import app.guad.feature.context.Context;
 import app.guad.feature.context.ContextRepository;
 import app.guad.feature.project.ProjectRepository;
@@ -26,15 +26,15 @@ class ActionRestController {
 
     private final ActionService actionService;
     private final ProjectRepository projectRepository;
-    private final AreaRepository areaRepository;
+    private final AreaService areaService;
     private final ContextRepository contextRepository;
 
     ActionRestController(ActionService actionService,
-                          ProjectRepository projectRepository, AreaRepository areaRepository,
+                          ProjectRepository projectRepository, AreaService areaService,
                           ContextRepository contextRepository) {
         this.actionService = actionService;
         this.projectRepository = projectRepository;
-        this.areaRepository = areaRepository;
+        this.areaService = areaService;
         this.contextRepository = contextRepository;
     }
 
@@ -75,7 +75,7 @@ class ActionRestController {
             projectRepository.findById(request.projectId()).ifPresent(action::setProject);
         }
         if (request.areaId() != null) {
-            areaRepository.findById(request.areaId()).ifPresent(action::setArea);
+            areaService.getAreaById(request.areaId()).ifPresent(action::setArea);
         }
         if (request.contextIds() != null && !request.contextIds().isEmpty()) {
             var contexts = new HashSet<Context>();
@@ -113,7 +113,7 @@ class ActionRestController {
             projectRepository.findById(request.projectId()).ifPresent(action::setProject);
         }
         if (request.areaId() != null) {
-            areaRepository.findById(request.areaId()).ifPresent(action::setArea);
+            areaService.getAreaById(request.areaId()).ifPresent(action::setArea);
         }
         if (request.contextIds() != null) {
             var contexts = new HashSet<Context>();

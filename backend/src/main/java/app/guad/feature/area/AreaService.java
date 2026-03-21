@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AreaService {
@@ -19,8 +21,19 @@ public class AreaService {
         return this.areaRepository.findAll(pageable);
     }
 
-    public Page<Area> search(Specification<Area> spec, Pageable pageable) {
+    public Page<Area> search(String name, Pageable pageable) {
+        var spec = Specification.allOf(
+                AreaSpecifications.byName(name)
+        );
         return this.areaRepository.findAll(spec, pageable);
+    }
+
+    public List<Area> findAllByUserId(UUID userId) {
+        return areaRepository.findAllByUserId(userId);
+    }
+
+    public Optional<Area> findByIdAndUserId(Long id, UUID userId) {
+        return areaRepository.findByIdAndUserId(id, userId);
     }
 
     public Optional<Area> getAreaById(long id) {
@@ -48,3 +61,4 @@ public class AreaService {
     }
 
 }
+

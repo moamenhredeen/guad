@@ -4,7 +4,7 @@ import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.Action;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
-import app.guad.feature.area.AreaRepository;
+import app.guad.feature.area.AreaService;
 import app.guad.feature.project.Project;
 import app.guad.feature.project.ProjectRepository;
 import app.guad.feature.project.ProjectService;
@@ -29,16 +29,16 @@ class ProjectRestController {
     private final ProjectService projectService;
     private final ProjectRepository projectRepository;
     private final ActionService actionService;
-    private final AreaRepository areaRepository;
+    private final AreaService areaService;
     private final WaitingForRepository waitingForRepository;
 
     ProjectRestController(ProjectService projectService, ProjectRepository projectRepository,
                            ActionService actionService,
-                           AreaRepository areaRepository, WaitingForRepository waitingForRepository) {
+                           AreaService areaService, WaitingForRepository waitingForRepository) {
         this.projectService = projectService;
         this.projectRepository = projectRepository;
         this.actionService = actionService;
-        this.areaRepository = areaRepository;
+        this.areaService = areaService;
         this.waitingForRepository = waitingForRepository;
     }
 
@@ -65,7 +65,7 @@ class ProjectRestController {
         project.setColor(request.color());
         project.setUserId(userId);
         if (request.areaId() != null) {
-            areaRepository.findById(request.areaId()).ifPresent(project::setArea);
+            areaService.getAreaById(request.areaId()).ifPresent(project::setArea);
         }
         var saved = projectService.save(project);
         return ResponseEntity.created(URI.create("/api/projects/" + saved.getId()))
@@ -101,7 +101,7 @@ class ProjectRestController {
         project.setDesired_outcome(request.desiredOutcome());
         project.setColor(request.color());
         if (request.areaId() != null) {
-            areaRepository.findById(request.areaId()).ifPresent(project::setArea);
+            areaService.getAreaById(request.areaId()).ifPresent(project::setArea);
         }
         var saved = projectService.save(project);
         int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, id)

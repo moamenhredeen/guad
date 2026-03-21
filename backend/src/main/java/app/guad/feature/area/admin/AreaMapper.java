@@ -1,4 +1,6 @@
-package app.guad.feature.area;
+package app.guad.feature.area.admin;
+
+import app.guad.feature.area.Area;
 
 public final class AreaMapper {
     private AreaMapper(){}
@@ -25,4 +27,3 @@ public final class AreaMapper {
         return new DeleteAreaViewModel(area.getId(), area.getName());
     }
 }
-
