@@ -1,11 +1,18 @@
 package app.guad.feature.profile;
 
 import app.guad.core.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.util.Optional;
 import java.util.UUID;
+
+import static app.guad.feature.profile.UserProfileSpecifications.byDisplayName;
+import static app.guad.feature.profile.UserProfileSpecifications.byEmail;
 
 @Service
 public class ProfileService {
@@ -56,5 +63,23 @@ public class ProfileService {
         profile.setEmailDigestsEnabled(emailDigestsEnabled);
         profile.setReminderNotificationsEnabled(reminderNotificationsEnabled);
         return userProfileRepository.save(profile);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserProfile> search(String search, Pageable pageable) {
+        var spec = Specification.allOf(
+                Specification.anyOf(byEmail(search), byDisplayName(search))
+        );
+        return userProfileRepository.findAll(spec, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserProfile> findById(Long id) {
+        return userProfileRepository.findById(id);
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        userProfileRepository.deleteById(id);
     }
 }

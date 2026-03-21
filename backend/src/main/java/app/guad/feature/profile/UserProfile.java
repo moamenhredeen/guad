@@ -1,12 +1,14 @@
 package app.guad.feature.profile;
 
+import app.guad.core.AuditMetadata;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.DayOfWeek;
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_profiles")
 public class UserProfile {
 
@@ -39,22 +41,8 @@ public class UserProfile {
     @Column(nullable = false)
     private boolean reminderNotificationsEnabled = true;
 
-    @Column(nullable = false, updatable = false)
-    private Instant createdDate;
-
-    @Column(nullable = false)
-    private Instant updatedDate;
-
-    @PrePersist
-    void onCreate() {
-        createdDate = Instant.now();
-        updatedDate = Instant.now();
-    }
-
-    @PreUpdate
-    void onUpdate() {
-        updatedDate = Instant.now();
-    }
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     public Long getId() {
         return id;
@@ -128,19 +116,11 @@ public class UserProfile {
         this.reminderNotificationsEnabled = reminderNotificationsEnabled;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public AuditMetadata getAudit() {
+        return audit;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Instant getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Instant updatedDate) {
-        this.updatedDate = updatedDate;
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
     }
 }

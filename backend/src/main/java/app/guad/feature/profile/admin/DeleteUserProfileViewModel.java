@@ -1,4 +1,4 @@
-package app.guad.feature.profile;
+package app.guad.feature.profile.admin;
 
 public record DeleteUserProfileViewModel(
         Long id,

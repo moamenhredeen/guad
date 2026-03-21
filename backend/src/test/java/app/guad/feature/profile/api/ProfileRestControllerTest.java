@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class ProfileControllerTest extends BaseIntegrationTest {
+class ProfileRestControllerTest extends BaseIntegrationTest {
 
     @Test
     void getProfile_returnsProfileWithDefaults() throws Exception {

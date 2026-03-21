@@ -12,8 +12,8 @@ public record ProfileResponse(
     boolean energyTrackingEnabled,
     boolean emailDigestsEnabled,
     boolean reminderNotificationsEnabled,
-    Instant createdDate,
-    Instant updatedDate
+    Instant createdAt,
+    Instant updatedAt
 ) {
     public static ProfileResponse from(UserProfile profile) {
         return new ProfileResponse(
@@ -24,8 +24,8 @@ public record ProfileResponse(
             profile.isEnergyTrackingEnabled(),
             profile.isEmailDigestsEnabled(),
             profile.isReminderNotificationsEnabled(),
-            profile.getCreatedDate(),
-            profile.getUpdatedDate()
+            profile.getAudit().getCreatedAt(),
+            profile.getAudit().getUpdatedAt()
         );
     }
 }

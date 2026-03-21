@@ -1,4 +1,4 @@
-package app.guad.feature.profile;
+package app.guad.feature.profile.admin;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -14,7 +14,7 @@ public record UserProfileDetailsViewModel(
         boolean energyTrackingEnabled,
         boolean emailDigestsEnabled,
         boolean reminderNotificationsEnabled,
-        Instant createdDate,
-        Instant updatedDate
+        Instant createdAt,
+        Instant updatedAt
 ) {
 }

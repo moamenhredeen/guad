@@ -1,4 +1,4 @@
-package app.guad.feature.profile;
+package app.guad.feature.profile.admin;
 
 import java.time.Instant;
 
@@ -7,6 +7,6 @@ public record GetUserProfileViewModel(
         String email,
         String displayName,
         String timezone,
-        Instant createdDate
+        Instant createdAt
 ) {
 }

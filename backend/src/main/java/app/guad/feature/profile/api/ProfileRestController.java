@@ -12,11 +12,11 @@ import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/api/profile")
-class ProfileController {
+class ProfileRestController {
 
     private final ProfileService profileService;
 
-    ProfileController(ProfileService profileService) {
+    ProfileRestController(ProfileService profileService) {
         this.profileService = profileService;
     }
 

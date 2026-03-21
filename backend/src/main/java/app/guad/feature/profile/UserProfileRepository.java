@@ -7,7 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserProfileRepository extends
+interface UserProfileRepository extends
         CrudRepository<UserProfile, Long>,
         PagingAndSortingRepository<UserProfile, Long>,
         JpaSpecificationExecutor<UserProfile> {

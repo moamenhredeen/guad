@@ -1,4 +1,6 @@
-package app.guad.feature.profile;
+package app.guad.feature.profile.admin;
+
+import app.guad.feature.profile.UserProfile;
 
 public final class UserProfileMapper {
     private UserProfileMapper() {}
@@ -9,7 +11,7 @@ public final class UserProfileMapper {
                 profile.getEmail(),
                 profile.getDisplayName(),
                 profile.getTimezone(),
-                profile.getCreatedDate()
+                profile.getAudit().getCreatedAt()
         );
     }
 
@@ -24,8 +26,8 @@ public final class UserProfileMapper {
                 profile.isEnergyTrackingEnabled(),
                 profile.isEmailDigestsEnabled(),
                 profile.isReminderNotificationsEnabled(),
-                profile.getCreatedDate(),
-                profile.getUpdatedDate()
+                profile.getAudit().getCreatedAt(),
+                profile.getAudit().getUpdatedAt()
         );
     }
 
