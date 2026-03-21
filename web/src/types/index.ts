@@ -1,10 +1,23 @@
+// === API Envelope ===
+export interface PageMeta {
+  page: number
+  size: number
+  totalElements: number
+  totalPages: number
+}
+
+export interface ApiResponse<T> {
+  data: T
+  meta: PageMeta | null
+}
+
 // === Inbox ===
 export interface InboxItem {
   id: string
   title: string
   description: string | null
   status: string
-  createdDate: string
+  createdAt: string
 }
 
 export interface CreateInboxItemRequest {

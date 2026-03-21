@@ -53,7 +53,7 @@ async function onProcess(action: ProcessAction) {
           v-for="item in inbox.items"
           :key="item.id"
           :title="item.title"
-          :meta="formatAge(item.createdDate)"
+          :meta="formatAge(item.createdAt)"
           :selected="inbox.selectedId === item.id"
           @click="inbox.selectedId = inbox.selectedId === item.id ? null : item.id"
         />

@@ -1,3 +1,5 @@
+import type { ApiResponse } from '@/types'
+
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -51,7 +53,8 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     return undefined as T;
   }
 
-  return response.json();
+  const envelope = await response.json() as ApiResponse<T>;
+  return envelope.data;
 }
 
 export const api = {
