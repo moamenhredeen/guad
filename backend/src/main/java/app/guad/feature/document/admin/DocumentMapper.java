@@ -1,11 +1,13 @@
-package app.guad.feature.document;
+package app.guad.feature.document.admin;
+
+import app.guad.feature.document.Document;
 
 import java.util.List;
 
-public final class DocumentMapper {
-    private DocumentMapper(){}
+final class DocumentMapper {
+    private DocumentMapper() {}
 
-    public static GetDocumentViewModel toGetDocumentViewModel(Document document) {
+    static GetDocumentViewModel toGetDocumentViewModel(Document document) {
         return new GetDocumentViewModel(
                 document.getId(),
                 document.getName(),
@@ -13,7 +15,7 @@ public final class DocumentMapper {
         );
     }
 
-    public static DocumentDetailsViewModel toDocumentDetailsViewModel(Document document) {
+    static DocumentDetailsViewModel toDocumentDetailsViewModel(Document document) {
         return new DocumentDetailsViewModel(
                 document.getId(),
                 document.getName(),
@@ -22,8 +24,7 @@ public final class DocumentMapper {
         );
     }
 
-    public static DeleteDocumentViewModel toDeleteDocumentViewModel(Document document) {
+    static DeleteDocumentViewModel toDeleteDocumentViewModel(Document document) {
         return new DeleteDocumentViewModel(document.getId(), document.getName());
     }
 }
-

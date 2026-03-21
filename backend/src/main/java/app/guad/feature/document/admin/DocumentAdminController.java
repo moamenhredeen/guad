@@ -1,14 +1,12 @@
-package app.guad.feature.document;
+package app.guad.feature.document.admin;
 
 import app.guad.core.ResourceNotFoundException;
+import app.guad.feature.document.DocumentService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static app.guad.feature.document.DocumentSpecifications.byName;
-import static app.guad.feature.document.DocumentMapper.toDocumentDetailsViewModel;
 import static app.guad.core.PaginationUtils.addPaginationData;
 
 @Controller
@@ -27,8 +25,7 @@ public class DocumentAdminController {
             Pageable pageable,
             @RequestParam(required = false) String search
     ) {
-        var spec = Specification.allOf(byName(search));
-        var paginatedData = this.documentService.search(spec, pageable);
+        var paginatedData = this.documentService.search(search, pageable);
         var documents = paginatedData.stream()
                 .map(DocumentMapper::toGetDocumentViewModel)
                 .toList();
@@ -43,7 +40,7 @@ public class DocumentAdminController {
     public String details(@PathVariable Long id, Model model) {
         var document = this.documentService.getDocumentById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Document", id));
-        model.addAttribute("document", toDocumentDetailsViewModel(document));
+        model.addAttribute("document", DocumentMapper.toDocumentDetailsViewModel(document));
         return "admin/documents/details";
     }
 
@@ -61,4 +58,3 @@ public class DocumentAdminController {
         return "redirect:/admin/documents";
     }
 }
-

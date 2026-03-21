@@ -1,12 +1,15 @@
 package app.guad.feature.document;
 
+import app.guad.core.AuditMetadata;
 import app.guad.feature.attachment.Attachment;
 import app.guad.feature.project.Project;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Set;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "documents")
 public class Document {
     @Id
@@ -26,6 +29,9 @@ public class Document {
     @ManyToMany
     @JoinTable(name = "document_attachments", joinColumns = @JoinColumn(name = "document_id"), inverseJoinColumns = @JoinColumn(name = "attachment_id"))
     private Set<Attachment> attachments;
+
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     public Long getId() {
         return id;
@@ -66,5 +72,12 @@ public class Document {
     public void setProject(Project project) {
         this.project = project;
     }
-}
 
+    public AuditMetadata getAudit() {
+        return audit;
+    }
+
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
+    }
+}

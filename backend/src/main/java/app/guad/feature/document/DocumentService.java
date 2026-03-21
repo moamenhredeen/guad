@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static app.guad.feature.document.DocumentSpecifications.byName;
+
 @Service
 public class DocumentService {
     private final DocumentRepository documentRepository;
@@ -19,11 +21,8 @@ public class DocumentService {
         this.documentRepository = documentRepository;
     }
 
-    public Page<Document> getDocuments(Pageable pageable) {
-        return this.documentRepository.findAll(pageable);
-    }
-
-    public Page<Document> search(Specification<Document> spec, Pageable pageable) {
+    public Page<Document> search(String name, Pageable pageable) {
+        var spec = Specification.allOf(byName(name));
         return this.documentRepository.findAll(spec, pageable);
     }
 
@@ -43,7 +42,6 @@ public class DocumentService {
         var documentFromDb = found.get();
         documentFromDb.setName(document.getName());
         documentFromDb.setContent(document.getContent());
-        // Preserve attachments if they were set on the document
         if (document.getAttachments() != null) {
             documentFromDb.setAttachments(document.getAttachments());
         }
@@ -63,4 +61,3 @@ public class DocumentService {
         this.documentRepository.deleteById(id);
     }
 }
-

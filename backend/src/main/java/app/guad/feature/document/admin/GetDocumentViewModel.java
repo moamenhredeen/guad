@@ -1,9 +1,8 @@
-package app.guad.feature.document;
+package app.guad.feature.document.admin;
 
-public record GetDocumentViewModel(
+record GetDocumentViewModel(
         Long id,
         String name,
         String projectName
 ) {
 }
-
