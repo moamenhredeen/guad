@@ -15,32 +15,32 @@
         <div class="sidebar-group">
             <div class="sidebar-group-label">GTD</div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/admin/inbox}" th:classappend="${currentUri.startsWith('/admin/inbox')} ? 'active'">Inbox</a></li>
-                <li><a th:href="@{/admin/actions}" th:classappend="${currentUri.startsWith('/admin/actions')} ? 'active'">Actions</a></li>
-                <li><a th:href="@{/admin/projects}" th:classappend="${currentUri.startsWith('/admin/projects')} ? 'active'">Projects</a></li>
+                <li><a th:href="@{/admin/inbox}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/inbox')} ? 'active'">Inbox</a></li>
+                <li><a th:href="@{/admin/actions}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/actions')} ? 'active'">Actions</a></li>
+                <li><a th:href="@{/admin/projects}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/projects')} ? 'active'">Projects</a></li>
             </ul>
         </div>
 
         <div class="sidebar-group">
             <div class="sidebar-group-label">Organization</div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/admin/areas}" th:classappend="${currentUri.startsWith('/admin/areas')} ? 'active'">Areas</a></li>
-                <li><a th:href="@{/admin/contexts}" th:classappend="${currentUri.startsWith('/admin/contexts')} ? 'active'">Contexts</a></li>
+                <li><a th:href="@{/admin/areas}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/areas')} ? 'active'">Areas</a></li>
+                <li><a th:href="@{/admin/contexts}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/contexts')} ? 'active'">Contexts</a></li>
             </ul>
         </div>
 
         <div class="sidebar-group">
             <div class="sidebar-group-label">Content</div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/admin/documents}" th:classappend="${currentUri.startsWith('/admin/documents')} ? 'active'">Documents</a></li>
-                <li><a th:href="@{/admin/attachments}" th:classappend="${currentUri.startsWith('/admin/attachments')} ? 'active'">Attachments</a></li>
+                <li><a th:href="@{/admin/documents}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/documents')} ? 'active'">Documents</a></li>
+                <li><a th:href="@{/admin/attachments}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/attachments')} ? 'active'">Attachments</a></li>
             </ul>
         </div>
 
         <div class="sidebar-group">
             <div class="sidebar-group-label">Users</div>
             <ul class="sidebar-nav">
-                <li><a th:href="@{/admin/profiles}" th:classappend="${currentUri.startsWith('/admin/profiles')} ? 'active'">Profiles</a></li>
+                <li><a th:href="@{/admin/profiles}" th:classappend="${currentUri != null and currentUri.startsWith('/admin/profiles')} ? 'active'">Profiles</a></li>
             </ul>
         </div>
 
