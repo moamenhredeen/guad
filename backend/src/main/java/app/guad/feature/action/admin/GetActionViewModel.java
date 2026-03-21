@@ -1,4 +1,4 @@
-package app.guad.feature.action;
+package app.guad.feature.action.admin;
 
 public record GetActionViewModel(
         Long id,
@@ -8,4 +8,3 @@ public record GetActionViewModel(
         String projectName
 ) {
 }
-

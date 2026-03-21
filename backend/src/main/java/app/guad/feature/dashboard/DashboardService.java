@@ -1,6 +1,6 @@
 package app.guad.feature.dashboard;
 
-import app.guad.feature.action.ActionRepository;
+import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.dashboard.api.DashboardResponse;
 import app.guad.feature.inbox.InboxItemStatus;
@@ -21,16 +21,16 @@ import java.util.UUID;
 public class DashboardService {
 
     private final InboxService inboxService;
-    private final ActionRepository actionRepository;
+    private final ActionService actionService;
     private final ProjectRepository projectRepository;
     private final WaitingForRepository waitingForRepository;
     private final WeeklyReviewService weeklyReviewService;
 
-    public DashboardService(InboxService inboxService, ActionRepository actionRepository,
+    public DashboardService(InboxService inboxService, ActionService actionService,
                              ProjectRepository projectRepository, WaitingForRepository waitingForRepository,
                              WeeklyReviewService weeklyReviewService) {
         this.inboxService = inboxService;
-        this.actionRepository = actionRepository;
+        this.actionService = actionService;
         this.projectRepository = projectRepository;
         this.waitingForRepository = waitingForRepository;
         this.weeklyReviewService = weeklyReviewService;
@@ -39,10 +39,10 @@ public class DashboardService {
     @Transactional(readOnly = true)
     public DashboardResponse getDashboard(UUID userId) {
         long inboxCount = inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
-        long nextActionsCount = actionRepository.countByUserIdAndStatus(userId, ActionStatus.NEXT);
+        long nextActionsCount = actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT);
         long activeProjectsCount = projectRepository.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE);
         long waitingForCount = waitingForRepository.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING);
-        long somedayMaybeCount = actionRepository.countByUserIdAndStatus(userId, ActionStatus.SOMEDAY_MAYBE);
+        long somedayMaybeCount = actionService.countByUserIdAndStatus(userId, ActionStatus.SOMEDAY_MAYBE);
 
         var lastReview = weeklyReviewService.getLastCompletedReview(userId).orElse(null);
         Instant lastReviewDate = lastReview != null ? lastReview.getCompletedAt() : null;

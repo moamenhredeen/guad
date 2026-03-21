@@ -27,7 +27,7 @@ public record ActionResponse(
             action.getContexts() != null
                 ? action.getContexts().stream().map(ContextResponse::from).toList()
                 : List.of(),
-            action.getCreatedDate(), action.getCompletedDate()
+            action.getAudit().getCreatedAt(), action.getCompletedDate()
         );
     }
 }

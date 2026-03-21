@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ActionRepository extends
+interface ActionRepository extends
                 CrudRepository<Action, Long>,
                 PagingAndSortingRepository<Action, Long>,
                 JpaSpecificationExecutor<Action> {

@@ -2,7 +2,6 @@ package app.guad.feature.action.api;
 
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.Action;
-import app.guad.feature.action.ActionRepository;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.area.AreaRepository;
@@ -26,16 +25,14 @@ import java.util.Map;
 class ActionRestController {
 
     private final ActionService actionService;
-    private final ActionRepository actionRepository;
     private final ProjectRepository projectRepository;
     private final AreaRepository areaRepository;
     private final ContextRepository contextRepository;
 
-    ActionRestController(ActionService actionService, ActionRepository actionRepository,
+    ActionRestController(ActionService actionService,
                           ProjectRepository projectRepository, AreaRepository areaRepository,
                           ContextRepository contextRepository) {
         this.actionService = actionService;
-        this.actionRepository = actionRepository;
         this.projectRepository = projectRepository;
         this.areaRepository = areaRepository;
         this.contextRepository = contextRepository;
@@ -48,9 +45,9 @@ class ActionRestController {
         var userId = AuthenticatedUser.from(jwt).id();
         List<Action> actions;
         if (status != null) {
-            actions = actionRepository.findAllByUserIdAndStatus(userId, status);
+            actions = actionService.findAllByUserIdAndStatus(userId, status);
         } else {
-            actions = actionRepository.findAllByUserId(userId);
+            actions = actionService.findAllByUserId(userId);
         }
         if (contextId != null) {
             actions = actions.stream()
@@ -95,7 +92,7 @@ class ActionRestController {
     @GetMapping("/{id}")
     ActionResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return actionRepository.findByIdAndUserId(id, userId)
+        return actionService.findByIdAndUserId(id, userId)
             .map(ActionResponse::from)
             .orElseThrow(() -> new ResourceNotFoundException("Action", id));
     }
@@ -104,7 +101,7 @@ class ActionRestController {
     ActionResponse update(@PathVariable Long id, @Valid @RequestBody UpdateActionRequest request,
                            @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var action = actionRepository.findByIdAndUserId(id, userId)
+        var action = actionService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Action", id));
         if (request.description() != null) action.setDescription(request.description());
         if (request.notes() != null) action.setNotes(request.notes());
@@ -131,7 +128,7 @@ class ActionRestController {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        actionRepository.findByIdAndUserId(id, userId)
+        actionService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Action", id));
         actionService.deleteById(id);
         return ResponseEntity.noContent().build();

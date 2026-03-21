@@ -61,8 +61,28 @@ public class ActionService {
         this.actionRepository.deleteById(id);
     }
 
+    public long countByUserIdAndStatus(UUID userId, ActionStatus status) {
+        return actionRepository.countByUserIdAndStatus(userId, status);
+    }
+
     public List<Action> findAllByUserIdAndStatus(UUID userId, ActionStatus status) {
         return actionRepository.findAllByUserIdAndStatus(userId, status);
+    }
+
+    public Page<Action> search(String description, ActionStatus status, Pageable pageable) {
+        var spec = Specification.allOf(
+                ActionSpecifications.byDescription(description),
+                ActionSpecifications.byStatus(status)
+        );
+        return actionRepository.findAll(spec, pageable);
+    }
+
+    public List<Action> findAllByUserId(UUID userId) {
+        return actionRepository.findAllByUserId(userId);
+    }
+
+    public List<Action> findAllByUserIdAndProjectId(UUID userId, Long projectId) {
+        return actionRepository.findAllByUserIdAndProjectId(userId, projectId);
     }
 
     public Optional<Action> findByIdAndUserId(Long id, UUID userId) {

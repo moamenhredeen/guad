@@ -1,7 +1,8 @@
-package app.guad.feature.action;
+package app.guad.feature.action.admin;
 
-import app.guad.feature.context.Context;
+import app.guad.feature.action.Action;
 import app.guad.feature.attachment.AttachmentListItemViewModel;
+import app.guad.feature.context.Context;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -46,8 +47,8 @@ public record ActionDetailsViewModel(
                 action.getEstimatedDuration(),
                 action.getEnergyLevel(),
                 action.getLocation(),
-                action.getCreatedDate(),
-                action.getUpdatedDate(),
+                action.getAudit().getCreatedAt(),
+                action.getAudit().getUpdatedAt(),
                 action.getCompletedDate(),
                 action.getScheduledDate(),
                 action.getDueDate(),
@@ -59,4 +60,3 @@ public record ActionDetailsViewModel(
                 List.of());
     }
 }
-

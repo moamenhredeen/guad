@@ -2,7 +2,6 @@ package app.guad.feature.project.api;
 
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.Action;
-import app.guad.feature.action.ActionRepository;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.area.AreaRepository;
@@ -29,17 +28,15 @@ class ProjectRestController {
 
     private final ProjectService projectService;
     private final ProjectRepository projectRepository;
-    private final ActionRepository actionRepository;
     private final ActionService actionService;
     private final AreaRepository areaRepository;
     private final WaitingForRepository waitingForRepository;
 
     ProjectRestController(ProjectService projectService, ProjectRepository projectRepository,
-                           ActionRepository actionRepository, ActionService actionService,
+                           ActionService actionService,
                            AreaRepository areaRepository, WaitingForRepository waitingForRepository) {
         this.projectService = projectService;
         this.projectRepository = projectRepository;
-        this.actionRepository = actionRepository;
         this.actionService = actionService;
         this.areaRepository = areaRepository;
         this.waitingForRepository = waitingForRepository;
@@ -50,7 +47,7 @@ class ProjectRestController {
         var userId = AuthenticatedUser.from(jwt).id();
         return projectRepository.findAllByUserIdAndStatus(userId, ProjectStatus.ACTIVE).stream()
             .map(p -> {
-                int nextCount = (int) actionRepository.findAllByUserIdAndProjectId(userId, p.getId())
+                int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, p.getId())
                     .stream().filter(a -> a.getStatus() == ActionStatus.NEXT).count();
                 return ProjectResponse.from(p, nextCount);
             }).toList();
@@ -80,7 +77,7 @@ class ProjectRestController {
         var userId = AuthenticatedUser.from(jwt).id();
         var project = projectRepository.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
-        var allActions = actionRepository.findAllByUserIdAndProjectId(userId, id);
+        var allActions = actionService.findAllByUserIdAndProjectId(userId, id);
         var nextActions = allActions.stream()
             .filter(a -> a.getStatus() == ActionStatus.NEXT || a.getStatus() == ActionStatus.IN_PROGRESS)
             .toList();
@@ -107,7 +104,7 @@ class ProjectRestController {
             areaRepository.findById(request.areaId()).ifPresent(project::setArea);
         }
         var saved = projectService.save(project);
-        int nextCount = (int) actionRepository.findAllByUserIdAndProjectId(userId, id)
+        int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, id)
             .stream().filter(a -> a.getStatus() == ActionStatus.NEXT).count();
         return ProjectResponse.from(saved, nextCount);
     }
@@ -145,7 +142,7 @@ class ProjectRestController {
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
         project.setStatus(ProjectStatus.valueOf(body.get("status")));
         var saved = projectService.save(project);
-        int nextCount = (int) actionRepository.findAllByUserIdAndProjectId(userId, id)
+        int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, id)
             .stream().filter(a -> a.getStatus() == ActionStatus.NEXT).count();
         return ProjectResponse.from(saved, nextCount);
     }

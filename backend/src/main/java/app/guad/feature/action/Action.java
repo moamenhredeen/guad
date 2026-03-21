@@ -1,12 +1,11 @@
 package app.guad.feature.action;
 
+import app.guad.core.AuditMetadata;
 import app.guad.feature.area.Area;
 import app.guad.feature.attachment.Attachment;
 import app.guad.feature.context.Context;
 import app.guad.feature.project.Project;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
@@ -44,13 +43,8 @@ public class Action {
     @Column
     private String location;
 
-    @Column(nullable = false, updatable = false)
-    @CreatedDate
-    private Instant createdDate;
-
-    @Column(insertable = false)
-    @LastModifiedDate
-    private Instant updatedDate;
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     @Column
     private Instant completedDate;
@@ -152,20 +146,12 @@ public class Action {
         this.location = location;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public AuditMetadata getAudit() {
+        return audit;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Instant getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Instant updatedDate) {
-        this.updatedDate = updatedDate;
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
     }
 
     public Instant getCompletedDate() {

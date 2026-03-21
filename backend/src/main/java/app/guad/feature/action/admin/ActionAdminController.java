@@ -1,18 +1,19 @@
-package app.guad.feature.action;
+package app.guad.feature.action.admin;
 
 import app.guad.core.ResourceNotFoundException;
+import app.guad.feature.action.Action;
+import app.guad.feature.action.ActionService;
+import app.guad.feature.action.ActionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static app.guad.feature.action.ActionSpecifications.byDescription;
-import static app.guad.feature.action.ActionSpecifications.byStatus;
 import static app.guad.core.PaginationUtils.addPaginationData;
-import static app.guad.feature.action.ActionDetailsViewModel.toActionDetailsViewModel;
+import static app.guad.feature.action.admin.ActionDetailsViewModel.toActionDetailsViewModel;
 
 @Controller
 @RequestMapping("/admin/actions")
@@ -33,11 +34,7 @@ public class ActionAdminController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) ActionStatus status
     ) {
-        var spec = Specification.allOf(
-                byDescription(search),
-                byStatus(status)
-        );
-        var paginatedData = this.actionService.getAllActions(spec, pageable);
+        var paginatedData = this.actionService.search(search, status, pageable);
         var actions = paginatedData
                 .stream()
                 .map(ActionMapper::toGetActionViewModel)

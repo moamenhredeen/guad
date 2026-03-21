@@ -1,7 +1,8 @@
-package app.guad.feature.action;
+package app.guad.feature.action.admin;
 
+import app.guad.feature.action.Action;
+import app.guad.feature.action.ActionStatus;
 import app.guad.feature.context.Context;
-import app.guad.feature.attachment.AttachmentService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public final class ActionMapper {
         );
     }
 
-    public static ActionDetailsViewModel toActionDetailsViewModel(Action action, AttachmentService attachmentService) {
+    public static ActionDetailsViewModel toActionDetailsViewModel(Action action) {
         List<String> contextNames = action.getContexts() != null
                 ? action.getContexts().stream()
                         .map(Context::getName)
@@ -36,8 +37,8 @@ public final class ActionMapper {
                 action.getEstimatedDuration(),
                 action.getEnergyLevel(),
                 action.getLocation(),
-                action.getCreatedDate(),
-                action.getUpdatedDate(),
+                action.getAudit().getCreatedAt(),
+                action.getAudit().getUpdatedAt(),
                 action.getCompletedDate(),
                 action.getScheduledDate(),
                 action.getDueDate(),

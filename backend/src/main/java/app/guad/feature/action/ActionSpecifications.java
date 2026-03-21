@@ -2,7 +2,7 @@ package app.guad.feature.action;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public class ActionSpecifications {
+class ActionSpecifications {
     public static Specification<Action> byDescription(String description) {
         if (description == null) return Specification.unrestricted();
         return (root, _, cb) ->  cb.like(root.get("description"), description + "%");

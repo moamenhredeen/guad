@@ -1,7 +1,7 @@
 package app.guad.feature.waitingfor.api;
 
 import app.guad.core.ResourceNotFoundException;
-import app.guad.feature.action.ActionRepository;
+import app.guad.feature.action.ActionService;
 import app.guad.feature.project.ProjectRepository;
 import app.guad.feature.waitingfor.WaitingForItem;
 import app.guad.feature.waitingfor.WaitingForItemStatus;
@@ -24,14 +24,14 @@ class WaitingForRestController {
 
     private final WaitingForService waitingForService;
     private final WaitingForRepository waitingForRepository;
-    private final ActionRepository actionRepository;
+    private final ActionService actionService;
     private final ProjectRepository projectRepository;
 
     WaitingForRestController(WaitingForService waitingForService, WaitingForRepository waitingForRepository,
-                              ActionRepository actionRepository, ProjectRepository projectRepository) {
+                              ActionService actionService, ProjectRepository projectRepository) {
         this.waitingForService = waitingForService;
         this.waitingForRepository = waitingForRepository;
-        this.actionRepository = actionRepository;
+        this.actionService = actionService;
         this.projectRepository = projectRepository;
     }
 
@@ -55,7 +55,7 @@ class WaitingForRestController {
         item.setStatus(WaitingForItemStatus.WAITING);
         item.setUserId(userId);
         if (request.actionId() != null) {
-            actionRepository.findById(request.actionId()).ifPresent(item::setAction);
+            actionService.getActionById(request.actionId()).ifPresent(item::setAction);
         }
         if (request.projectId() != null) {
             projectRepository.findById(request.projectId()).ifPresent(item::setProject);
@@ -85,7 +85,7 @@ class WaitingForRestController {
         item.setFollowUpDate(request.followUpDate());
         item.setNotes(request.notes());
         if (request.actionId() != null) {
-            actionRepository.findById(request.actionId()).ifPresent(item::setAction);
+            actionService.getActionById(request.actionId()).ifPresent(item::setAction);
         }
         if (request.projectId() != null) {
             projectRepository.findById(request.projectId()).ifPresent(item::setProject);
