@@ -89,7 +89,7 @@ public class AttachmentService {
     }
 
     public boolean isOwner(Attachment attachment, UUID userId) {
-        return attachment.getUserId().equals(userId);
+        return java.util.Objects.equals(attachment.getUserId(), userId);
     }
 
     private void validateFile(MultipartFile file) {
