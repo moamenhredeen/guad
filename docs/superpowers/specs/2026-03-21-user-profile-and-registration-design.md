@@ -30,19 +30,21 @@ This design introduces:
 
 - **Long PK over Keycloak UUID as PK:** Keeps PK strategy consistent with all other entities (Action, Project, Area, etc.) and decouples identity from the external IdP.
 - **`keycloakId` as unique column:** Links to the `UUID userId` stored on domain entities. The interceptor looks up profiles by this field.
-- **Cached email/displayName:** Avoids needing to parse the JWT or call Keycloak when displaying user info. Updated on each authenticated request to stay reasonably fresh.
+- **Cached email/displayName:** Avoids needing to parse the JWT or call Keycloak when displaying user info. `displayName` maps to the `preferred_username` JWT claim. Updated on profile creation and when stale (see below).
 
 ### Lazy Creation
 
-A Spring `HandlerInterceptor` runs on authenticated API requests:
+A Spring `HandlerInterceptor` registered only for `/api/**` routes (the stateless JWT filter chain). It does NOT run for `/admin/**` routes (session-based OAuth2 login).
 
 1. Extract Keycloak subject UUID from the JWT
 2. Look up `UserProfile` by `keycloakId`
-3. If not found → create a new profile with defaults and JWT-derived fields (email, displayName)
-4. If found → update cached email/displayName if they've changed in the JWT
+3. If not found → create a new profile with defaults and JWT-derived fields (email, preferred_username)
+4. If found → update cached email/displayName only when the JWT's `iat` (issued-at) is newer than the profile's `updatedDate` and the values differ. This avoids a write on every request.
 5. Make the profile available to downstream handlers (e.g., via request attribute)
 
-Performance: The lookup is a single indexed query on `keycloakId` (unique constraint = index). For subsequent requests in the same session, a short-lived cache or request-scoped flag avoids redundant queries.
+**Error handling:** If the database is unavailable during profile creation, log a warning and let the request proceed without a profile. The API endpoints that require a profile (`GET /api/profile`, `PUT /api/profile/settings`) will return 404 in this edge case — but domain endpoints (actions, projects, etc.) remain functional.
+
+**Performance:** The lookup is a single indexed query on `keycloakId` (unique constraint = index). A Caffeine cache (keyed by keycloakId, TTL ~5 minutes) avoids hitting the DB on every request.
 
 ## 2. Keycloak Registration
 
@@ -84,13 +86,18 @@ Create a Keycloak login theme at `themes/guad/login/` with Guad's branding:
 
 ### DTOs
 
-**`ProfileResponse`** — all profile fields:
-- `id`, `email`, `displayName`, `timezone`, `defaultReviewDay`, `energyTrackingEnabled`, `emailDigestsEnabled`, `reminderNotificationsEnabled`, `createdDate`, `updatedDate`
+**`ProfileResponse`** — profile fields (excludes internal `id`):
+- `email`, `displayName`, `timezone`, `defaultReviewDay`, `energyTrackingEnabled`, `emailDigestsEnabled`, `reminderNotificationsEnabled`, `createdDate`, `updatedDate`
 
 **`UpdateSettingsRequest`** — mutable settings only:
 - `timezone`, `defaultReviewDay`, `energyTrackingEnabled`, `emailDigestsEnabled`, `reminderNotificationsEnabled`
 
 Email and displayName are not updatable via this endpoint — they are managed in Keycloak and synced on login.
+
+**Validation:**
+- `timezone`: must be a valid IANA timezone identifier (validated via `ZoneId.of()`)
+- `defaultReviewDay`: must be a valid `DayOfWeek` enum value
+- All fields required — no partial updates. Client sends the full settings object.
 
 ### Package Structure
 
@@ -110,7 +117,11 @@ Lives in `app.guad.feature.profile`, following the existing feature-per-package 
 
 ## 4. Database Migration
 
-Flyway migration `V3__User_profile.sql`:
+Since we are pre-alpha with no production data, consolidate all migrations into a single `V1__Schema.sql`. Remove the legacy `users`/`roles`/`user_roles` tables, merge V2 changes (UUID user_id, waiting_for_items, weekly_reviews) into V1, and add `user_profiles`. Delete `V2__Gtd_enhancements.sql`.
+
+After updating the migration, drop and recreate the local database.
+
+### `user_profiles` table (added to the consolidated V1):
 
 ```sql
 CREATE SEQUENCE user_profiles_seq START WITH 1 INCREMENT BY 50;
