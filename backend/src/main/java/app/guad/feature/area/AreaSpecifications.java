@@ -8,8 +8,4 @@ class AreaSpecifications {
         return (root, _, cb) ->  cb.like(root.get("name"), name + "%");
     }
 
-    public static Specification<Area> byUser(Long userId) {
-        if (userId == null) return Specification.unrestricted();
-        return (root, _, cb) ->  cb.equal(root.get("user_id"), userId);
-    }
 }

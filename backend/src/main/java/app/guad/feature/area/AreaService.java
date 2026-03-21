@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +16,6 @@ public class AreaService {
 
     public AreaService(AreaRepository areaRepository) {
         this.areaRepository = areaRepository;
-    }
-
-    public Page<Area> getAreas(Pageable pageable) {
-        return this.areaRepository.findAll(pageable);
     }
 
     public Page<Area> search(String name, Pageable pageable) {
@@ -40,6 +37,7 @@ public class AreaService {
         return this.areaRepository.findById(id);
     }
 
+    @Transactional
     public Area save(Area area) {
         if (area.getId() == null) {
             return this.areaRepository.save(area);
