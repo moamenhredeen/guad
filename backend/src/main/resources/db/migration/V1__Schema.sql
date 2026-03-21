@@ -13,7 +13,7 @@ CREATE SEQUENCE IF NOT EXISTS user_profiles_seq START WITH 1 INCREMENT BY 50;
 -- Tables
 CREATE TABLE actions
 (
-    id                 BIGINT                      NOT NULL,
+    id                 BIGINT       NOT NULL,
     description        VARCHAR(255),
     notes              VARCHAR(255),
     status             SMALLINT,
@@ -21,14 +21,16 @@ CREATE TABLE actions
     estimated_duration INTEGER,
     energy_level       INTEGER,
     location           VARCHAR(255),
-    created_date       TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_date       TIMESTAMP WITHOUT TIME ZONE,
-    completed_date     TIMESTAMP WITHOUT TIME ZONE,
-    scheduled_date     TIMESTAMP WITHOUT TIME ZONE,
-    due_date           TIMESTAMP WITHOUT TIME ZONE,
+    created_at         TIMESTAMPTZ,
+    updated_at         TIMESTAMPTZ,
+    created_by         VARCHAR(255),
+    updated_by         VARCHAR(255),
+    completed_date     TIMESTAMPTZ,
+    scheduled_date     TIMESTAMPTZ,
+    due_date           TIMESTAMPTZ,
     project_id         BIGINT,
     area_id            BIGINT,
-    user_id            UUID                        NOT NULL,
+    user_id            UUID         NOT NULL,
     CONSTRAINT pk_actions PRIMARY KEY (id)
 );
 
@@ -39,18 +41,25 @@ CREATE TABLE areas
     description VARCHAR(255),
     "order"     INTEGER,
     user_id     UUID         NOT NULL,
+    created_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMPTZ,
+    created_by  VARCHAR(255),
+    updated_by  VARCHAR(255),
     CONSTRAINT pk_areas PRIMARY KEY (id)
 );
 
 CREATE TABLE attachments
 (
-    id            BIGINT NOT NULL,
-    filename      VARCHAR(255),
-    file_size     BIGINT,
-    mime_type     VARCHAR(255),
-    file_url      VARCHAR(255),
-    uploaded_date TIMESTAMP WITHOUT TIME ZONE,
-    user_id       UUID   NOT NULL,
+    id         BIGINT NOT NULL,
+    filename   VARCHAR(255),
+    file_size  BIGINT,
+    mime_type  VARCHAR(255),
+    file_url   VARCHAR(255),
+    created_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255),
+    user_id    UUID   NOT NULL,
     CONSTRAINT pk_attachments PRIMARY KEY (id)
 );
 
@@ -62,6 +71,10 @@ CREATE TABLE contexts
     color       VARCHAR(255),
     icon_key    VARCHAR(255),
     user_id     UUID,
+    created_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMPTZ,
+    created_by  VARCHAR(255),
+    updated_by  VARCHAR(255),
     CONSTRAINT pk_contexts PRIMARY KEY (id)
 );
 
@@ -71,6 +84,10 @@ CREATE TABLE documents
     name       VARCHAR(255) NOT NULL,
     content    VARCHAR(255),
     project_id BIGINT,
+    created_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255),
     CONSTRAINT pk_documents PRIMARY KEY (id)
 );
 
@@ -80,9 +97,11 @@ CREATE TABLE inbox_items
     title          VARCHAR(255) NOT NULL,
     description    VARCHAR(255),
     status         SMALLINT     NOT NULL,
-    created_date   TIMESTAMP WITHOUT TIME ZONE,
-    updated_date   TIMESTAMP WITHOUT TIME ZONE,
-    processed_date TIMESTAMP WITHOUT TIME ZONE,
+    created_at     TIMESTAMPTZ,
+    updated_at     TIMESTAMPTZ,
+    created_by     VARCHAR(255),
+    updated_by     VARCHAR(255),
+    processed_date TIMESTAMPTZ,
     user_id        UUID         NOT NULL,
     CONSTRAINT pk_inbox_items PRIMARY KEY (id)
 );
@@ -94,9 +113,11 @@ CREATE TABLE projects
     description     VARCHAR(255),
     desired_outcome VARCHAR(255),
     status          SMALLINT,
-    created_date    TIMESTAMP WITHOUT TIME ZONE,
-    updated_date    TIMESTAMP WITHOUT TIME ZONE,
-    completed_date  TIMESTAMP WITHOUT TIME ZONE,
+    created_at      TIMESTAMPTZ,
+    updated_at      TIMESTAMPTZ,
+    created_by      VARCHAR(255),
+    updated_by      VARCHAR(255),
+    completed_date  TIMESTAMPTZ,
     color           VARCHAR(255),
     user_id         UUID   NOT NULL,
     area_id         BIGINT,
@@ -105,30 +126,36 @@ CREATE TABLE projects
 
 CREATE TABLE waiting_for_items
 (
-    id             BIGINT                      NOT NULL,
-    title          VARCHAR(255)                NOT NULL,
+    id             BIGINT       NOT NULL,
+    title          VARCHAR(255) NOT NULL,
     delegated_to   VARCHAR(255),
-    delegated_at   TIMESTAMP WITHOUT TIME ZONE,
-    follow_up_date TIMESTAMP WITHOUT TIME ZONE,
+    delegated_at   TIMESTAMPTZ,
+    follow_up_date TIMESTAMPTZ,
     notes          VARCHAR(255),
-    status         SMALLINT                    NOT NULL DEFAULT 0,
+    status         SMALLINT     NOT NULL DEFAULT 0,
     action_id      BIGINT,
     project_id     BIGINT,
-    user_id        UUID                        NOT NULL,
-    created_date   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_date   TIMESTAMP WITHOUT TIME ZONE,
-    completed_date TIMESTAMP WITHOUT TIME ZONE,
+    user_id        UUID         NOT NULL,
+    created_at     TIMESTAMPTZ  NOT NULL,
+    updated_at     TIMESTAMPTZ,
+    created_by     VARCHAR(255),
+    updated_by     VARCHAR(255),
+    completed_date TIMESTAMPTZ,
     CONSTRAINT pk_waiting_for_items PRIMARY KEY (id)
 );
 
 CREATE TABLE weekly_reviews
 (
-    id           BIGINT                      NOT NULL,
-    started_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    completed_at TIMESTAMP WITHOUT TIME ZONE,
-    current_step SMALLINT                    NOT NULL DEFAULT 0,
+    id           BIGINT      NOT NULL,
+    started_at   TIMESTAMPTZ NOT NULL,
+    completed_at TIMESTAMPTZ,
+    current_step SMALLINT    NOT NULL DEFAULT 0,
     notes        VARCHAR(255),
-    user_id      UUID                        NOT NULL,
+    user_id      UUID        NOT NULL,
+    created_at   TIMESTAMPTZ,
+    updated_at   TIMESTAMPTZ,
+    created_by   VARCHAR(255),
+    updated_by   VARCHAR(255),
     CONSTRAINT pk_weekly_reviews PRIMARY KEY (id)
 );
 
@@ -143,8 +170,10 @@ CREATE TABLE user_profiles
     energy_tracking_enabled        BOOLEAN      NOT NULL DEFAULT TRUE,
     email_digests_enabled          BOOLEAN      NOT NULL DEFAULT FALSE,
     reminder_notifications_enabled BOOLEAN      NOT NULL DEFAULT TRUE,
-    created_date                   TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    updated_date                   TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    created_at                     TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    updated_at                     TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    created_by                     VARCHAR(255),
+    updated_by                     VARCHAR(255),
     CONSTRAINT pk_user_profiles PRIMARY KEY (id),
     CONSTRAINT uq_user_profiles_keycloak_id UNIQUE (keycloak_id)
 );
