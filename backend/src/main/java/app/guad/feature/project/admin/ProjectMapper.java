@@ -15,7 +15,7 @@ public final class ProjectMapper {
                 project.getName(),
                 project.getDescription(),
                 project.getStatus().name(),
-                project.getArea().getName()
+                project.getArea() != null ? project.getArea().getName() : null
         );
     }
 
