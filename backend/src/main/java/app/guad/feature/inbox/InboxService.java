@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class InboxService {
@@ -23,12 +25,28 @@ public class InboxService {
         return this.inboxRepository.findAll(pageable);
     }
 
-    public Page<InboxItem> search(Specification<InboxItem> spec, Pageable pageable) {
-        return this.inboxRepository.findAll(spec, pageable);
+    public Page<InboxItem> search(String title, InboxItemStatus status, Pageable pageable) {
+        var spec = Specification.allOf(
+            InboxItemSpecifications.byTitle(title),
+            InboxItemSpecifications.byStatus(status)
+        );
+        return inboxRepository.findAll(spec, pageable);
     }
 
     public Optional<InboxItem> getInboxItemById(long id) {
         return this.inboxRepository.findById(id);
+    }
+
+    public List<InboxItem> getUnprocessedByUserId(UUID userId) {
+        return inboxRepository.findAllByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
+    }
+
+    public Optional<InboxItem> getByIdAndUserId(Long id, UUID userId) {
+        return inboxRepository.findByIdAndUserId(id, userId);
+    }
+
+    public long countByUserIdAndStatus(UUID userId, InboxItemStatus status) {
+        return inboxRepository.countByUserIdAndStatus(userId, status);
     }
 
     @Transactional
@@ -69,4 +87,3 @@ public class InboxService {
     }
 
 }
-

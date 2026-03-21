@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface InboxRepository extends
+interface InboxRepository extends
         JpaRepository<InboxItem, Long>,
         PagingAndSortingRepository<InboxItem, Long>,
         JpaSpecificationExecutor<InboxItem> {

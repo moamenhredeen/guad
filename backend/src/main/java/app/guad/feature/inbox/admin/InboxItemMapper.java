@@ -20,8 +20,8 @@ final class InboxItemMapper {
                 inboxItem.getTitle(),
                 inboxItem.getDescription(),
                 inboxItem.getStatus(),
-                inboxItem.getCreatedDate(),
-                inboxItem.getUpdatedDate(),
+                inboxItem.getAudit().getCreatedAt(),
+                inboxItem.getAudit().getUpdatedAt(),
                 inboxItem.getProcessedDate(),
                 null
         );

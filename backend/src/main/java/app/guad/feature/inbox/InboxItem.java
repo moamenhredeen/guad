@@ -1,9 +1,9 @@
 package app.guad.feature.inbox;
 
+import app.guad.core.AuditMetadata;
 import app.guad.feature.attachment.Attachment;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.Set;
@@ -12,6 +12,7 @@ import java.util.UUID;
 /// Capture point for all incoming thoughts, tasks, emails, etc.
 @Entity
 @Table(name = "inbox_items")
+@EntityListeners(AuditingEntityListener.class)
 public class InboxItem {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,13 +27,8 @@ public class InboxItem {
     @Column(nullable = false)
     private InboxItemStatus status;
 
-    @Column
-    @CreatedDate
-    private Instant createdDate;
-
-    @Column
-    @LastModifiedDate
-    private Instant updatedDate;
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     @Column
     private Instant processedDate;
@@ -80,20 +76,12 @@ public class InboxItem {
         this.status = status;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public AuditMetadata getAudit() {
+        return audit;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Instant getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Instant updatedDate) {
-        this.updatedDate = updatedDate;
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
     }
 
     public Instant getProcessedDate() {

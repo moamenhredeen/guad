@@ -4,7 +4,6 @@ import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.inbox.InboxItem;
 import app.guad.feature.inbox.InboxItemStatus;
 import app.guad.feature.inbox.InboxProcessingService;
-import app.guad.feature.inbox.InboxRepository;
 import app.guad.feature.inbox.InboxService;
 import app.guad.security.AuthenticatedUser;
 import jakarta.validation.Valid;
@@ -21,13 +20,10 @@ import java.util.List;
 class InboxRestController {
 
     private final InboxService inboxService;
-    private final InboxRepository inboxRepository;
     private final InboxProcessingService inboxProcessingService;
 
-    InboxRestController(InboxService inboxService, InboxRepository inboxRepository,
-                        InboxProcessingService inboxProcessingService) {
+    InboxRestController(InboxService inboxService, InboxProcessingService inboxProcessingService) {
         this.inboxService = inboxService;
-        this.inboxRepository = inboxRepository;
         this.inboxProcessingService = inboxProcessingService;
     }
 
@@ -48,14 +44,14 @@ class InboxRestController {
     @GetMapping
     List<InboxItemResponse> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return inboxRepository.findAllByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED).stream()
+        return inboxService.getUnprocessedByUserId(userId).stream()
             .map(InboxItemResponse::from).toList();
     }
 
     @GetMapping("/{id}")
     InboxItemResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return inboxRepository.findByIdAndUserId(id, userId)
+        return inboxService.getByIdAndUserId(id, userId)
             .map(InboxItemResponse::from)
             .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id));
     }
@@ -63,7 +59,7 @@ class InboxRestController {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        inboxRepository.findByIdAndUserId(id, userId)
+        inboxService.getByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id));
         inboxService.deleteById(id);
         return ResponseEntity.noContent().build();

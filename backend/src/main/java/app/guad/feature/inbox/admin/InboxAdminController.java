@@ -4,13 +4,10 @@ import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.inbox.InboxItemStatus;
 import app.guad.feature.inbox.InboxService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static app.guad.feature.inbox.InboxItemSpecifications.byStatus;
-import static app.guad.feature.inbox.InboxItemSpecifications.byTitle;
 import static app.guad.core.PaginationUtils.addPaginationData;
 
 @Controller
@@ -30,11 +27,7 @@ class InboxAdminController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) InboxItemStatus status
     ) {
-        var spec = Specification.allOf(
-                byTitle(search),
-                byStatus(status)
-        );
-        var paginatedData = this.inboxService.search(spec, pageable);
+        var paginatedData = this.inboxService.search(search, status, pageable);
         var inboxItems = paginatedData.stream()
                 .map(InboxItemMapper::toGetInboxItemViewModel)
                 .toList();
