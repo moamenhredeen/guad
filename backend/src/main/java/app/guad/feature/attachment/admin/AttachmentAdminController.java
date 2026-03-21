@@ -1,14 +1,12 @@
-package app.guad.feature.attachment;
+package app.guad.feature.attachment.admin;
 
 import app.guad.core.ResourceNotFoundException;
+import app.guad.feature.attachment.AttachmentService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static app.guad.feature.attachment.AttachmentSpecifications.byFilename;
-import static app.guad.feature.attachment.AttachmentSpecifications.byMimeType;
 import static app.guad.core.PaginationUtils.addPaginationData;
 
 @Controller
@@ -28,11 +26,7 @@ public class AttachmentAdminController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String mimetype
     ) {
-        var spec = Specification.allOf(
-                byFilename(search),
-                byMimeType(mimetype)
-        );
-        var paginatedData = attachmentService.search(spec, pageable);
+        var paginatedData = attachmentService.search(search, mimetype, pageable);
         var attachments = paginatedData
                 .stream()
                 .map(AttachmentMapper::toGetAttachmentViewModel)

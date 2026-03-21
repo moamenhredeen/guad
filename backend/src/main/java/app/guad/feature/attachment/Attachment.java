@@ -1,12 +1,13 @@
 package app.guad.feature.attachment;
 
+import app.guad.core.AuditMetadata;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "attachments")
 public class Attachment {
 
@@ -26,9 +27,8 @@ public class Attachment {
     @Column
     private String fileUrl;
 
-    @Column
-    @CreatedDate
-    private Instant uploadedDate;
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     @Column
     private UUID userId;
@@ -73,12 +73,12 @@ public class Attachment {
         this.fileUrl = fileUrl;
     }
 
-    public Instant getUploadedDate() {
-        return uploadedDate;
+    public AuditMetadata getAudit() {
+        return audit;
     }
 
-    public void setUploadedDate(Instant uploadedDate) {
-        this.uploadedDate = uploadedDate;
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
     }
 
     public UUID getUserId() {

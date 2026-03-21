@@ -11,5 +11,3 @@ public record AttachmentListItemViewModel(
         Instant uploadedDate
 ) {
 }
-
-

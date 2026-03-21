@@ -1,10 +1,9 @@
-package app.guad.feature.attachment;
+package app.guad.feature.attachment.admin;
 
-public record GetAttachmentViewModel(
+record GetAttachmentViewModel(
         Long id,
         String filename,
         Long fileSize,
         String mimeType
 ) {
 }
-

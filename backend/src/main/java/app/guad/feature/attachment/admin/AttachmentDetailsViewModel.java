@@ -1,8 +1,8 @@
-package app.guad.feature.attachment;
+package app.guad.feature.attachment.admin;
 
 import java.time.Instant;
 
-public record AttachmentDetailsViewModel(
+record AttachmentDetailsViewModel(
         Long id,
         String filename,
         Long fileSize,
@@ -11,4 +11,3 @@ public record AttachmentDetailsViewModel(
         Instant uploadedDate
 ) {
 }
-

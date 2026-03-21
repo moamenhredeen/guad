@@ -5,14 +5,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static app.guad.feature.attachment.AttachmentSpecifications.byFilename;
+import static app.guad.feature.attachment.AttachmentSpecifications.byMimeType;
 
 @Service
 public class AttachmentService {
@@ -20,7 +23,7 @@ public class AttachmentService {
     private final AttachmentRepository attachmentRepository;
     private final ObjectStorageProvider objectStorageProvider;
     private final long maxFileSizeBytes;
-    private final List<String> allowedMimeTypes;
+    private final java.util.List<String> allowedMimeTypes;
     private final int presignedUrlExpirationMinutes;
 
     public AttachmentService(
@@ -35,6 +38,7 @@ public class AttachmentService {
         this.presignedUrlExpirationMinutes = attachmentProperties.getPresignedUrlExpirationMinutes();
     }
 
+    @Transactional
     public Attachment uploadFile(MultipartFile file, UUID userId) throws IOException {
         validateFile(file);
 
@@ -54,7 +58,6 @@ public class AttachmentService {
         attachment.setFileSize(fileSize);
         attachment.setMimeType(contentType);
         attachment.setFileUrl(s3Key); // Store S3 key, not full URL
-        attachment.setUploadedDate(Instant.now());
         attachment.setUserId(userId);
 
         return attachmentRepository.save(attachment);
@@ -66,12 +69,12 @@ public class AttachmentService {
                 Duration.ofMinutes(presignedUrlExpirationMinutes));
     }
 
-    public Page<Attachment> getAttachments(Pageable pageable) {
-        return attachmentRepository.findAll(pageable);
-    }
-
-    public Page<Attachment> search(Specification<Attachment> spec, Pageable pageable) {
-        return this.attachmentRepository.findAll(spec, pageable);
+    public Page<Attachment> search(String filename, String mimeType, Pageable pageable) {
+        var spec = Specification.allOf(
+                byFilename(filename),
+                byMimeType(mimeType)
+        );
+        return attachmentRepository.findAll(spec, pageable);
     }
 
     public Optional<Attachment> getAttachmentById(Long id) {
