@@ -1,4 +1,4 @@
-package app.guad.feature.auth;
+package app.guad.feature.auth.admin;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
