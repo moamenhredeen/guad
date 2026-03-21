@@ -1,10 +1,14 @@
 package app.guad.feature.review;
 
+import app.guad.core.AuditMetadata;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "weekly_reviews")
 public class WeeklyReview {
     @Id
@@ -25,6 +29,9 @@ public class WeeklyReview {
 
     @Column(nullable = false)
     private UUID userId;
+
+    @Embedded
+    private AuditMetadata audit = new AuditMetadata();
 
     public Long getId() {
         return id;
@@ -72,5 +79,13 @@ public class WeeklyReview {
 
     public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+    public AuditMetadata getAudit() {
+        return audit;
+    }
+
+    public void setAudit(AuditMetadata audit) {
+        this.audit = audit;
     }
 }

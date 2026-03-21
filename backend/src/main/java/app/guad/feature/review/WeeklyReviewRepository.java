@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface WeeklyReviewRepository extends CrudRepository<WeeklyReview, Long> {
+interface WeeklyReviewRepository extends CrudRepository<WeeklyReview, Long> {
     Optional<WeeklyReview> findFirstByUserIdAndCompletedAtIsNullOrderByStartedAtDesc(UUID userId);
     Optional<WeeklyReview> findFirstByUserIdAndCompletedAtIsNotNullOrderByCompletedAtDesc(UUID userId);
 }
