@@ -9,7 +9,7 @@ public record WaitingForResponse(
 ) {
     public static WaitingForResponse from(WaitingForItem item) {
         return new WaitingForResponse(
-            item.getId(), item.getTitle(), item.getDelegatedTo(), item.getCreatedDate(),
+            item.getId(), item.getTitle(), item.getDelegatedTo(), item.getAudit().getCreatedAt(),
             item.getNotes(), item.getStatus().name(),
             item.getProject() != null ? item.getProject().getName() : null,
             item.getProject() != null ? item.getProject().getId() : null

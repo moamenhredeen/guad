@@ -9,7 +9,7 @@ import app.guad.feature.project.Project;
 import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
 import app.guad.feature.waitingfor.WaitingForItemStatus;
-import app.guad.feature.waitingfor.WaitingForRepository;
+import app.guad.feature.waitingfor.WaitingForService;
 import app.guad.security.AuthenticatedUser;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +28,15 @@ class ProjectRestController {
     private final ProjectService projectService;
     private final ActionService actionService;
     private final AreaService areaService;
-    private final WaitingForRepository waitingForRepository;
+    private final WaitingForService waitingForService;
 
     ProjectRestController(ProjectService projectService,
                            ActionService actionService,
-                           AreaService areaService, WaitingForRepository waitingForRepository) {
+                           AreaService areaService, WaitingForService waitingForService) {
         this.projectService = projectService;
         this.actionService = actionService;
         this.areaService = areaService;
-        this.waitingForRepository = waitingForRepository;
+        this.waitingForService = waitingForService;
     }
 
     @GetMapping
@@ -81,7 +81,7 @@ class ProjectRestController {
         var completedActions = allActions.stream()
             .filter(a -> a.getStatus() == ActionStatus.COMPLETED)
             .toList();
-        var waitingFor = waitingForRepository.findAllByUserIdAndStatus(userId, WaitingForItemStatus.WAITING)
+        var waitingFor = waitingForService.findAllByUserIdAndStatus(userId, WaitingForItemStatus.WAITING)
             .stream().filter(w -> w.getProject() != null && w.getProject().getId().equals(id))
             .toList();
         return ProjectDetailResponse.from(project, nextActions, waitingFor, completedActions);

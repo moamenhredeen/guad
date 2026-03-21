@@ -9,7 +9,7 @@ import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
 import app.guad.feature.review.WeeklyReviewService;
 import app.guad.feature.waitingfor.WaitingForItemStatus;
-import app.guad.feature.waitingfor.WaitingForRepository;
+import app.guad.feature.waitingfor.WaitingForService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +23,16 @@ public class DashboardService {
     private final InboxService inboxService;
     private final ActionService actionService;
     private final ProjectService projectService;
-    private final WaitingForRepository waitingForRepository;
+    private final WaitingForService waitingForService;
     private final WeeklyReviewService weeklyReviewService;
 
     public DashboardService(InboxService inboxService, ActionService actionService,
-                             ProjectService projectService, WaitingForRepository waitingForRepository,
+                             ProjectService projectService, WaitingForService waitingForService,
                              WeeklyReviewService weeklyReviewService) {
         this.inboxService = inboxService;
         this.actionService = actionService;
         this.projectService = projectService;
-        this.waitingForRepository = waitingForRepository;
+        this.waitingForService = waitingForService;
         this.weeklyReviewService = weeklyReviewService;
     }
 
@@ -41,7 +41,7 @@ public class DashboardService {
         long inboxCount = inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
         long nextActionsCount = actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT);
         long activeProjectsCount = projectService.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE);
-        long waitingForCount = waitingForRepository.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING);
+        long waitingForCount = waitingForService.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING);
         long somedayMaybeCount = actionService.countByUserIdAndStatus(userId, ActionStatus.SOMEDAY_MAYBE);
 
         var lastReview = weeklyReviewService.getLastCompletedReview(userId).orElse(null);

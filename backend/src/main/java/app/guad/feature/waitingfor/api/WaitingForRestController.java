@@ -5,7 +5,6 @@ import app.guad.feature.action.ActionService;
 import app.guad.feature.project.ProjectService;
 import app.guad.feature.waitingfor.WaitingForItem;
 import app.guad.feature.waitingfor.WaitingForItemStatus;
-import app.guad.feature.waitingfor.WaitingForRepository;
 import app.guad.feature.waitingfor.WaitingForService;
 import app.guad.security.AuthenticatedUser;
 import jakarta.validation.Valid;
@@ -23,14 +22,12 @@ import java.util.List;
 class WaitingForRestController {
 
     private final WaitingForService waitingForService;
-    private final WaitingForRepository waitingForRepository;
     private final ActionService actionService;
     private final ProjectService projectService;
 
-    WaitingForRestController(WaitingForService waitingForService, WaitingForRepository waitingForRepository,
+    WaitingForRestController(WaitingForService waitingForService,
                               ActionService actionService, ProjectService projectService) {
         this.waitingForService = waitingForService;
-        this.waitingForRepository = waitingForRepository;
         this.actionService = actionService;
         this.projectService = projectService;
     }
@@ -38,7 +35,7 @@ class WaitingForRestController {
     @GetMapping
     List<WaitingForResponse> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return waitingForRepository.findAllByUserIdAndStatus(userId, WaitingForItemStatus.WAITING).stream()
+        return waitingForService.findAllByUserIdAndStatus(userId, WaitingForItemStatus.WAITING).stream()
             .map(WaitingForResponse::from).toList();
     }
 
@@ -68,7 +65,7 @@ class WaitingForRestController {
     @GetMapping("/{id}")
     WaitingForResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return waitingForRepository.findByIdAndUserId(id, userId)
+        return waitingForService.findByIdAndUserId(id, userId)
             .map(WaitingForResponse::from)
             .orElseThrow(() -> new ResourceNotFoundException("WaitingForItem", id));
     }
@@ -77,7 +74,7 @@ class WaitingForRestController {
     WaitingForResponse update(@PathVariable Long id, @Valid @RequestBody CreateWaitingForRequest request,
                                @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var item = waitingForRepository.findByIdAndUserId(id, userId)
+        var item = waitingForService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("WaitingForItem", id));
         item.setTitle(request.title());
         item.setDelegatedTo(request.delegatedTo());
@@ -96,7 +93,7 @@ class WaitingForRestController {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        waitingForRepository.findByIdAndUserId(id, userId)
+        waitingForService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("WaitingForItem", id));
         waitingForService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -105,7 +102,7 @@ class WaitingForRestController {
     @PatchMapping("/{id}/resolve")
     WaitingForResponse resolve(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var item = waitingForRepository.findByIdAndUserId(id, userId)
+        var item = waitingForService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("WaitingForItem", id));
         item.setStatus(WaitingForItemStatus.RESOLVED);
         item.setCompletedDate(Instant.now());

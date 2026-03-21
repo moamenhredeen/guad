@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface WaitingForRepository extends
+interface WaitingForRepository extends
         CrudRepository<WaitingForItem, Long>,
         PagingAndSortingRepository<WaitingForItem, Long> {
     List<WaitingForItem> findAllByUserIdAndStatus(UUID userId, WaitingForItemStatus status);
