@@ -40,6 +40,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useAuthStore } from '@/stores/auth'
 import { useDashboardStore } from '@/stores/dashboard'
+import { useQuickCapture } from '@/composables/useQuickCapture'
 import { useRoute } from 'vue-router'
 import { computed, onMounted } from 'vue'
 
@@ -47,6 +48,7 @@ withDefaults(defineProps<SidebarProps>(), {})
 
 const auth = useAuthStore()
 const dashboard = useDashboardStore()
+const { open: openQuickCapture } = useQuickCapture()
 const route = useRoute()
 
 onMounted(() => dashboard.fetch())
@@ -85,7 +87,7 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
 
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton class="text-gelb font-medium">
+          <SidebarMenuButton class="text-schwarz font-medium" @click="openQuickCapture">
             <Plus class="size-4" />
             <span>Add Task</span>
             <kbd class="ml-auto text-[10px] text-muted-foreground font-mono">Q</kbd>

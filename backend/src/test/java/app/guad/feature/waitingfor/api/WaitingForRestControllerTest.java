@@ -23,9 +23,9 @@ class WaitingForRestControllerTest extends BaseIntegrationTest {
                     {"title": "Waiting for plumber", "delegatedTo": "Bob"}
                     """))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.title").value("Waiting for plumber"))
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.status").value("WAITING"));
+            .andExpect(jsonPath("$.data.title").value("Waiting for plumber"))
+            .andExpect(jsonPath("$.data.id").isNumber())
+            .andExpect(jsonPath("$.data.status").value("WAITING"));
     }
 
     @Test
@@ -45,9 +45,9 @@ class WaitingForRestControllerTest extends BaseIntegrationTest {
 
         mockMvc.perform(get("/api/waiting-for").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[?(@.title == 'My item')]").exists())
-            .andExpect(jsonPath("$[?(@.title == 'Other item')]").doesNotExist());
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[?(@.title == 'My item')]").exists())
+            .andExpect(jsonPath("$.data[?(@.title == 'Other item')]").doesNotExist());
     }
 
     @Test
@@ -59,11 +59,11 @@ class WaitingForRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/waiting-for/" + id).with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.title").value("Fetch me"));
+            .andExpect(jsonPath("$.data.title").value("Fetch me"));
     }
 
     @Test
@@ -75,7 +75,7 @@ class WaitingForRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/waiting-for/" + id).with(userJwt(UUID.randomUUID())))
             .andExpect(status().isNotFound());
@@ -90,7 +90,7 @@ class WaitingForRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(delete("/api/waiting-for/" + id).with(userJwt()))
             .andExpect(status().isNoContent());
@@ -114,11 +114,11 @@ class WaitingForRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(patch("/api/waiting-for/" + id + "/resolve").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status").value("RESOLVED"));
+            .andExpect(jsonPath("$.data.status").value("RESOLVED"));
     }
 
     @Test
@@ -130,14 +130,14 @@ class WaitingForRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(patch("/api/waiting-for/" + id + "/resolve").with(userJwt()))
             .andExpect(status().isOk());
 
         mockMvc.perform(get("/api/waiting-for").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[?(@.title == 'Will be resolved')]").doesNotExist());
+            .andExpect(jsonPath("$.data[?(@.title == 'Will be resolved')]").doesNotExist());
     }
 
     @Test

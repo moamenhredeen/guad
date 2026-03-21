@@ -23,9 +23,9 @@ class ProjectRestControllerTest extends BaseIntegrationTest {
                     {"name": "Home renovation", "description": "Fix the kitchen"}
                     """))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.name").value("Home renovation"))
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.status").value("ACTIVE"));
+            .andExpect(jsonPath("$.data.name").value("Home renovation"))
+            .andExpect(jsonPath("$.data.id").isNumber())
+            .andExpect(jsonPath("$.data.status").value("ACTIVE"));
     }
 
     @Test
@@ -45,9 +45,9 @@ class ProjectRestControllerTest extends BaseIntegrationTest {
 
         mockMvc.perform(get("/api/projects").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[?(@.name == 'My project')]").exists())
-            .andExpect(jsonPath("$[?(@.name == 'Other project')]").doesNotExist());
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[?(@.name == 'My project')]").exists())
+            .andExpect(jsonPath("$.data[?(@.name == 'Other project')]").doesNotExist());
     }
 
     @Test
@@ -59,13 +59,13 @@ class ProjectRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/projects/" + id).with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.name").value("Detail project"))
-            .andExpect(jsonPath("$.nextActions").isArray())
-            .andExpect(jsonPath("$.completedActions").isArray());
+            .andExpect(jsonPath("$.data.name").value("Detail project"))
+            .andExpect(jsonPath("$.data.nextActions").isArray())
+            .andExpect(jsonPath("$.data.completedActions").isArray());
     }
 
     @Test
@@ -77,7 +77,7 @@ class ProjectRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/projects/" + id).with(userJwt(UUID.randomUUID())))
             .andExpect(status().isNotFound());
@@ -92,7 +92,7 @@ class ProjectRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(delete("/api/projects/" + id).with(userJwt()))
             .andExpect(status().isNoContent());
@@ -116,14 +116,14 @@ class ProjectRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(patch("/api/projects/" + id + "/status")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"status\": \"COMPLETED\"}"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status").value("COMPLETED"));
+            .andExpect(jsonPath("$.data.status").value("COMPLETED"));
     }
 
     @Test
@@ -135,7 +135,7 @@ class ProjectRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(post("/api/projects/" + id + "/actions")
                 .with(userJwt())

@@ -23,9 +23,9 @@ class InboxRestControllerTest extends BaseIntegrationTest {
                     {"title": "Buy groceries", "description": "Milk, eggs, bread"}
                     """))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.title").value("Buy groceries"))
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.status").value("UNPROCESSED"));
+            .andExpect(jsonPath("$.data.title").value("Buy groceries"))
+            .andExpect(jsonPath("$.data.id").isNumber())
+            .andExpect(jsonPath("$.data.status").value("UNPROCESSED"));
     }
 
     @Test
@@ -45,9 +45,9 @@ class InboxRestControllerTest extends BaseIntegrationTest {
 
         mockMvc.perform(get("/api/inbox").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[?(@.title == 'My item')]").exists())
-            .andExpect(jsonPath("$[?(@.title == 'Other item')]").doesNotExist());
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[?(@.title == 'My item')]").exists())
+            .andExpect(jsonPath("$.data[?(@.title == 'Other item')]").doesNotExist());
     }
 
     @Test
@@ -59,11 +59,11 @@ class InboxRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/inbox/" + id).with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.title").value("Pick item"));
+            .andExpect(jsonPath("$.data.title").value("Pick item"));
     }
 
     @Test
@@ -75,7 +75,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/inbox/" + id).with(userJwt(UUID.randomUUID())))
             .andExpect(status().isNotFound());
@@ -90,7 +90,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(delete("/api/inbox/" + id).with(userJwt()))
             .andExpect(status().isNoContent());
@@ -114,7 +114,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(post("/api/inbox/" + id + "/process")
                 .with(userJwt())
@@ -132,7 +132,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(post("/api/inbox/" + id + "/process")
                 .with(userJwt())

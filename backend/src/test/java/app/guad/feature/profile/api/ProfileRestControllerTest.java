@@ -17,14 +17,14 @@ class ProfileRestControllerTest extends BaseIntegrationTest {
     void getProfile_returnsProfileWithDefaults() throws Exception {
         mockMvc.perform(get("/api/profile").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.email").value("test@example.com"))
-            .andExpect(jsonPath("$.displayName").value("testuser"))
-            .andExpect(jsonPath("$.timezone").value("Europe/Berlin"))
-            .andExpect(jsonPath("$.defaultReviewDay").value("SATURDAY"))
-            .andExpect(jsonPath("$.energyTrackingEnabled").value(true))
-            .andExpect(jsonPath("$.emailDigestsEnabled").value(false))
-            .andExpect(jsonPath("$.reminderNotificationsEnabled").value(true))
-            .andExpect(jsonPath("$.id").doesNotExist());
+            .andExpect(jsonPath("$.data.email").value("test@example.com"))
+            .andExpect(jsonPath("$.data.displayName").value("testuser"))
+            .andExpect(jsonPath("$.data.timezone").value("Europe/Berlin"))
+            .andExpect(jsonPath("$.data.defaultReviewDay").value("SATURDAY"))
+            .andExpect(jsonPath("$.data.energyTrackingEnabled").value(true))
+            .andExpect(jsonPath("$.data.emailDigestsEnabled").value(false))
+            .andExpect(jsonPath("$.data.reminderNotificationsEnabled").value(true))
+            .andExpect(jsonPath("$.data.id").doesNotExist());
     }
 
     @Test
@@ -45,11 +45,11 @@ class ProfileRestControllerTest extends BaseIntegrationTest {
                     }
                     """))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.timezone").value("America/New_York"))
-            .andExpect(jsonPath("$.defaultReviewDay").value("SUNDAY"))
-            .andExpect(jsonPath("$.energyTrackingEnabled").value(false))
-            .andExpect(jsonPath("$.emailDigestsEnabled").value(true))
-            .andExpect(jsonPath("$.reminderNotificationsEnabled").value(false));
+            .andExpect(jsonPath("$.data.timezone").value("America/New_York"))
+            .andExpect(jsonPath("$.data.defaultReviewDay").value("SUNDAY"))
+            .andExpect(jsonPath("$.data.energyTrackingEnabled").value(false))
+            .andExpect(jsonPath("$.data.emailDigestsEnabled").value(true))
+            .andExpect(jsonPath("$.data.reminderNotificationsEnabled").value(false));
     }
 
     @Test
@@ -101,8 +101,8 @@ class ProfileRestControllerTest extends BaseIntegrationTest {
         var otherUserId = UUID.randomUUID();
         mockMvc.perform(get("/api/profile").with(userJwt(otherUserId)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.timezone").value("Europe/Berlin"))
-            .andExpect(jsonPath("$.defaultReviewDay").value("SATURDAY"))
-            .andExpect(jsonPath("$.energyTrackingEnabled").value(true));
+            .andExpect(jsonPath("$.data.timezone").value("Europe/Berlin"))
+            .andExpect(jsonPath("$.data.defaultReviewDay").value("SATURDAY"))
+            .andExpect(jsonPath("$.data.energyTrackingEnabled").value(true));
     }
 }

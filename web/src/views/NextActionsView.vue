@@ -2,12 +2,14 @@
 import { computed, onMounted, ref } from 'vue'
 import { useActionsStore } from '@/stores/actions'
 import { useContextsStore } from '@/stores/contexts'
+import { useTaskDetail } from '@/composables/useTaskDetail'
 import TaskRow from '@/components/task/TaskRow.vue'
 import InlineAddTask from '@/components/task/InlineAddTask.vue'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const actions = useActionsStore()
 const contexts = useContextsStore()
+const { open: openDetail } = useTaskDetail()
 const activeContextId = ref<string | null>(null)
 
 onMounted(() => {
@@ -83,6 +85,7 @@ async function onAdd(data: { title: string; notes: string }) {
             :meta="action.projectName ?? undefined"
             :due-date="formatDueDate(action.dueDate)"
             @toggle="actions.complete(action.id)"
+            @click="openDetail(action)"
           />
         </div>
       </div>

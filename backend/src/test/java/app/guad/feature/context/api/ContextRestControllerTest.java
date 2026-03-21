@@ -23,8 +23,8 @@ class ContextRestControllerTest extends BaseIntegrationTest {
                     {"name": "Phone", "description": "Phone calls", "color": "#ff0000"}
                     """))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.name").value("Phone"))
-            .andExpect(jsonPath("$.id").isNumber());
+            .andExpect(jsonPath("$.data.name").value("Phone"))
+            .andExpect(jsonPath("$.data.id").isNumber());
     }
 
     @Test
@@ -44,9 +44,9 @@ class ContextRestControllerTest extends BaseIntegrationTest {
 
         mockMvc.perform(get("/api/contexts").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[?(@.name == 'Office')]").exists())
-            .andExpect(jsonPath("$[?(@.name == 'Other')]").doesNotExist());
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[?(@.name == 'Office')]").exists())
+            .andExpect(jsonPath("$.data[?(@.name == 'Other')]").doesNotExist());
     }
 
     @Test
@@ -58,7 +58,7 @@ class ContextRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(delete("/api/contexts/" + id).with(userJwt()))
             .andExpect(status().isNoContent());
@@ -73,7 +73,7 @@ class ContextRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(delete("/api/contexts/" + id).with(userJwt(UUID.randomUUID())))
             .andExpect(status().isNotFound());
@@ -97,14 +97,14 @@ class ContextRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(put("/api/contexts/" + id)
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"Updated\"}"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.name").value("Updated"));
+            .andExpect(jsonPath("$.data.name").value("Updated"));
     }
 
     @Test

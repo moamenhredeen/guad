@@ -1,5 +1,6 @@
 package app.guad.feature.somedaymaybe.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.action.api.ActionResponse;
@@ -26,12 +27,12 @@ class SomedayMaybeRestController {
     }
 
     @GetMapping
-    SomedayMaybeResponse list(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<SomedayMaybeResponse> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var actions = actionService.findAllByUserIdAndStatus(userId, ActionStatus.SOMEDAY_MAYBE)
             .stream().map(ActionResponse::from).toList();
         var projects = projectService.findAllByUserIdAndStatus(userId, ProjectStatus.SOMEDAY_MAYBE)
             .stream().map(p -> ProjectResponse.from(p, 0)).toList();
-        return new SomedayMaybeResponse(actions, projects);
+        return ApiResponse.of(new SomedayMaybeResponse(actions, projects));
     }
 }

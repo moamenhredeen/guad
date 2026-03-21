@@ -1,5 +1,6 @@
 package app.guad.feature.profile.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.feature.profile.ProfileService;
 import app.guad.security.AuthenticatedUser;
 import jakarta.validation.Valid;
@@ -21,20 +22,19 @@ class ProfileRestController {
     }
 
     @GetMapping
-    ResponseEntity<ProfileResponse> getProfile(@AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<ApiResponse<ProfileResponse>> getProfile(@AuthenticationPrincipal Jwt jwt) {
         var user = AuthenticatedUser.from(jwt);
         var profile = profileService.getProfileByKeycloakId(user.id());
         if (profile == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(ProfileResponse.from(profile));
+        return ResponseEntity.ok(ApiResponse.of(ProfileResponse.from(profile)));
     }
 
     @PutMapping("/settings")
-    ResponseEntity<ProfileResponse> updateSettings(
+    ResponseEntity<ApiResponse<ProfileResponse>> updateSettings(
             @Valid @RequestBody UpdateSettingsRequest request,
             @AuthenticationPrincipal Jwt jwt) {
-        // Validate timezone
         try {
             ZoneId.of(request.timezone());
         } catch (Exception e) {
@@ -50,6 +50,6 @@ class ProfileRestController {
             request.emailDigestsEnabled(),
             request.reminderNotificationsEnabled()
         );
-        return ResponseEntity.ok(ProfileResponse.from(profile));
+        return ResponseEntity.ok(ApiResponse.of(ProfileResponse.from(profile)));
     }
 }

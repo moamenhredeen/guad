@@ -1,5 +1,6 @@
 package app.guad.feature.dashboard.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.feature.dashboard.DashboardService;
 import app.guad.security.AuthenticatedUser;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,8 +20,8 @@ class DashboardRestController {
     }
 
     @GetMapping
-    DashboardResponse get(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<DashboardResponse> get(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return dashboardService.getDashboard(userId);
+        return ApiResponse.of(dashboardService.getDashboard(userId));
     }
 }

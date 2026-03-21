@@ -1,5 +1,6 @@
 package app.guad.feature.area.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.area.Area;
 import app.guad.feature.area.AreaService;
@@ -24,14 +25,14 @@ class AreaRestController {
     }
 
     @GetMapping
-    List<AreaResponse> list(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<List<AreaResponse>> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return areaService.findAllByUserId(userId).stream()
-            .map(AreaResponse::from).toList();
+        return ApiResponse.of(areaService.findAllByUserId(userId).stream()
+            .map(AreaResponse::from).toList());
     }
 
     @PostMapping
-    ResponseEntity<AreaResponse> create(@Valid @RequestBody CreateAreaRequest request,
+    ResponseEntity<ApiResponse<AreaResponse>> create(@Valid @RequestBody CreateAreaRequest request,
                                         @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var area = new Area();
@@ -40,18 +41,18 @@ class AreaRestController {
         area.setUserId(userId);
         var saved = areaService.save(area);
         return ResponseEntity.created(URI.create("/api/areas/" + saved.getId()))
-            .body(AreaResponse.from(saved));
+            .body(ApiResponse.of(AreaResponse.from(saved)));
     }
 
     @PutMapping("/{id}")
-    AreaResponse update(@PathVariable Long id, @Valid @RequestBody CreateAreaRequest request,
+    ApiResponse<AreaResponse> update(@PathVariable Long id, @Valid @RequestBody CreateAreaRequest request,
                         @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var area = areaService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Area", id));
         area.setName(request.name());
         area.setDescription(request.description());
-        return AreaResponse.from(areaService.save(area));
+        return ApiResponse.of(AreaResponse.from(areaService.save(area)));
     }
 
     @DeleteMapping("/{id}")

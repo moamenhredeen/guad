@@ -82,13 +82,13 @@
   --chart-3: #867A69;
   --chart-4: #08AAD5;
   --chart-5: #375A08;
-  --sidebar: #2A2623;                      /* BW Schwarz */
-  --sidebar-foreground: #F4F3F1;
-  --sidebar-primary: #FFFC00;              /* BW Gelb */
-  --sidebar-primary-foreground: #2A2623;
-  --sidebar-accent: #49413C;              /* BW Grau 90 */
-  --sidebar-accent-foreground: #F4F3F1;
-  --sidebar-border: #49413C;
+  --sidebar: #F4F3F1;                      /* BW Grau 5 */
+  --sidebar-foreground: #2A2623;           /* BW Schwarz */
+  --sidebar-primary: #2A2623;              /* BW Schwarz */
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E4E1DC;              /* BW Grau 10 */
+  --sidebar-accent-foreground: #2A2623;
+  --sidebar-border: #CBC6BD;              /* BW Grau 20 */
   --sidebar-ring: #6E0BCC;
 }
 

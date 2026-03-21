@@ -1,11 +1,19 @@
 <script lang="ts" setup>
 import { useAuthStore } from '@/stores/auth'
+import { useColorMode } from '@vueuse/core'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { LogOut } from 'lucide-vue-next'
+import { LogOut, Sun, Moon, Monitor } from 'lucide-vue-next'
 
 const auth = useAuthStore()
+const { store: mode } = useColorMode({ emitAuto: true })
+
+const themes = [
+  { value: 'light', label: 'Light', icon: Sun },
+  { value: 'dark', label: 'Dark', icon: Moon },
+  { value: 'auto', label: 'System', icon: Monitor },
+] as const
 </script>
 
 <template>
@@ -21,6 +29,26 @@ const auth = useAuthStore()
       <div>
         <div class="font-medium text-schwarz">{{ auth.user?.username ?? 'User' }}</div>
         <div class="text-sm text-grau-50">{{ auth.user?.email ?? '' }}</div>
+      </div>
+    </div>
+
+    <Separator class="my-6" />
+
+    <div>
+      <h2 class="font-medium text-schwarz">Appearance</h2>
+      <p class="mt-1 text-sm text-grau-50">Choose your preferred theme</p>
+      <div class="mt-3 inline-flex gap-1 rounded-md border border-border p-1">
+        <Button
+          v-for="theme in themes"
+          :key="theme.value"
+          variant="ghost"
+          size="sm"
+          :class="mode === theme.value ? 'bg-schwarz text-white hover:bg-schwarz hover:text-white' : ''"
+          @click="mode = theme.value"
+        >
+          <component :is="theme.icon" class="mr-1.5 size-4" />
+          {{ theme.label }}
+        </Button>
       </div>
     </div>
 

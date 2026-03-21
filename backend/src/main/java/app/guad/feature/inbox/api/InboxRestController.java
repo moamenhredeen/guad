@@ -1,5 +1,6 @@
 package app.guad.feature.inbox.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.inbox.InboxItem;
 import app.guad.feature.inbox.InboxItemStatus;
@@ -28,7 +29,7 @@ class InboxRestController {
     }
 
     @PostMapping
-    ResponseEntity<InboxItemResponse> create(@Valid @RequestBody CreateInboxItemRequest request,
+    ResponseEntity<ApiResponse<InboxItemResponse>> create(@Valid @RequestBody CreateInboxItemRequest request,
                                              @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var item = new InboxItem();
@@ -38,22 +39,22 @@ class InboxRestController {
         item.setUserId(userId);
         var saved = inboxService.save(item);
         return ResponseEntity.created(URI.create("/api/inbox/" + saved.getId()))
-            .body(InboxItemResponse.from(saved));
+            .body(ApiResponse.of(InboxItemResponse.from(saved)));
     }
 
     @GetMapping
-    List<InboxItemResponse> list(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<List<InboxItemResponse>> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return inboxService.getUnprocessedByUserId(userId).stream()
-            .map(InboxItemResponse::from).toList();
+        return ApiResponse.of(inboxService.getUnprocessedByUserId(userId).stream()
+            .map(InboxItemResponse::from).toList());
     }
 
     @GetMapping("/{id}")
-    InboxItemResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<InboxItemResponse> get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return inboxService.getByIdAndUserId(id, userId)
+        return ApiResponse.of(inboxService.getByIdAndUserId(id, userId)
             .map(InboxItemResponse::from)
-            .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id));
+            .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id)));
     }
 
     @DeleteMapping("/{id}")

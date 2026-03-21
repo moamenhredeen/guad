@@ -1,5 +1,6 @@
 package app.guad.feature.waitingfor.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.project.ProjectService;
@@ -33,14 +34,14 @@ class WaitingForRestController {
     }
 
     @GetMapping
-    List<WaitingForResponse> list(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<List<WaitingForResponse>> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return waitingForService.findAllByUserIdAndStatus(userId, WaitingForItemStatus.WAITING).stream()
-            .map(WaitingForResponse::from).toList();
+        return ApiResponse.of(waitingForService.findAllByUserIdAndStatus(userId, WaitingForItemStatus.WAITING).stream()
+            .map(WaitingForResponse::from).toList());
     }
 
     @PostMapping
-    ResponseEntity<WaitingForResponse> create(@Valid @RequestBody CreateWaitingForRequest request,
+    ResponseEntity<ApiResponse<WaitingForResponse>> create(@Valid @RequestBody CreateWaitingForRequest request,
                                                @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var item = new WaitingForItem();
@@ -59,19 +60,19 @@ class WaitingForRestController {
         }
         var saved = waitingForService.save(item);
         return ResponseEntity.created(URI.create("/api/waiting-for/" + saved.getId()))
-            .body(WaitingForResponse.from(saved));
+            .body(ApiResponse.of(WaitingForResponse.from(saved)));
     }
 
     @GetMapping("/{id}")
-    WaitingForResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<WaitingForResponse> get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return waitingForService.findByIdAndUserId(id, userId)
+        return ApiResponse.of(waitingForService.findByIdAndUserId(id, userId)
             .map(WaitingForResponse::from)
-            .orElseThrow(() -> new ResourceNotFoundException("WaitingForItem", id));
+            .orElseThrow(() -> new ResourceNotFoundException("WaitingForItem", id)));
     }
 
     @PutMapping("/{id}")
-    WaitingForResponse update(@PathVariable Long id, @Valid @RequestBody CreateWaitingForRequest request,
+    ApiResponse<WaitingForResponse> update(@PathVariable Long id, @Valid @RequestBody CreateWaitingForRequest request,
                                @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var item = waitingForService.findByIdAndUserId(id, userId)
@@ -87,7 +88,7 @@ class WaitingForRestController {
         if (request.projectId() != null) {
             projectService.findById(request.projectId()).ifPresent(item::setProject);
         }
-        return WaitingForResponse.from(waitingForService.save(item));
+        return ApiResponse.of(WaitingForResponse.from(waitingForService.save(item)));
     }
 
     @DeleteMapping("/{id}")
@@ -100,12 +101,12 @@ class WaitingForRestController {
     }
 
     @PatchMapping("/{id}/resolve")
-    WaitingForResponse resolve(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<WaitingForResponse> resolve(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var item = waitingForService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("WaitingForItem", id));
         item.setStatus(WaitingForItemStatus.RESOLVED);
         item.setCompletedDate(Instant.now());
-        return WaitingForResponse.from(waitingForService.save(item));
+        return ApiResponse.of(WaitingForResponse.from(waitingForService.save(item)));
     }
 }

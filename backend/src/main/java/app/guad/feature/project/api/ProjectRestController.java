@@ -1,5 +1,6 @@
 package app.guad.feature.project.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.Action;
 import app.guad.feature.action.ActionService;
@@ -40,18 +41,18 @@ class ProjectRestController {
     }
 
     @GetMapping
-    List<ProjectResponse> list(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<List<ProjectResponse>> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return projectService.findAllByUserIdAndStatus(userId, ProjectStatus.ACTIVE).stream()
+        return ApiResponse.of(projectService.findAllByUserIdAndStatus(userId, ProjectStatus.ACTIVE).stream()
             .map(p -> {
                 int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, p.getId())
                     .stream().filter(a -> a.getStatus() == ActionStatus.NEXT).count();
                 return ProjectResponse.from(p, nextCount);
-            }).toList();
+            }).toList());
     }
 
     @PostMapping
-    ResponseEntity<ProjectResponse> create(@Valid @RequestBody CreateProjectRequest request,
+    ResponseEntity<ApiResponse<ProjectResponse>> create(@Valid @RequestBody CreateProjectRequest request,
                                             @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var project = new Project();
@@ -66,11 +67,11 @@ class ProjectRestController {
         }
         var saved = projectService.save(project);
         return ResponseEntity.created(URI.create("/api/projects/" + saved.getId()))
-            .body(ProjectResponse.from(saved, 0));
+            .body(ApiResponse.of(ProjectResponse.from(saved, 0)));
     }
 
     @GetMapping("/{id}")
-    ProjectDetailResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<ProjectDetailResponse> get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var project = projectService.findByIdAndUserId(id, userId)
             .orElseThrow(() -> new ResourceNotFoundException("Project", id));
@@ -84,11 +85,11 @@ class ProjectRestController {
         var waitingFor = waitingForService.findAllByUserIdAndStatus(userId, WaitingForItemStatus.WAITING)
             .stream().filter(w -> w.getProject() != null && w.getProject().getId().equals(id))
             .toList();
-        return ProjectDetailResponse.from(project, nextActions, waitingFor, completedActions);
+        return ApiResponse.of(ProjectDetailResponse.from(project, nextActions, waitingFor, completedActions));
     }
 
     @PutMapping("/{id}")
-    ProjectResponse update(@PathVariable Long id, @Valid @RequestBody CreateProjectRequest request,
+    ApiResponse<ProjectResponse> update(@PathVariable Long id, @Valid @RequestBody CreateProjectRequest request,
                             @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var project = projectService.findByIdAndUserId(id, userId)
@@ -103,7 +104,7 @@ class ProjectRestController {
         var saved = projectService.save(project);
         int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, id)
             .stream().filter(a -> a.getStatus() == ActionStatus.NEXT).count();
-        return ProjectResponse.from(saved, nextCount);
+        return ApiResponse.of(ProjectResponse.from(saved, nextCount));
     }
 
     @DeleteMapping("/{id}")
@@ -132,7 +133,7 @@ class ProjectRestController {
     }
 
     @PatchMapping("/{id}/status")
-    ProjectResponse changeStatus(@PathVariable Long id, @RequestBody Map<String, String> body,
+    ApiResponse<ProjectResponse> changeStatus(@PathVariable Long id, @RequestBody Map<String, String> body,
                                   @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var project = projectService.findByIdAndUserId(id, userId)
@@ -141,6 +142,6 @@ class ProjectRestController {
         var saved = projectService.save(project);
         int nextCount = (int) actionService.findAllByUserIdAndProjectId(userId, id)
             .stream().filter(a -> a.getStatus() == ActionStatus.NEXT).count();
-        return ProjectResponse.from(saved, nextCount);
+        return ApiResponse.of(ProjectResponse.from(saved, nextCount));
     }
 }

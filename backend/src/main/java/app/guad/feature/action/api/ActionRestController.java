@@ -1,5 +1,6 @@
 package app.guad.feature.action.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.Action;
 import app.guad.feature.action.ActionService;
@@ -39,9 +40,9 @@ class ActionRestController {
     }
 
     @GetMapping
-    List<ActionResponse> list(@RequestParam(required = false) ActionStatus status,
-                               @RequestParam(required = false) Long contextId,
-                               @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<List<ActionResponse>> list(@RequestParam(required = false) ActionStatus status,
+                                          @RequestParam(required = false) Long contextId,
+                                          @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         List<Action> actions;
         if (status != null) {
@@ -55,11 +56,11 @@ class ActionRestController {
                     .anyMatch(c -> c.getId().equals(contextId)))
                 .toList();
         }
-        return actions.stream().map(ActionResponse::from).toList();
+        return ApiResponse.of(actions.stream().map(ActionResponse::from).toList());
     }
 
     @PostMapping
-    ResponseEntity<ActionResponse> create(@Valid @RequestBody CreateActionRequest request,
+    ResponseEntity<ApiResponse<ActionResponse>> create(@Valid @RequestBody CreateActionRequest request,
                                            @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var action = new Action();
@@ -86,19 +87,19 @@ class ActionRestController {
         }
         var saved = actionService.save(action);
         return ResponseEntity.created(URI.create("/api/actions/" + saved.getId()))
-            .body(ActionResponse.from(saved));
+            .body(ApiResponse.of(ActionResponse.from(saved)));
     }
 
     @GetMapping("/{id}")
-    ActionResponse get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<ActionResponse> get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         return actionService.findByIdAndUserId(id, userId)
-            .map(ActionResponse::from)
+            .map(action -> ApiResponse.of(ActionResponse.from(action)))
             .orElseThrow(() -> new ResourceNotFoundException("Action", id));
     }
 
     @PutMapping("/{id}")
-    ActionResponse update(@PathVariable Long id, @Valid @RequestBody UpdateActionRequest request,
+    ApiResponse<ActionResponse> update(@PathVariable Long id, @Valid @RequestBody UpdateActionRequest request,
                            @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var action = actionService.findByIdAndUserId(id, userId)
@@ -122,7 +123,7 @@ class ActionRestController {
             }
             action.setContexts(contexts);
         }
-        return ActionResponse.from(actionService.save(action));
+        return ApiResponse.of(ActionResponse.from(actionService.save(action)));
     }
 
     @DeleteMapping("/{id}")
@@ -135,16 +136,16 @@ class ActionRestController {
     }
 
     @PatchMapping("/{id}/complete")
-    ActionResponse complete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<ActionResponse> complete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return ActionResponse.from(actionService.completeAction(id, userId));
+        return ApiResponse.of(ActionResponse.from(actionService.completeAction(id, userId)));
     }
 
     @PatchMapping("/{id}/status")
-    ActionResponse changeStatus(@PathVariable Long id, @RequestBody Map<String, String> body,
+    ApiResponse<ActionResponse> changeStatus(@PathVariable Long id, @RequestBody Map<String, String> body,
                                  @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var status = ActionStatus.valueOf(body.get("status"));
-        return ActionResponse.from(actionService.updateStatus(id, userId, status));
+        return ApiResponse.of(ActionResponse.from(actionService.updateStatus(id, userId, status)));
     }
 }

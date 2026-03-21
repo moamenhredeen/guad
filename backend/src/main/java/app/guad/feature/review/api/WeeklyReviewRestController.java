@@ -1,5 +1,6 @@
 package app.guad.feature.review.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.feature.review.WeeklyReviewService;
 import app.guad.security.AuthenticatedUser;
 import org.springframework.http.ResponseEntity;
@@ -20,38 +21,38 @@ class WeeklyReviewRestController {
     }
 
     @PostMapping
-    ResponseEntity<WeeklyReviewResponse> start(@AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<ApiResponse<WeeklyReviewResponse>> start(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var review = reviewService.startReview(userId);
         return ResponseEntity.created(URI.create("/api/reviews/" + review.getId()))
-            .body(WeeklyReviewResponse.from(review));
+            .body(ApiResponse.of(WeeklyReviewResponse.from(review)));
     }
 
     @GetMapping("/current")
-    ResponseEntity<WeeklyReviewResponse> current(@AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<ApiResponse<WeeklyReviewResponse>> current(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         return reviewService.getCurrentReview(userId)
-            .map(r -> ResponseEntity.ok(WeeklyReviewResponse.from(r)))
+            .map(r -> ResponseEntity.ok(ApiResponse.of(WeeklyReviewResponse.from(r))))
             .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @PatchMapping("/{id}/step")
-    WeeklyReviewResponse advanceStep(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<WeeklyReviewResponse> advanceStep(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return WeeklyReviewResponse.from(reviewService.advanceStep(id, userId));
+        return ApiResponse.of(WeeklyReviewResponse.from(reviewService.advanceStep(id, userId)));
     }
 
     @PostMapping("/{id}/complete")
-    WeeklyReviewResponse complete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<WeeklyReviewResponse> complete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return WeeklyReviewResponse.from(reviewService.completeReview(id, userId));
+        return ApiResponse.of(WeeklyReviewResponse.from(reviewService.completeReview(id, userId)));
     }
 
     @GetMapping("/last")
-    ResponseEntity<WeeklyReviewResponse> last(@AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<ApiResponse<WeeklyReviewResponse>> last(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         return reviewService.getLastCompletedReview(userId)
-            .map(r -> ResponseEntity.ok(WeeklyReviewResponse.from(r)))
+            .map(r -> ResponseEntity.ok(ApiResponse.of(WeeklyReviewResponse.from(r))))
             .orElseGet(() -> ResponseEntity.noContent().build());
     }
 }

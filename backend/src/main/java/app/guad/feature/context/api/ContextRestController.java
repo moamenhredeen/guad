@@ -1,5 +1,6 @@
 package app.guad.feature.context.api;
 
+import app.guad.core.ApiResponse;
 import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.context.Context;
 import app.guad.feature.context.ContextService;
@@ -24,14 +25,14 @@ class ContextRestController {
     }
 
     @GetMapping
-    List<ContextResponse> list(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<List<ContextResponse>> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        return contextService.findAllByUserId(userId).stream()
-            .map(ContextResponse::from).toList();
+        return ApiResponse.of(contextService.findAllByUserId(userId).stream()
+            .map(ContextResponse::from).toList());
     }
 
     @PostMapping
-    ResponseEntity<ContextResponse> create(@Valid @RequestBody CreateContextRequest request,
+    ResponseEntity<ApiResponse<ContextResponse>> create(@Valid @RequestBody CreateContextRequest request,
                                            @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var context = new Context();
@@ -42,11 +43,11 @@ class ContextRestController {
         context.setUserId(userId);
         var saved = contextService.save(context);
         return ResponseEntity.created(URI.create("/api/contexts/" + saved.getId()))
-            .body(ContextResponse.from(saved));
+            .body(ApiResponse.of(ContextResponse.from(saved)));
     }
 
     @PutMapping("/{id}")
-    ContextResponse update(@PathVariable Long id, @Valid @RequestBody CreateContextRequest request,
+    ApiResponse<ContextResponse> update(@PathVariable Long id, @Valid @RequestBody CreateContextRequest request,
                            @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         var context = contextService.findByIdAndUserId(id, userId)
@@ -55,7 +56,7 @@ class ContextRestController {
         context.setDescription(request.description());
         context.setColor(request.color());
         context.setIconKey(request.iconKey());
-        return ContextResponse.from(contextService.save(context));
+        return ApiResponse.of(ContextResponse.from(contextService.save(context)));
     }
 
     @DeleteMapping("/{id}")

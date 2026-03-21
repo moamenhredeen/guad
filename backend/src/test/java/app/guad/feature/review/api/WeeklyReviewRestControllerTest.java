@@ -15,8 +15,8 @@ class WeeklyReviewRestControllerTest extends BaseIntegrationTest {
     void startReview_returns201() throws Exception {
         mockMvc.perform(post("/api/reviews").with(userJwt()))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.currentStep").value("CLEAR_INBOX"));
+            .andExpect(jsonPath("$.data.id").isNumber())
+            .andExpect(jsonPath("$.data.currentStep").value("CLEAR_INBOX"));
     }
 
     @Test
@@ -26,7 +26,7 @@ class WeeklyReviewRestControllerTest extends BaseIntegrationTest {
 
         mockMvc.perform(get("/api/reviews/current").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.currentStep").exists());
+            .andExpect(jsonPath("$.data.currentStep").exists());
     }
 
     @Test
@@ -41,11 +41,11 @@ class WeeklyReviewRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(patch("/api/reviews/" + id + "/step").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.currentStep").value("REVIEW_NEXT_ACTIONS"));
+            .andExpect(jsonPath("$.data.currentStep").value("REVIEW_NEXT_ACTIONS"));
     }
 
     @Test
@@ -54,11 +54,11 @@ class WeeklyReviewRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(post("/api/reviews/" + id + "/complete").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.completedAt").isNotEmpty());
+            .andExpect(jsonPath("$.data.completedAt").isNotEmpty());
     }
 
     @Test
@@ -73,14 +73,14 @@ class WeeklyReviewRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(post("/api/reviews/" + id + "/complete").with(userJwt()))
             .andExpect(status().isOk());
 
         mockMvc.perform(get("/api/reviews/last").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.completedAt").isNotEmpty());
+            .andExpect(jsonPath("$.data.completedAt").isNotEmpty());
     }
 
     @Test

@@ -21,9 +21,9 @@ class ActionRestControllerTest extends BaseIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"description\": \"Call dentist\"}"))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.description").value("Call dentist"))
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.status").value("NEXT"));
+            .andExpect(jsonPath("$.data.description").value("Call dentist"))
+            .andExpect(jsonPath("$.data.id").isNumber())
+            .andExpect(jsonPath("$.data.status").value("NEXT"));
     }
 
     @Test
@@ -43,9 +43,9 @@ class ActionRestControllerTest extends BaseIntegrationTest {
 
         mockMvc.perform(get("/api/actions").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[?(@.description == 'My action')]").exists())
-            .andExpect(jsonPath("$[?(@.description == 'Other action')]").doesNotExist());
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[?(@.description == 'My action')]").exists())
+            .andExpect(jsonPath("$.data[?(@.description == 'Other action')]").doesNotExist());
     }
 
     @Test
@@ -57,11 +57,11 @@ class ActionRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/actions/" + id).with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.description").value("Fetch action"));
+            .andExpect(jsonPath("$.data.description").value("Fetch action"));
     }
 
     @Test
@@ -73,7 +73,7 @@ class ActionRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(get("/api/actions/" + id).with(userJwt(UUID.randomUUID())))
             .andExpect(status().isNotFound());
@@ -88,7 +88,7 @@ class ActionRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(delete("/api/actions/" + id).with(userJwt()))
             .andExpect(status().isNoContent());
@@ -112,11 +112,11 @@ class ActionRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(patch("/api/actions/" + id + "/complete").with(userJwt()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status").value("COMPLETED"));
+            .andExpect(jsonPath("$.data.status").value("COMPLETED"));
     }
 
     @Test
@@ -128,14 +128,14 @@ class ActionRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(patch("/api/actions/" + id + "/status")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"status\": \"IN_PROGRESS\"}"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status").value("IN_PROGRESS"));
+            .andExpect(jsonPath("$.data.status").value("IN_PROGRESS"));
     }
 
     @Test
@@ -147,14 +147,14 @@ class ActionRestControllerTest extends BaseIntegrationTest {
             .andExpect(status().isCreated())
             .andReturn();
 
-        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
+        Number id = JsonPath.read(result.getResponse().getContentAsString(), "$.data.id");
 
         mockMvc.perform(put("/api/actions/" + id)
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"description\": \"Updated description\"}"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.description").value("Updated description"));
+            .andExpect(jsonPath("$.data.description").value("Updated description"));
     }
 
     @Test
