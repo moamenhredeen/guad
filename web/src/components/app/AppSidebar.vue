@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SidebarProps } from '@/components/ui/sidebar'
+import type { SidebarProps } from "@/components/ui/sidebar";
 import {
   Inbox,
   Zap,
@@ -12,7 +12,7 @@ import {
   Settings,
   LogOut,
   Plus,
-} from 'lucide-vue-next'
+} from "lucide-vue-next";
 import {
   Sidebar,
   SidebarContent,
@@ -25,45 +25,56 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
-  SidebarRail,
   SidebarSeparator,
-} from '@/components/ui/sidebar'
-import {
-  Avatar,
-  AvatarFallback,
-} from '@/components/ui/avatar'
+} from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useAuthStore } from '@/stores/auth'
-import { useDashboardStore } from '@/stores/dashboard'
-import { useQuickCapture } from '@/composables/useQuickCapture'
-import { useRoute } from 'vue-router'
-import { computed, onMounted } from 'vue'
+} from "@/components/ui/dropdown-menu";
+import { useAuthStore } from "@/stores/auth";
+import { useDashboardStore } from "@/stores/dashboard";
+import { useQuickCapture } from "@/composables/useQuickCapture";
+import { useRoute } from "vue-router";
+import { computed, onMounted } from "vue";
 
-withDefaults(defineProps<SidebarProps>(), {})
+withDefaults(defineProps<SidebarProps>(), {});
 
-const auth = useAuthStore()
-const dashboard = useDashboardStore()
-const { open: openQuickCapture } = useQuickCapture()
-const route = useRoute()
+const auth = useAuthStore();
+const dashboard = useDashboardStore();
+const { open: openQuickCapture } = useQuickCapture();
+const route = useRoute();
 
-onMounted(() => dashboard.fetch())
+onMounted(() => dashboard.fetch());
 
 const primaryNav = computed(() => [
-  { title: 'Inbox', url: '/inbox', icon: Inbox, badge: dashboard.data?.inboxCount },
-  { title: 'Next Actions', url: '/next-actions', icon: Zap, badge: dashboard.data?.nextActionsCount },
-  { title: 'Projects', url: '/projects', icon: FolderOpen, badge: dashboard.data?.activeProjectsCount },
-  { title: 'Waiting For', url: '/waiting-for', icon: Clock, badge: dashboard.data?.waitingForCount },
-  { title: 'Someday / Maybe', url: '/someday-maybe', icon: CloudSun },
-])
+  { title: "Inbox", url: "/inbox", icon: Inbox, badge: dashboard.data?.inboxCount },
+  {
+    title: "Next Actions",
+    url: "/next-actions",
+    icon: Zap,
+    badge: dashboard.data?.nextActionsCount,
+  },
+  {
+    title: "Projects",
+    url: "/projects",
+    icon: FolderOpen,
+    badge: dashboard.data?.activeProjectsCount,
+  },
+  {
+    title: "Waiting For",
+    url: "/waiting-for",
+    icon: Clock,
+    badge: dashboard.data?.waitingForCount,
+  },
+  { title: "Someday / Maybe", url: "/someday-maybe", icon: CloudSun },
+]);
 
-const reviewDue = computed(() => dashboard.data?.weeklyReviewDue ?? false)
+const reviewDue = computed(() => dashboard.data?.weeklyReviewDue ?? false);
 
-const isActive = (url: string) => route.path === url || route.path.startsWith(url + '/')
+const isActive = (url: string) => route.path === url || route.path.startsWith(url + "/");
 </script>
 
 <template>
@@ -73,7 +84,9 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" as-child>
             <RouterLink to="/inbox">
-              <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-gelb text-schwarz font-serif font-bold text-sm">
+              <div
+                class="flex aspect-square size-8 items-center justify-center rounded-lg bg-gelb text-schwarz font-serif font-bold text-sm"
+              >
                 G
               </div>
               <div class="grid flex-1 text-left text-sm leading-tight">
@@ -127,7 +140,10 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
                 </RouterLink>
               </SidebarMenuButton>
               <SidebarMenuBadge v-if="reviewDue">
-                <span class="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-800">Due</span>
+                <span
+                  class="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-800"
+                  >Due</span
+                >
               </SidebarMenuBadge>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -168,12 +184,14 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
               <SidebarMenuButton size="lg">
                 <Avatar class="h-8 w-8 rounded-lg">
                   <AvatarFallback class="rounded-lg bg-schwarz text-white text-xs">
-                    {{ auth.user?.username?.charAt(0)?.toUpperCase() ?? '?' }}
+                    {{ auth.user?.username?.charAt(0)?.toUpperCase() ?? "?" }}
                   </AvatarFallback>
                 </Avatar>
                 <div class="grid flex-1 text-left text-sm leading-tight">
-                  <span class="truncate font-medium">{{ auth.user?.username ?? 'User' }}</span>
-                  <span class="truncate text-xs text-muted-foreground">{{ auth.user?.email ?? '' }}</span>
+                  <span class="truncate font-medium">{{ auth.user?.username ?? "User" }}</span>
+                  <span class="truncate text-xs text-muted-foreground">{{
+                    auth.user?.email ?? ""
+                  }}</span>
                 </div>
               </SidebarMenuButton>
             </DropdownMenuTrigger>
@@ -187,7 +205,5 @@ const isActive = (url: string) => route.path === url || route.path.startsWith(ur
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarFooter>
-
-    <SidebarRail />
   </Sidebar>
 </template>
