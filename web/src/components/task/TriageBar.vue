@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import type { ProcessAction } from '@/types'
+import type { ProcessAction } from "@/types";
 
 defineEmits<{
-  process: [action: ProcessAction]
-}>()
+  process: [action: ProcessAction];
+}>();
 
 const actions: { label: string; icon: string; action: ProcessAction }[] = [
-  { label: 'Next Action', icon: '⚡', action: 'NEXT_ACTION' },
-  { label: 'To Project', icon: '📁', action: 'PROJECT' },
-  { label: 'Waiting For', icon: '⏳', action: 'WAITING_FOR' },
-  { label: 'Someday', icon: '💭', action: 'SOMEDAY_MAYBE' },
-  { label: 'Reference', icon: '📋', action: 'REFERENCE' },
-  { label: 'Trash', icon: '🗑️', action: 'TRASH' },
-]
+  { label: "Next Action", icon: "⚡", action: "NEXT_ACTION" },
+  { label: "To Project", icon: "📁", action: "PROJECT" },
+  { label: "Waiting For", icon: "⏳", action: "WAITING_FOR" },
+  { label: "Someday", icon: "💭", action: "SOMEDAY_MAYBE" },
+  { label: "Reference", icon: "📋", action: "REFERENCE" },
+  { label: "Trash", icon: "🗑️", action: "TRASH" },
+];
 </script>
 
 <template>
