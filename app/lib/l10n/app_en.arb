@@ -1,0 +1,63 @@
+{
+  "@@locale": "en",
+
+  "appName": "Guad",
+  "navHome": "Home",
+  "navProfile": "Profile",
+
+  "loginHint": "Keep your tasks and account organized",
+  "loginSignIn": "Sign in",
+  "loginEmail": "Email",
+  "loginPassword": "Password",
+  "loginEmailRequired": "Email is required",
+  "loginEmailInvalid": "Enter a valid email",
+  "loginPasswordRequired": "Password is required",
+
+  "homeWelcome": "Welcome back, {name}",
+  "@homeWelcome": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+
+  "profileTitle": "Profile",
+  "profileAccount": "Account",
+  "profileApp": "App",
+  "profilePersonalInfo": "Personal Information",
+  "profileNotifications": "Notifications",
+  "profileSettings": "Language",
+  "profileHelp": "Help & Support",
+  "profileSignOut": "Sign out",
+  "profileAccountSettings": "Account & Security",
+
+  "personalInfoTitle": "Personal Information",
+  "personalInfoFirstName": "First Name",
+  "personalInfoLastName": "Last Name",
+  "personalInfoEmail": "Email",
+  "personalInfoPhone": "Phone",
+
+  "notificationsTitle": "Notifications",
+  "notificationsEmpty": "No notifications",
+  "notificationsCaughtUp": "You're all caught up",
+
+  "save": "Save",
+
+  "accountTitle": "Account",
+  "accountContact": "Contact",
+  "accountSecurity": "Security",
+  "accountEmail": "Email Address",
+  "accountPhone": "Phone Number",
+  "accountChangePassword": "Change Password",
+  "accountNotSet": "Not set",
+  "accountEmailVerifyHint": "Changing your email address requires verification to keep your account secure.",
+  "accountPhoneVerifyHint": "Changing your phone number requires verification to keep your account secure.",
+  "accountPasswordVerifyHint": "You will receive a verification code to confirm your identity before changing your password.",
+  "accountSecurityNote": "Changes to contact info and password require identity verification for your security.",
+
+  "biometricTitle": "Verify Identity",
+  "biometricSubtitle": "Use your biometrics to continue",
+  "biometricTryAgain": "Try Again",
+  "biometricUsePassword": "Use password instead",
+  "biometricEnable": "Biometric Login",
+  "biometricEnableHint": "Sign in faster using fingerprint or face recognition"
+}

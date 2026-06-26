@@ -1,0 +1,63 @@
+{
+  "@@locale": "ar",
+
+  "appName": "Guad",
+  "navHome": "الرئيسية",
+  "navProfile": "الملف الشخصي",
+
+  "loginHint": "نظّم مهامك وحسابك بسهولة",
+  "loginSignIn": "تسجيل الدخول",
+  "loginEmail": "البريد الإلكتروني",
+  "loginPassword": "كلمة المرور",
+  "loginEmailRequired": "البريد الإلكتروني مطلوب",
+  "loginEmailInvalid": "أدخل بريداً إلكترونياً صحيحاً",
+  "loginPasswordRequired": "كلمة المرور مطلوبة",
+
+  "homeWelcome": "مرحباً، {name}",
+  "@homeWelcome": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+
+  "profileTitle": "الملف الشخصي",
+  "profileAccount": "الحساب",
+  "profileApp": "التطبيق",
+  "profilePersonalInfo": "المعلومات الشخصية",
+  "profileNotifications": "الإشعارات",
+  "profileSettings": "اللغة",
+  "profileHelp": "المساعدة والدعم",
+  "profileSignOut": "تسجيل الخروج",
+  "profileAccountSettings": "الحساب والأمان",
+
+  "personalInfoTitle": "المعلومات الشخصية",
+  "personalInfoFirstName": "الاسم الأول",
+  "personalInfoLastName": "اسم العائلة",
+  "personalInfoEmail": "البريد الإلكتروني",
+  "personalInfoPhone": "الهاتف",
+
+  "notificationsTitle": "الإشعارات",
+  "notificationsEmpty": "لا توجد إشعارات",
+  "notificationsCaughtUp": "أنت مطلع على كل شيء",
+
+  "save": "حفظ",
+
+  "accountTitle": "الحساب",
+  "accountContact": "معلومات التواصل",
+  "accountSecurity": "الأمان",
+  "accountEmail": "البريد الإلكتروني",
+  "accountPhone": "رقم الهاتف",
+  "accountChangePassword": "تغيير كلمة المرور",
+  "accountNotSet": "غير محدد",
+  "accountEmailVerifyHint": "تغيير بريدك الإلكتروني يتطلب التحقق للحفاظ على أمان حسابك.",
+  "accountPhoneVerifyHint": "تغيير رقم هاتفك يتطلب التحقق للحفاظ على أمان حسابك.",
+  "accountPasswordVerifyHint": "ستتلقى رمز تحقق لتأكيد هويتك قبل تغيير كلمة المرور.",
+  "accountSecurityNote": "التغييرات على معلومات التواصل وكلمة المرور تتطلب التحقق من الهوية لأمانك.",
+
+  "biometricTitle": "التحقق من الهوية",
+  "biometricSubtitle": "استخدم بصمتك للمتابعة",
+  "biometricTryAgain": "حاول مرة أخرى",
+  "biometricUsePassword": "استخدم كلمة المرور",
+  "biometricEnable": "تسجيل الدخول بالبصمة",
+  "biometricEnableHint": "سجّل الدخول بسرعة باستخدام البصمة أو التعرف على الوجه"
+}
