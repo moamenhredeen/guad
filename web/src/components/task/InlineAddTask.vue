@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Plus } from 'lucide-vue-next'
-import { Button } from '@/components/ui/button'
+import { ref } from "vue";
+import { Plus } from "lucide-vue-next";
+import { Button } from "@/components/ui/button";
 
 const props = defineProps<{
-  placeholder?: string
-}>()
+  placeholder?: string;
+}>();
 
 const emit = defineEmits<{
-  submit: [data: { title: string; notes: string }]
-}>()
+  submit: [data: { title: string; notes: string }];
+}>();
 
-const expanded = ref(false)
-const title = ref('')
-const notes = ref('')
-const titleInput = ref<HTMLInputElement>()
+const expanded = ref(false);
+const title = ref("");
+const notes = ref("");
+const titleInput = ref<HTMLInputElement>();
 
 function expand() {
-  expanded.value = true
-  setTimeout(() => titleInput.value?.focus(), 0)
+  expanded.value = true;
+  setTimeout(() => titleInput.value?.focus(), 0);
 }
 
 function submit() {
-  if (!title.value.trim()) return
-  emit('submit', { title: title.value.trim(), notes: notes.value.trim() })
-  title.value = ''
-  notes.value = ''
-  expanded.value = false
+  if (!title.value.trim()) return;
+  emit("submit", { title: title.value.trim(), notes: notes.value.trim() });
+  title.value = "";
+  notes.value = "";
+  expanded.value = false;
 }
 
 function cancel() {
-  title.value = ''
-  notes.value = ''
-  expanded.value = false
+  title.value = "";
+  notes.value = "";
+  expanded.value = false;
 }
 </script>
 
@@ -40,13 +40,14 @@ function cancel() {
   <!-- Collapsed -->
   <button
     v-if="!expanded"
-    class="flex w-full items-center gap-2.5 rounded-md px-1 py-2.5 text-sm text-grau-80 hover:bg-grau-5 transition-colors"
+    class="flex w-full items-center gap-2.5 rounded-md px-4 py-2 text-sm text-grau-80 hover:bg-grau-5 transition-colors"
     @click="expand"
   >
-    <div class="flex size-5 items-center justify-center rounded-full border-2 border-schwarz">
-      <Plus class="size-3" />
-    </div>
-    {{ placeholder ?? 'Add task' }}
+    <Plus class="size-4" />
+
+    <span class="text-grau-50">
+      {{ placeholder ?? "Add task" }}
+    </span>
   </button>
 
   <!-- Expanded -->

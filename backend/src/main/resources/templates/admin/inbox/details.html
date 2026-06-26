@@ -19,7 +19,7 @@
         <dd th:text="${inboxItem.status()}"></dd>
     </dl>
 
-    <div th:replace="~{admin/fragments/attachments :: attachment-grid(${inboxItem.attachments()})}"></div>
+<!--    <div th:replace="~{admin/fragments/attachments :: attachment-grid(${inboxItem.attachments()})}"></div>-->
 
     <div class="mt-4">
         <a th:href="@{/admin/inbox/{id}/create-action(id=${inboxItem.id()})}" class="btn btn-primary">Create Action from this Item</a>

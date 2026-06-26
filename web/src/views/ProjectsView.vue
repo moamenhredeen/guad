@@ -1,21 +1,21 @@
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue'
-import { useProjectsStore } from '@/stores/projects'
-import { Skeleton } from '@/components/ui/skeleton'
-import { ChevronRight } from 'lucide-vue-next'
+import { computed, onMounted } from "vue";
+import { useProjectsStore } from "@/stores/projects";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronRight } from "lucide-vue-next";
 
-const projects = useProjectsStore()
-onMounted(() => projects.fetch())
+const projects = useProjectsStore();
+onMounted(() => projects.fetch());
 
 const groupedByArea = computed(() => {
-  const groups = new Map<string, typeof projects.items>()
+  const groups = new Map<string, typeof projects.items>();
   for (const p of projects.items) {
-    const area = p.areaName ?? 'No Area'
-    if (!groups.has(area)) groups.set(area, [])
-    groups.get(area)!.push(p)
+    const area = p.areaName ?? "No Area";
+    if (!groups.has(area)) groups.set(area, []);
+    groups.get(area)!.push(p);
   }
-  return groups
-})
+  return groups;
+});
 </script>
 
 <template>
@@ -39,7 +39,9 @@ const groupedByArea = computed(() => {
           >
             <div>
               <div class="text-sm font-medium text-schwarz">{{ p.name }}</div>
-              <div class="mt-0.5 text-xs text-grau-20">{{ p.nextActionCount }} next action{{ p.nextActionCount !== 1 ? 's' : '' }}</div>
+              <div class="mt-0.5 text-xs text-grau-20">
+                {{ p.nextActionCount }} next action{{ p.nextActionCount !== 1 ? "s" : "" }}
+              </div>
             </div>
             <ChevronRight class="size-4 text-grau-20" />
           </RouterLink>

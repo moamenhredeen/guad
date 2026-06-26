@@ -30,7 +30,7 @@
             <td th:text="${profile.email()}"></td>
             <td th:text="${profile.displayName()}"></td>
             <td th:text="${profile.timezone()}"></td>
-            <td th:text="${profile.createdDate() != null ? #temporals.format(profile.createdDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></td>
+            <td th:text="${profile.createdAt() != null ? #temporals.format(profile.createdAt(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></td>
             <td class="actions">
                 <a th:href="@{/admin/profiles/{id}(id=${profile.id()})}">View</a>
                 <a th:href="@{/admin/profiles/delete/{id}(id=${profile.id()})}" class="delete-link">Delete</a>

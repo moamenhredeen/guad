@@ -28,9 +28,9 @@
         <dt>Reminder Notifications</dt>
         <dd th:text="${profile.reminderNotificationsEnabled()} ? 'Enabled' : 'Disabled'"></dd>
         <dt>Created</dt>
-        <dd th:text="${profile.createdDate() != null ? #temporals.format(profile.createdDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></dd>
+        <dd th:text="${profile.createdAt() != null ? #temporals.format(profile.createdAt(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></dd>
         <dt>Updated</dt>
-        <dd th:text="${profile.updatedDate() != null ? #temporals.format(profile.updatedDate(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></dd>
+        <dd th:text="${profile.updatedAt() != null ? #temporals.format(profile.updatedAt(), 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></dd>
     </dl>
 </main>
 
