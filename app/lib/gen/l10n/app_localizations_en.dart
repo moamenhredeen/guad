@@ -44,6 +44,49 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get inboxCapture => 'Capture';
+
+  @override
+  String get inboxEmptyTitle => 'Inbox is clear';
+
+  @override
+  String get inboxEmptySubtitle =>
+      'Capture anything on your mind, then clarify it later.';
+
+  @override
+  String get inboxProcessTooltip => 'Process';
+
+  @override
+  String get inboxProcessNextAction => 'Next action';
+
+  @override
+  String get inboxProcessProject => 'Project';
+
+  @override
+  String get inboxProcessWaitingFor => 'Waiting for';
+
+  @override
+  String get inboxProcessSomedayMaybe => 'Someday maybe';
+
+  @override
+  String get inboxProcessReference => 'Reference';
+
+  @override
+  String get inboxProcessTrash => 'Trash';
+
+  @override
+  String get inboxCapturePrompt => 'What is it?';
+
+  @override
+  String get inboxNotes => 'Notes';
+
+  @override
+  String get inboxTitleRequired => 'Title is required';
+
+  @override
+  String get inboxAddToInbox => 'Add to inbox';
+
+  @override
   String get profileTitle => 'Profile';
 
   @override

@@ -13,7 +13,7 @@ class ApiClient {
   static Dio _buildDio(String baseUrl, Interceptor authInterceptor) {
     final dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl,
+        baseUrl: baseUrl.endsWith('/') ? baseUrl : '$baseUrl/',
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {'Content-Type': 'application/json'},
@@ -42,7 +42,8 @@ class _LogInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     AppLogger.error(
-      '✗ ${err.response?.statusCode} ${err.requestOptions.path}: ${err.message}',
+      '✗ ${err.response?.statusCode} ${err.requestOptions.path}: '
+      '${err.message} response=${err.response?.data}',
     );
     handler.next(err);
   }

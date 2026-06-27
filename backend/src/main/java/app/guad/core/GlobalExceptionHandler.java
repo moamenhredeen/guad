@@ -1,5 +1,6 @@
 package app.guad.core;
 
+import app.guad.security.InvalidAuthenticatedUserException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,5 +25,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(ApiError.of(400, "Bad Request", ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidAuthenticatedUserException.class)
+    ResponseEntity<ApiError> handleInvalidAuthenticatedUser(InvalidAuthenticatedUserException ex) {
+        return ResponseEntity.status(401).body(ApiError.of(401, "Unauthorized", ex.getMessage()));
     }
 }

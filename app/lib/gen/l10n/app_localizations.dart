@@ -164,6 +164,90 @@ abstract class AppLocalizations {
   /// **'Welcome back, {name}'**
   String inboxWelcome(String name);
 
+  /// No description provided for @inboxCapture.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture'**
+  String get inboxCapture;
+
+  /// No description provided for @inboxEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inbox is clear'**
+  String get inboxEmptyTitle;
+
+  /// No description provided for @inboxEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture anything on your mind, then clarify it later.'**
+  String get inboxEmptySubtitle;
+
+  /// No description provided for @inboxProcessTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Process'**
+  String get inboxProcessTooltip;
+
+  /// No description provided for @inboxProcessNextAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Next action'**
+  String get inboxProcessNextAction;
+
+  /// No description provided for @inboxProcessProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Project'**
+  String get inboxProcessProject;
+
+  /// No description provided for @inboxProcessWaitingFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for'**
+  String get inboxProcessWaitingFor;
+
+  /// No description provided for @inboxProcessSomedayMaybe.
+  ///
+  /// In en, this message translates to:
+  /// **'Someday maybe'**
+  String get inboxProcessSomedayMaybe;
+
+  /// No description provided for @inboxProcessReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get inboxProcessReference;
+
+  /// No description provided for @inboxProcessTrash.
+  ///
+  /// In en, this message translates to:
+  /// **'Trash'**
+  String get inboxProcessTrash;
+
+  /// No description provided for @inboxCapturePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it?'**
+  String get inboxCapturePrompt;
+
+  /// No description provided for @inboxNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get inboxNotes;
+
+  /// No description provided for @inboxTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get inboxTitleRequired;
+
+  /// No description provided for @inboxAddToInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to inbox'**
+  String get inboxAddToInbox;
+
   /// No description provided for @profileTitle.
   ///
   /// In en, this message translates to:

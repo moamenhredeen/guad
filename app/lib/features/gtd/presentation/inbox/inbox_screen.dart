@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
+import 'package:guad/features/gtd/presentation/inbox/cubit/inbox_cubit.dart';
 import 'package:guad/features/notifications/presentation/notifications_routes.dart';
-import 'package:guad/features/profile/presentation/profile_routes.dart';
 import 'package:guad/gen/l10n/app_localizations.dart';
 
 class InboxScreen extends StatelessWidget {
@@ -14,115 +14,312 @@ class InboxScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
-    final user = context.select((AuthBloc bloc) => bloc.state.user);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.navInbox),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            tooltip: l10n.notificationsTitle,
-            onPressed: () => context.push(NotificationsRoutes.notifications),
+    return BlocConsumer<InboxCubit, InboxState>(
+      listenWhen: (previous, current) =>
+          previous.errorMessage != current.errorMessage &&
+          current.errorMessage != null,
+      listener: (context, state) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(state.errorMessage!),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: cs.errorContainer,
+            showCloseIcon: true,
           ),
-          const SizedBox(width: 4),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-        children: [
-          if (user != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Text(
-                l10n.inboxWelcome(user.firstName),
-                style: tt.titleMedium?.copyWith(color: cs.onSurfaceVariant),
+        );
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(l10n.navInbox),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.notifications_outlined),
+                tooltip: l10n.notificationsTitle,
+                onPressed: () =>
+                    context.push(NotificationsRoutes.notifications),
               ),
-            ),
-          _ActionTile(
-            icon: Icons.person_outline_rounded,
-            title: l10n.profilePersonalInfo,
-            subtitle: user?.fullName ?? '',
-            onTap: () => context.push(ProfileRoutes.personalInfo),
+              const SizedBox(width: 4),
+            ],
           ),
-          const SizedBox(height: 12),
-          _ActionTile(
-            icon: Icons.manage_accounts_outlined,
-            title: l10n.profileAccountSettings,
-            subtitle: user?.email ?? '',
-            onTap: () => context.push(ProfileRoutes.account),
+          body: _InboxBody(state: state),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: state.isMutating
+                ? null
+                : () => _showCaptureSheet(context),
+            icon: const Icon(Icons.add_rounded),
+            label: Text(l10n.inboxCapture),
           ),
-          const SizedBox(height: 12),
-          _ActionTile(
-            icon: Icons.notifications_outlined,
-            title: l10n.profileNotifications,
-            subtitle: l10n.notificationsCaughtUp,
-            onTap: () => context.push(NotificationsRoutes.notifications),
-          ),
-        ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showCaptureSheet(BuildContext context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => BlocProvider.value(
+        value: context.read<InboxCubit>(),
+        child: const _CaptureInboxSheet(),
       ),
     );
   }
 }
 
-class _ActionTile extends StatelessWidget {
-  const _ActionTile({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
+class _InboxBody extends StatelessWidget {
+  const _InboxBody({required this.state});
 
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
+  final InboxState state;
+
+  @override
+  Widget build(BuildContext context) {
+    if (state.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.isEmpty) {
+      return RefreshIndicator(
+        onRefresh: () => context.read<InboxCubit>().load(),
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: const [SizedBox(height: 160), _InboxEmptyState()],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => context.read<InboxCubit>().load(),
+      child: ListView.separated(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+        itemCount: state.items.length,
+        separatorBuilder: (_, _) => const SizedBox(height: 8),
+        itemBuilder: (context, index) {
+          final item = state.items[index];
+          return Dismissible(
+            key: ValueKey(item.id),
+            direction: DismissDirection.endToStart,
+            background: const _DeleteBackground(),
+            onDismissed: (_) => context.read<InboxCubit>().delete(item.id),
+            child: _InboxItemTile(item: item),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _InboxItemTile extends StatelessWidget {
+  const _InboxItemTile({required this.item});
+
+  final InboxItem item;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context);
+    final description = item.description?.trim();
 
     return Material(
       color: cs.surfaceContainer,
       borderRadius: BorderRadius.circular(8),
-      child: InkWell(
+      child: ListTile(
+        contentPadding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+        title: Text(
+          item.title,
+          style: tt.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+        ),
+        subtitle: description?.isNotEmpty == true
+            ? Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(description!),
+              )
+            : null,
+        trailing: PopupMenuButton<InboxProcessAction>(
+          tooltip: l10n.inboxProcessTooltip,
+          icon: const Icon(Icons.more_vert_rounded),
+          onSelected: (action) =>
+              context.read<InboxCubit>().process(id: item.id, action: action),
+          itemBuilder: (_) => [
+            PopupMenuItem(
+              value: InboxProcessAction.nextAction,
+              child: Text(l10n.inboxProcessNextAction),
+            ),
+            PopupMenuItem(
+              value: InboxProcessAction.project,
+              child: Text(l10n.inboxProcessProject),
+            ),
+            PopupMenuItem(
+              value: InboxProcessAction.waitingFor,
+              child: Text(l10n.inboxProcessWaitingFor),
+            ),
+            PopupMenuItem(
+              value: InboxProcessAction.somedayMaybe,
+              child: Text(l10n.inboxProcessSomedayMaybe),
+            ),
+            PopupMenuItem(
+              value: InboxProcessAction.reference,
+              child: Text(l10n.inboxProcessReference),
+            ),
+            PopupMenuItem(
+              value: InboxProcessAction.trash,
+              child: Text(l10n.inboxProcessTrash),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InboxEmptyState extends StatelessWidget {
+  const _InboxEmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          children: [
+            Icon(Icons.inbox_outlined, size: 64, color: cs.outlineVariant),
+            const SizedBox(height: 16),
+            Text(
+              l10n.inboxEmptyTitle,
+              style: tt.titleMedium?.copyWith(color: cs.onSurfaceVariant),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              l10n.inboxEmptySubtitle,
+              style: tt.bodySmall?.copyWith(color: cs.outline),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DeleteBackground extends StatelessWidget {
+  const _DeleteBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: cs.errorContainer,
         borderRadius: BorderRadius.circular(8),
-        onTap: onTap,
+      ),
+      child: Align(
+        alignment: Alignment.centerRight,
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
+          padding: const EdgeInsets.only(right: 20),
+          child: Icon(Icons.delete_outline_rounded, color: cs.onErrorContainer),
+        ),
+      ),
+    );
+  }
+}
+
+class _CaptureInboxSheet extends StatefulWidget {
+  const _CaptureInboxSheet();
+
+  @override
+  State<_CaptureInboxSheet> createState() => _CaptureInboxSheetState();
+}
+
+class _CaptureInboxSheetState extends State<_CaptureInboxSheet> {
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
+    final isMutating = context.select(
+      (InboxCubit cubit) => cubit.state.isMutating,
+    );
+    final l10n = AppLocalizations.of(context);
+
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(20, 20, 20, 16 + bottomInset),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Icon(icon, color: cs.primary),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: tt.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    if (subtitle.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        subtitle,
-                        style: tt.bodySmall?.copyWith(
-                          color: cs.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ],
+              Text(
+                l10n.inboxCapture,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _titleController,
+                autofocus: true,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  labelText: l10n.inboxCapturePrompt,
+                  prefixIcon: const Icon(Icons.inbox_outlined),
+                ),
+                validator: (value) => value?.trim().isEmpty == true
+                    ? l10n.inboxTitleRequired
+                    : null,
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: _descriptionController,
+                minLines: 2,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  labelText: l10n.inboxNotes,
+                  prefixIcon: const Icon(Icons.notes_outlined),
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded),
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                onPressed: isMutating ? null : _submit,
+                icon: isMutating
+                    ? const SizedBox.square(
+                        dimension: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.add_rounded),
+                label: Text(l10n.inboxAddToInbox),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _submit() async {
+    if (_formKey.currentState?.validate() != true) return;
+    await context.read<InboxCubit>().create(
+      title: _titleController.text,
+      description: _descriptionController.text,
+    );
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 }

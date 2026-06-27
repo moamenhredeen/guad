@@ -19,6 +19,20 @@
       "name": { "type": "String" }
     }
   },
+  "inboxCapture": "Capture",
+  "inboxEmptyTitle": "Inbox is clear",
+  "inboxEmptySubtitle": "Capture anything on your mind, then clarify it later.",
+  "inboxProcessTooltip": "Process",
+  "inboxProcessNextAction": "Next action",
+  "inboxProcessProject": "Project",
+  "inboxProcessWaitingFor": "Waiting for",
+  "inboxProcessSomedayMaybe": "Someday maybe",
+  "inboxProcessReference": "Reference",
+  "inboxProcessTrash": "Trash",
+  "inboxCapturePrompt": "What is it?",
+  "inboxNotes": "Notes",
+  "inboxTitleRequired": "Title is required",
+  "inboxAddToInbox": "Add to inbox",
 
   "profileTitle": "Profile",
   "profileAccount": "Account",

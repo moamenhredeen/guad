@@ -44,6 +44,48 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get inboxCapture => 'التقاط';
+
+  @override
+  String get inboxEmptyTitle => 'صندوق الوارد فارغ';
+
+  @override
+  String get inboxEmptySubtitle => 'التقط أي شيء يشغل بالك، ثم وضّحه لاحقاً.';
+
+  @override
+  String get inboxProcessTooltip => 'معالجة';
+
+  @override
+  String get inboxProcessNextAction => 'إجراء تالي';
+
+  @override
+  String get inboxProcessProject => 'مشروع';
+
+  @override
+  String get inboxProcessWaitingFor => 'بانتظار';
+
+  @override
+  String get inboxProcessSomedayMaybe => 'ربما يوماً ما';
+
+  @override
+  String get inboxProcessReference => 'مرجع';
+
+  @override
+  String get inboxProcessTrash => 'حذف';
+
+  @override
+  String get inboxCapturePrompt => 'ما هو؟';
+
+  @override
+  String get inboxNotes => 'ملاحظات';
+
+  @override
+  String get inboxTitleRequired => 'العنوان مطلوب';
+
+  @override
+  String get inboxAddToInbox => 'إضافة إلى الوارد';
+
+  @override
   String get profileTitle => 'الملف الشخصي';
 
   @override

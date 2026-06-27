@@ -15,6 +15,9 @@ import 'package:guad/features/auth/data/services/token_refresh_service.dart';
 import 'package:guad/features/auth/domain/repositories/biometric_authenticator.dart';
 import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:guad/features/auth/presentation/screens/biometric_gate_screen.dart';
+import 'package:guad/features/gtd/data/datasources/gtd_remote_data_source.dart';
+import 'package:guad/features/gtd/data/repositories/api_gtd_repository.dart';
+import 'package:guad/features/gtd/domain/repositories/gtd_repository.dart';
 import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/infrastructure/services/connectivity_service.dart';
 import 'package:guad/infrastructure/services/key_value_storage_service.dart';
@@ -50,6 +53,7 @@ class App extends StatelessWidget {
       baseUrl: config.apiBaseUrl,
       authInterceptor: tokenRefresh.fresh,
     );
+    final gtdRepository = ApiGtdRepository(GtdRemoteDataSource(apiClient.dio));
 
     return MultiRepositoryProvider(
       providers: [
@@ -62,6 +66,7 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: authRepository),
         RepositoryProvider.value(value: tokenRefresh),
         RepositoryProvider.value(value: apiClient),
+        RepositoryProvider<GtdRepository>.value(value: gtdRepository),
       ],
       child: MultiBlocProvider(
         providers: [

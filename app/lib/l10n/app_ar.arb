@@ -19,6 +19,20 @@
       "name": { "type": "String" }
     }
   },
+  "inboxCapture": "التقاط",
+  "inboxEmptyTitle": "صندوق الوارد فارغ",
+  "inboxEmptySubtitle": "التقط أي شيء يشغل بالك، ثم وضّحه لاحقاً.",
+  "inboxProcessTooltip": "معالجة",
+  "inboxProcessNextAction": "إجراء تالي",
+  "inboxProcessProject": "مشروع",
+  "inboxProcessWaitingFor": "بانتظار",
+  "inboxProcessSomedayMaybe": "ربما يوماً ما",
+  "inboxProcessReference": "مرجع",
+  "inboxProcessTrash": "حذف",
+  "inboxCapturePrompt": "ما هو؟",
+  "inboxNotes": "ملاحظات",
+  "inboxTitleRequired": "العنوان مطلوب",
+  "inboxAddToInbox": "إضافة إلى الوارد",
 
   "profileTitle": "الملف الشخصي",
   "profileAccount": "الحساب",
