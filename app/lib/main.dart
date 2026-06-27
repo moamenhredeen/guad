@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:guad/app.dart';
 import 'package:guad/config/env_config.dart';
-import 'package:guad/infrastructure/services/biometric_service.dart';
+import 'package:guad/features/auth/data/services/local_biometric_authenticator.dart';
 import 'package:guad/infrastructure/services/connectivity_service.dart';
 import 'package:guad/infrastructure/services/key_value_storage_service.dart';
 
@@ -21,7 +21,7 @@ void main() async {
       config: config,
       keyValueStorage: keyValueStorage,
       connectivityService: ConnectivityService(),
-      biometricService: BiometricService(),
+      biometricService: LocalBiometricAuthenticator(),
     ),
   );
 }

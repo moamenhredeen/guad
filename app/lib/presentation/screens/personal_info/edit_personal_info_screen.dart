@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:guad/gen/l10n/app_localizations.dart';
-import 'package:guad/presentation/blocs/auth/auth_bloc.dart';
+import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
 
 class EditPersonalInfoScreen extends StatefulWidget {
   const EditPersonalInfoScreen({super.key});

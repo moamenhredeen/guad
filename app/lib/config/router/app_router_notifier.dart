@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
+import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:guad/infrastructure/services/connectivity_service.dart';
-import 'package:guad/presentation/blocs/auth/auth_bloc.dart';
 
 class AppRouterNotifier extends ChangeNotifier {
   AuthStatus authStatus = AuthStatus.initial;

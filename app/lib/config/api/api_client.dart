@@ -1,19 +1,16 @@
 import 'package:dio/dio.dart';
 
 import 'package:guad/domain/core/app_exceptions.dart';
-import 'package:guad/infrastructure/services/token_refresh_service.dart';
 
 class ApiClient {
   final Dio _dio;
 
-  ApiClient({
-    required String baseUrl,
-    required TokenRefreshService tokenRefresh,
-  }) : _dio = _buildDio(baseUrl, tokenRefresh);
+  ApiClient({required String baseUrl, required Interceptor authInterceptor})
+    : _dio = _buildDio(baseUrl, authInterceptor);
 
   Dio get dio => _dio;
 
-  static Dio _buildDio(String baseUrl, TokenRefreshService tokenRefresh) {
+  static Dio _buildDio(String baseUrl, Interceptor authInterceptor) {
     final dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
@@ -23,7 +20,7 @@ class ApiClient {
       ),
     );
 
-    dio.interceptors.addAll([tokenRefresh.fresh, _LogInterceptor()]);
+    dio.interceptors.addAll([authInterceptor, _LogInterceptor()]);
 
     return dio;
   }

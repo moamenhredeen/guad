@@ -2,22 +2,16 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:guad/domain/core/app_exceptions.dart';
-import 'package:guad/infrastructure/services/biometric_service.dart';
-import 'package:guad/infrastructure/services/keycloak_auth_service.dart';
-import 'package:guad/infrastructure/services/key_value_storage_service.dart';
-import 'package:guad/infrastructure/services/secure_storage_service.dart';
-import 'package:guad/presentation/blocs/auth/app_user.dart';
+import 'package:guad/features/auth/domain/entities/app_user.dart';
+import 'package:guad/features/auth/domain/repositories/auth_repository.dart';
+import 'package:guad/features/auth/domain/repositories/biometric_authenticator.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({
-    required this.keyValueStorage,
-    required this.biometricService,
-    required this.secureStorage,
-    required this.authService,
-  }) : super(const AuthState()) {
+  AuthBloc({required this.authRepository, required this.biometricAuthenticator})
+    : super(const AuthState()) {
     on<AuthStarted>(_onStarted);
     on<AuthLoginSubmitted>(_onLoginSubmitted);
     on<AuthLogoutRequested>(_onLogoutRequested);
@@ -30,28 +24,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     add(const AuthStarted());
   }
 
-  static const _userKey = 'auth_user';
-  static const _biometricEnabledKey = 'biometric_enabled';
-
-  final KeyValueStorageService keyValueStorage;
-  final BiometricService biometricService;
-  final SecureStorageService secureStorage;
-  final KeycloakAuthService authService;
+  final AuthRepository authRepository;
+  final BiometricAuthenticator biometricAuthenticator;
 
   Future<void> _onStarted(AuthStarted event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading, clearError: true));
 
     final biometricAvailable = await _isBiometricAvailable();
-    final biometricEnabled =
-        keyValueStorage.getBool(_biometricEnabledKey) ?? false;
-    final user = AppUser.tryDecode(keyValueStorage.getString(_userKey));
-    final token = await secureStorage.read();
+    final biometricEnabled = authRepository.getBiometricEnabled();
+    final session = await authRepository.readSession();
 
-    if (user == null || token == null || token.isRefreshExpired) {
-      if (token?.isRefreshExpired == true) {
-        await secureStorage.delete();
-        await keyValueStorage.remove(_userKey);
-      }
+    if (session == null) {
       emit(
         AuthState(
           status: AuthStatus.unauthenticated,
@@ -67,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         status: biometricAvailable && biometricEnabled
             ? AuthStatus.biometricLocked
             : AuthStatus.authenticated,
-        user: user,
+        user: session.user,
         biometricAvailable: biometricAvailable,
         biometricEnabled: biometricEnabled,
       ),
@@ -81,9 +64,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(isLoading: true, clearError: true));
 
     try {
-      final session = await authService.signIn();
-      await secureStorage.write(session.token);
-      await keyValueStorage.setString(_userKey, session.user.encode());
+      final session = await authRepository.signIn();
+      await authRepository.saveSession(session);
 
       emit(
         state.copyWith(
@@ -100,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           errorMessage: 'Sign in was not completed.',
         ),
       );
-    } catch (e) {
+    } catch (_) {
       emit(
         state.copyWith(
           status: AuthStatus.unauthenticated,
@@ -115,10 +97,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLogoutRequested event,
     Emitter<AuthState> emit,
   ) async {
-    final token = await secureStorage.read();
-    await authService.signOut(token);
-    await secureStorage.delete();
-    await keyValueStorage.remove(_userKey);
+    final session = await authRepository.readSession();
+    await authRepository.signOut(session?.token);
+    await authRepository.clearSession();
     emit(
       AuthState(
         status: AuthStatus.unauthenticated,
@@ -133,7 +114,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(isLoading: true, clearError: true));
-    final authenticated = await biometricService.authenticate(
+    final authenticated = await biometricAuthenticator.authenticate(
       'Use your biometrics to continue',
     );
 
@@ -153,7 +134,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(state.copyWith(isLoading: true, clearError: true));
 
-    final authenticated = await biometricService.authenticate(
+    final authenticated = await biometricAuthenticator.authenticate(
       'Enable biometric login',
     );
     if (!authenticated) {
@@ -166,7 +147,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
-    await keyValueStorage.setBool(_biometricEnabledKey, value: true);
+    await authRepository.setBiometricEnabled(value: true);
     emit(state.copyWith(isLoading: false, biometricEnabled: true));
   }
 
@@ -174,7 +155,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthBiometricDisabled event,
     Emitter<AuthState> emit,
   ) async {
-    await keyValueStorage.setBool(_biometricEnabledKey, value: false);
+    await authRepository.setBiometricEnabled(value: false);
     emit(state.copyWith(biometricEnabled: false));
   }
 
@@ -190,7 +171,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       lastName: event.lastName,
       phoneNumber: event.phoneNumber,
     );
-    await keyValueStorage.setString(_userKey, updated.encode());
+    await authRepository.updateUser(updated);
     emit(state.copyWith(user: updated));
   }
 
@@ -200,7 +181,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<bool> _isBiometricAvailable() async {
     try {
-      return biometricService.isAvailable();
+      return biometricAuthenticator.isAvailable();
     } catch (_) {
       return false;
     }

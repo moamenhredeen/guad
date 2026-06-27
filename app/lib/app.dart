@@ -7,16 +7,17 @@ import 'package:guad/config/api/api_client.dart';
 import 'package:guad/config/router/app_router.dart';
 import 'package:guad/config/router/app_router_notifier.dart';
 import 'package:guad/config/theme/app_theme.dart';
+import 'package:guad/features/auth/data/datasources/keycloak_auth_datasource.dart';
+import 'package:guad/features/auth/data/datasources/secure_token_storage.dart';
+import 'package:guad/features/auth/data/repositories/keycloak_auth_repository.dart';
+import 'package:guad/features/auth/data/services/token_refresh_service.dart';
+import 'package:guad/features/auth/domain/repositories/biometric_authenticator.dart';
+import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:guad/features/auth/presentation/screens/biometric_gate_screen.dart';
 import 'package:guad/gen/l10n/app_localizations.dart';
-import 'package:guad/infrastructure/services/biometric_service.dart';
 import 'package:guad/infrastructure/services/connectivity_service.dart';
-import 'package:guad/infrastructure/services/keycloak_auth_service.dart';
 import 'package:guad/infrastructure/services/key_value_storage_service.dart';
-import 'package:guad/infrastructure/services/secure_storage_service.dart';
-import 'package:guad/infrastructure/services/token_refresh_service.dart';
-import 'package:guad/presentation/blocs/auth/auth_bloc.dart';
 import 'package:guad/presentation/blocs/locale/locale_cubit.dart';
-import 'package:guad/presentation/screens/auth/biometric_gate_screen.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -30,19 +31,24 @@ class App extends StatelessWidget {
   final EnvConfig config;
   final KeyValueStorageService keyValueStorage;
   final ConnectivityService connectivityService;
-  final BiometricService biometricService;
+  final BiometricAuthenticator biometricService;
 
   @override
   Widget build(BuildContext context) {
-    final secureStorage = SecureStorageService();
-    final keycloakAuth = KeycloakAuthService(config: config);
+    final tokenStorage = SecureTokenStorage();
+    final keycloakAuth = KeycloakAuthDataSource(config: config);
+    final authRepository = KeycloakAuthRepository(
+      authDataSource: keycloakAuth,
+      tokenStorage: tokenStorage,
+      keyValueStorage: keyValueStorage,
+    );
     final tokenRefresh = TokenRefreshService(
-      secureStorage: secureStorage,
+      tokenStorage: tokenStorage,
       keycloakAuth: keycloakAuth,
     );
     final apiClient = ApiClient(
       baseUrl: config.apiBaseUrl,
-      tokenRefresh: tokenRefresh,
+      authInterceptor: tokenRefresh.fresh,
     );
 
     return MultiRepositoryProvider(
@@ -51,8 +57,9 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: keyValueStorage),
         RepositoryProvider.value(value: connectivityService),
         RepositoryProvider.value(value: biometricService),
-        RepositoryProvider.value(value: secureStorage),
+        RepositoryProvider.value(value: tokenStorage),
         RepositoryProvider.value(value: keycloakAuth),
+        RepositoryProvider.value(value: authRepository),
         RepositoryProvider.value(value: tokenRefresh),
         RepositoryProvider.value(value: apiClient),
       ],
@@ -60,10 +67,8 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (_) => AuthBloc(
-              keyValueStorage: keyValueStorage,
-              biometricService: biometricService,
-              secureStorage: secureStorage,
-              authService: keycloakAuth,
+              authRepository: authRepository,
+              biometricAuthenticator: biometricService,
             ),
           ),
           BlocProvider(

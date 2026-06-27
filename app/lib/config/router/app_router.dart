@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import 'package:guad/config/router/app_router_notifier.dart';
 import 'package:guad/config/router/screen_paths.dart';
+import 'package:guad/features/auth/presentation/screens/login_screen.dart';
 import 'package:guad/presentation/screens/account/account_screen.dart';
 import 'package:guad/presentation/screens/home/home_screen.dart';
-import 'package:guad/presentation/screens/login/login_screen.dart';
 import 'package:guad/presentation/screens/notifications/notifications_screen.dart';
 import 'package:guad/presentation/screens/personal_info/edit_personal_info_screen.dart';
 import 'package:guad/presentation/screens/personal_info/personal_info_screen.dart';

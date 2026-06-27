@@ -5,18 +5,12 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 
 import 'package:guad/config/env_config.dart';
 import 'package:guad/domain/core/app_exceptions.dart';
-import 'package:guad/infrastructure/services/secure_storage_service.dart';
-import 'package:guad/presentation/blocs/auth/app_user.dart';
+import 'package:guad/features/auth/domain/entities/app_user.dart';
+import 'package:guad/features/auth/domain/entities/auth_session.dart';
+import 'package:guad/features/auth/domain/entities/auth_token.dart';
 
-class AuthSession {
-  const AuthSession({required this.token, required this.user});
-
-  final AuthToken token;
-  final AppUser user;
-}
-
-class KeycloakAuthService {
-  KeycloakAuthService({required this.config, FlutterAppAuth? appAuth})
+class KeycloakAuthDataSource {
+  KeycloakAuthDataSource({required this.config, FlutterAppAuth? appAuth})
     : _appAuth = appAuth ?? const FlutterAppAuth();
 
   final EnvConfig config;
