@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 
+import 'package:guad/features/gtd/data/models/gtd_action_model.dart';
 import 'package:guad/features/gtd/data/models/inbox_item_model.dart';
+import 'package:guad/features/gtd/domain/entities/gtd_action.dart';
 import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
 
 class GtdRemoteDataSource {
@@ -50,6 +52,49 @@ class GtdRemoteDataSource {
     );
   }
 
+  Future<List<GtdActionModel>> getNextActions() async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      'actions',
+      queryParameters: {'status': _actionStatusToApi(GtdActionStatus.next)},
+    );
+    final data = response.data?['data'];
+    if (data is! List) return const [];
+
+    return data
+        .whereType<Map<String, dynamic>>()
+        .map(GtdActionModel.fromJson)
+        .toList();
+  }
+
+  Future<GtdActionModel> createNextAction({
+    required String description,
+    String? notes,
+  }) async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      'actions',
+      data: {
+        'description': description,
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      },
+    );
+    return GtdActionModel.fromJson(
+      response.data?['data'] as Map<String, dynamic>,
+    );
+  }
+
+  Future<GtdActionModel> completeAction(int id) async {
+    final response = await _dio.patch<Map<String, dynamic>>(
+      'actions/$id/complete',
+    );
+    return GtdActionModel.fromJson(
+      response.data?['data'] as Map<String, dynamic>,
+    );
+  }
+
+  Future<void> deleteAction(int id) {
+    return _dio.delete<void>('actions/$id');
+  }
+
   String _processActionToApi(InboxProcessAction action) {
     return switch (action) {
       InboxProcessAction.nextAction => 'NEXT_ACTION',
@@ -58,6 +103,17 @@ class GtdRemoteDataSource {
       InboxProcessAction.somedayMaybe => 'SOMEDAY_MAYBE',
       InboxProcessAction.reference => 'REFERENCE',
       InboxProcessAction.trash => 'TRASH',
+    };
+  }
+
+  String _actionStatusToApi(GtdActionStatus status) {
+    return switch (status) {
+      GtdActionStatus.next => 'NEXT',
+      GtdActionStatus.inProgress => 'IN_PROGRESS',
+      GtdActionStatus.completed => 'COMPLETED',
+      GtdActionStatus.waitingFor => 'WAITING_FOR',
+      GtdActionStatus.somedayMaybe => 'SOMEDAY_MAYBE',
+      GtdActionStatus.scheduled => 'SCHEDULED',
     };
   }
 }

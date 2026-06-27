@@ -3,6 +3,7 @@
 
   "appName": "Guad",
   "navInbox": "Inbox",
+  "navActions": "Next",
   "navProfile": "Profile",
 
   "loginHint": "Keep your tasks and account organized",
@@ -33,6 +34,21 @@
   "inboxNotes": "Notes",
   "inboxTitleRequired": "Title is required",
   "inboxAddToInbox": "Add to inbox",
+
+  "actionsAdd": "Add action",
+  "actionsComplete": "Complete",
+  "actionsEmptyTitle": "No next actions",
+  "actionsEmptySubtitle": "Clarified actions from your inbox will show up here.",
+  "actionsPrompt": "What's the next action?",
+  "actionsNotes": "Notes",
+  "actionsDescriptionRequired": "Description is required",
+  "actionsAddAction": "Add action",
+  "actionsMinutes": "{minutes} min",
+  "@actionsMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
 
   "profileTitle": "Profile",
   "profileAccount": "Account",

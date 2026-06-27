@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
 import 'package:guad/features/gtd/domain/repositories/gtd_repository.dart';
+import 'package:guad/features/gtd/domain/services/gtd_change_bus.dart';
 
 part 'inbox_state.dart';
 
 class InboxCubit extends Cubit<InboxState> {
-  InboxCubit(this._repository) : super(const InboxState());
+  InboxCubit(this._repository, this._changeBus) : super(const InboxState());
 
   final GtdRepository _repository;
+  final GtdChangeBus _changeBus;
+  final Object _changeOrigin = Object();
 
   Future<void> load() async {
     emit(state.copyWith(status: InboxStatus.loading, clearError: true));
@@ -46,6 +49,12 @@ class InboxCubit extends Cubit<InboxState> {
           isMutating: false,
         ),
       );
+      _changeBus.notify(
+        GtdChange(
+          collections: const {GtdCollection.inbox, GtdCollection.dashboard},
+          source: _changeOrigin,
+        ),
+      );
     } catch (_) {
       emit(
         state.copyWith(
@@ -67,6 +76,12 @@ class InboxCubit extends Cubit<InboxState> {
 
     try {
       await _repository.deleteInboxItem(id);
+      _changeBus.notify(
+        GtdChange(
+          collections: const {GtdCollection.inbox, GtdCollection.dashboard},
+          source: _changeOrigin,
+        ),
+      );
     } catch (_) {
       emit(
         state.copyWith(
@@ -91,6 +106,12 @@ class InboxCubit extends Cubit<InboxState> {
 
     try {
       await _repository.processInboxItem(id: id, action: action);
+      _changeBus.notify(
+        GtdChange(
+          collections: _collectionsAffectedBy(action),
+          source: _changeOrigin,
+        ),
+      );
     } catch (_) {
       emit(
         state.copyWith(
@@ -99,5 +120,39 @@ class InboxCubit extends Cubit<InboxState> {
         ),
       );
     }
+  }
+
+  Set<GtdCollection> _collectionsAffectedBy(InboxProcessAction action) {
+    return switch (action) {
+      InboxProcessAction.nextAction => const {
+        GtdCollection.inbox,
+        GtdCollection.actions,
+        GtdCollection.dashboard,
+      },
+      InboxProcessAction.project => const {
+        GtdCollection.inbox,
+        GtdCollection.projects,
+        GtdCollection.dashboard,
+      },
+      InboxProcessAction.waitingFor => const {
+        GtdCollection.inbox,
+        GtdCollection.waitingFor,
+        GtdCollection.dashboard,
+      },
+      InboxProcessAction.somedayMaybe => const {
+        GtdCollection.inbox,
+        GtdCollection.somedayMaybe,
+        GtdCollection.dashboard,
+      },
+      InboxProcessAction.reference => const {
+        GtdCollection.inbox,
+        GtdCollection.reference,
+        GtdCollection.dashboard,
+      },
+      InboxProcessAction.trash => const {
+        GtdCollection.inbox,
+        GtdCollection.dashboard,
+      },
+    };
   }
 }

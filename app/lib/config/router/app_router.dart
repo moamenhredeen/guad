@@ -51,6 +51,7 @@ GoRouter createRouter(AppRouterNotifier notifier) {
         builder: (context, state, shell) => TabsScreen(navigationShell: shell),
         branches: [
           StatefulShellBranch(routes: [GtdRoutes.inboxTabRoute]),
+          StatefulShellBranch(routes: [GtdRoutes.actionsTabRoute]),
           StatefulShellBranch(routes: [ProfileRoutes.profileTabRoute]),
         ],
       ),

@@ -26,6 +26,11 @@ class TabsScreen extends StatelessWidget {
             label: l10n.navInbox,
           ),
           NavigationDestination(
+            icon: const Icon(Icons.check_circle_outline_rounded),
+            selectedIcon: const Icon(Icons.check_circle_rounded),
+            label: l10n.navActions,
+          ),
+          NavigationDestination(
             icon: const Icon(Icons.person_outline_rounded),
             selectedIcon: const Icon(Icons.person_rounded),
             label: l10n.navProfile,

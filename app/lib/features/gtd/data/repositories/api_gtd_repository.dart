@@ -1,4 +1,5 @@
 import 'package:guad/features/gtd/data/datasources/gtd_remote_data_source.dart';
+import 'package:guad/features/gtd/domain/entities/gtd_action.dart';
 import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
 import 'package:guad/features/gtd/domain/repositories/gtd_repository.dart';
 
@@ -36,5 +37,34 @@ class ApiGtdRepository implements GtdRepository {
     required InboxProcessAction action,
   }) {
     return _remoteDataSource.processInboxItem(id: id, action: action);
+  }
+
+  @override
+  Future<List<GtdAction>> getNextActions() async {
+    final actions = await _remoteDataSource.getNextActions();
+    return actions.map((action) => action.toDomain()).toList();
+  }
+
+  @override
+  Future<GtdAction> createNextAction({
+    required String description,
+    String? notes,
+  }) async {
+    final action = await _remoteDataSource.createNextAction(
+      description: description,
+      notes: notes,
+    );
+    return action.toDomain();
+  }
+
+  @override
+  Future<GtdAction> completeAction(int id) async {
+    final action = await _remoteDataSource.completeAction(id);
+    return action.toDomain();
+  }
+
+  @override
+  Future<void> deleteAction(int id) {
+    return _remoteDataSource.deleteAction(id);
   }
 }

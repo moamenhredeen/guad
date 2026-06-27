@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'Inbox'**
   String get navInbox;
 
+  /// No description provided for @navActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get navActions;
+
   /// No description provided for @navProfile.
   ///
   /// In en, this message translates to:
@@ -247,6 +253,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add to inbox'**
   String get inboxAddToInbox;
+
+  /// No description provided for @actionsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add action'**
+  String get actionsAdd;
+
+  /// No description provided for @actionsComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get actionsComplete;
+
+  /// No description provided for @actionsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No next actions'**
+  String get actionsEmptyTitle;
+
+  /// No description provided for @actionsEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clarified actions from your inbox will show up here.'**
+  String get actionsEmptySubtitle;
+
+  /// No description provided for @actionsPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s the next action?'**
+  String get actionsPrompt;
+
+  /// No description provided for @actionsNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get actionsNotes;
+
+  /// No description provided for @actionsDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get actionsDescriptionRequired;
+
+  /// No description provided for @actionsAddAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add action'**
+  String get actionsAddAction;
+
+  /// No description provided for @actionsMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String actionsMinutes(int minutes);
 
   /// No description provided for @profileTitle.
   ///

@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navInbox => 'Inbox';
 
   @override
+  String get navActions => 'Next';
+
+  @override
   String get navProfile => 'Profile';
 
   @override
@@ -85,6 +88,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inboxAddToInbox => 'Add to inbox';
+
+  @override
+  String get actionsAdd => 'Add action';
+
+  @override
+  String get actionsComplete => 'Complete';
+
+  @override
+  String get actionsEmptyTitle => 'No next actions';
+
+  @override
+  String get actionsEmptySubtitle =>
+      'Clarified actions from your inbox will show up here.';
+
+  @override
+  String get actionsPrompt => 'What\'s the next action?';
+
+  @override
+  String get actionsNotes => 'Notes';
+
+  @override
+  String get actionsDescriptionRequired => 'Description is required';
+
+  @override
+  String get actionsAddAction => 'Add action';
+
+  @override
+  String actionsMinutes(int minutes) {
+    return '$minutes min';
+  }
 
   @override
   String get profileTitle => 'Profile';

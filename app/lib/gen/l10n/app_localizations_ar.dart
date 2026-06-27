@@ -15,6 +15,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get navInbox => 'الوارد';
 
   @override
+  String get navActions => 'التالي';
+
+  @override
   String get navProfile => 'الملف الشخصي';
 
   @override
@@ -84,6 +87,36 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get inboxAddToInbox => 'إضافة إلى الوارد';
+
+  @override
+  String get actionsAdd => 'إضافة إجراء';
+
+  @override
+  String get actionsComplete => 'إكمال';
+
+  @override
+  String get actionsEmptyTitle => 'لا توجد إجراءات تالية';
+
+  @override
+  String get actionsEmptySubtitle =>
+      'ستظهر هنا الإجراءات التي توضّحها من صندوق الوارد.';
+
+  @override
+  String get actionsPrompt => 'ما الإجراء التالي؟';
+
+  @override
+  String get actionsNotes => 'ملاحظات';
+
+  @override
+  String get actionsDescriptionRequired => 'الوصف مطلوب';
+
+  @override
+  String get actionsAddAction => 'إضافة إجراء';
+
+  @override
+  String actionsMinutes(int minutes) {
+    return '$minutes د';
+  }
 
   @override
   String get profileTitle => 'الملف الشخصي';

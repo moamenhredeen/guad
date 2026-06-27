@@ -3,6 +3,7 @@
 
   "appName": "Guad",
   "navInbox": "الوارد",
+  "navActions": "التالي",
   "navProfile": "الملف الشخصي",
 
   "loginHint": "نظّم مهامك وحسابك بسهولة",
@@ -33,6 +34,21 @@
   "inboxNotes": "ملاحظات",
   "inboxTitleRequired": "العنوان مطلوب",
   "inboxAddToInbox": "إضافة إلى الوارد",
+
+  "actionsAdd": "إضافة إجراء",
+  "actionsComplete": "إكمال",
+  "actionsEmptyTitle": "لا توجد إجراءات تالية",
+  "actionsEmptySubtitle": "ستظهر هنا الإجراءات التي توضّحها من صندوق الوارد.",
+  "actionsPrompt": "ما الإجراء التالي؟",
+  "actionsNotes": "ملاحظات",
+  "actionsDescriptionRequired": "الوصف مطلوب",
+  "actionsAddAction": "إضافة إجراء",
+  "actionsMinutes": "{minutes} د",
+  "@actionsMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
 
   "profileTitle": "الملف الشخصي",
   "profileAccount": "الحساب",
