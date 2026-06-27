@@ -1,6 +1,5 @@
 name: "guad-app"
 services:
-  # app
   db:
     image: "postgres:latest"
     volumes:
@@ -16,8 +15,9 @@ services:
 
   keycloak:
     image: "quay.io/keycloak/keycloak:latest"
-    command: start-dev
+    command: start-dev --import-realm
     volumes:
+      - "./keycloak/import:/opt/keycloak/data/import"
       - "./keycloak/themes/guad:/opt/keycloak/themes/guad"
     networks:
       - guad_network
@@ -39,8 +39,6 @@ services:
       - "keycloak_data:/var/lib/postgresql"
     networks:
       - guad_network
-    ports:
-      - "5433:5432"
     labels:
       org.springframework.boot.ignore: true
     environment:

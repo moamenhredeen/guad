@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -24,6 +25,10 @@ public class KeycloakGrantedAuthoritiesMapper implements GrantedAuthoritiesMappe
         for (GrantedAuthority authority : authorities) {
             if (authority instanceof OidcUserAuthority oidc) {
                 mapped.addAll(extractRealmRoles(oidc.getIdToken().getClaims()));
+                OidcUserInfo userInfo = oidc.getUserInfo();
+                if (userInfo != null) {
+                    mapped.addAll(extractRealmRoles(userInfo.getClaims()));
+                }
             }
         }
 
