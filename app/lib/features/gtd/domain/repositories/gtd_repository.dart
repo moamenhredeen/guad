@@ -20,7 +20,7 @@ abstract class GtdRepository {
 
   Future<void> processInboxItem({
     required int id,
-    required InboxProcessAction action,
+    required InboxProcessInput input,
   });
 
   Future<List<GtdAction>> getNextActions();

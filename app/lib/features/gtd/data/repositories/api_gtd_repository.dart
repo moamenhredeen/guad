@@ -41,9 +41,9 @@ class ApiGtdRepository implements GtdRepository {
   @override
   Future<void> processInboxItem({
     required int id,
-    required InboxProcessAction action,
+    required InboxProcessInput input,
   }) {
-    return _remoteDataSource.processInboxItem(id: id, action: action);
+    return _remoteDataSource.processInboxItem(id: id, input: input);
   }
 
   @override

@@ -52,12 +52,19 @@ class GtdRemoteDataSource {
 
   Future<void> processInboxItem({
     required int id,
-    required InboxProcessAction action,
+    required InboxProcessInput input,
   }) {
-    return _dio.post<void>(
-      'inbox/$id/process',
-      data: {'action': _processActionToApi(action)},
-    );
+    final body = <String, Object?>{
+      'action': _processActionToApi(input.action),
+      if (_isNotBlank(input.description)) 'description': input.description,
+      if (_isNotBlank(input.notes)) 'notes': input.notes,
+      if (input.projectId != null) 'projectId': input.projectId,
+      if (input.areaId != null) 'areaId': input.areaId,
+      if (_isNotBlank(input.delegatedTo)) 'delegatedTo': input.delegatedTo,
+      if (input.contextIds.isNotEmpty) 'contextIds': input.contextIds,
+    };
+
+    return _dio.post<void>('inbox/$id/process', data: body);
   }
 
   Future<List<GtdActionModel>> getNextActions() async {
@@ -319,5 +326,9 @@ class GtdRemoteDataSource {
     final data = response.data?['data'];
     if (data is! List) return const [];
     return data.whereType<Map<String, dynamic>>().toList();
+  }
+
+  bool _isNotBlank(String? value) {
+    return value?.trim().isNotEmpty == true;
   }
 }

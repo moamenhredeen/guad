@@ -142,6 +142,68 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
+    void processInboxItem_asNextAction_usesClarifiedActionFields() throws Exception {
+        var areaResult = mockMvc.perform(post("/api/areas")
+                .with(userJwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Work\"}"))
+            .andExpect(status().isCreated())
+            .andReturn();
+        Number areaId = JsonPath.read(areaResult.getResponse().getContentAsString(), "$.data.id");
+
+        var projectResult = mockMvc.perform(post("/api/projects")
+                .with(userJwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Launch\", \"areaId\": %s}".formatted(areaId)))
+            .andExpect(status().isCreated())
+            .andReturn();
+        Number projectId = JsonPath.read(projectResult.getResponse().getContentAsString(), "$.data.id");
+
+        var contextResult = mockMvc.perform(post("/api/contexts")
+                .with(userJwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Laptop\"}"))
+            .andExpect(status().isCreated())
+            .andReturn();
+        Number contextId = JsonPath.read(contextResult.getResponse().getContentAsString(), "$.data.id");
+
+        var inboxResult = mockMvc.perform(post("/api/inbox")
+                .with(userJwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"Launch thing\", \"description\": \"messy capture\"}"))
+            .andExpect(status().isCreated())
+            .andReturn();
+        Number inboxId = JsonPath.read(inboxResult.getResponse().getContentAsString(), "$.data.id");
+
+        mockMvc.perform(post("/api/inbox/" + inboxId + "/process")
+                .with(userJwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                      "action": "NEXT_ACTION",
+                      "description": "Email launch checklist to Sam",
+                      "notes": "Use the latest checklist",
+                      "projectId": %s,
+                      "areaId": %s,
+                      "contextIds": [%s],
+                      "energyLevel": 2,
+                      "estimatedDuration": 25
+                    }
+                    """.formatted(projectId, areaId, contextId)))
+            .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/actions?status=NEXT").with(userJwt()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].description").value("Email launch checklist to Sam"))
+            .andExpect(jsonPath("$.data[0].notes").value("Use the latest checklist"))
+            .andExpect(jsonPath("$.data[0].projectId").value(projectId))
+            .andExpect(jsonPath("$.data[0].areaId").value(areaId))
+            .andExpect(jsonPath("$.data[0].energyLevel").value(2))
+            .andExpect(jsonPath("$.data[0].estimatedDuration").value(25))
+            .andExpect(jsonPath("$.data[0].contexts[0].id").value(contextId));
+    }
+
+    @Test
     void unauthenticated_returns401() throws Exception {
         mockMvc.perform(get("/api/inbox"))
             .andExpect(status().isUnauthorized());

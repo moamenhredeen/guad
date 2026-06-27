@@ -4,6 +4,7 @@ import app.guad.core.ResourceNotFoundException;
 import app.guad.feature.action.Action;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
+import app.guad.feature.area.AreaService;
 import app.guad.feature.context.Context;
 import app.guad.feature.context.ContextService;
 import app.guad.feature.document.Document;
@@ -32,11 +33,12 @@ public class InboxProcessingService {
     private final WaitingForService waitingForService;
     private final DocumentService documentService;
     private final ContextService contextService;
+    private final AreaService areaService;
 
     public InboxProcessingService(InboxRepository inboxRepository, InboxService inboxService,
                                    ActionService actionService, ProjectService projectService,
                                    WaitingForService waitingForService, DocumentService documentService,
-                                   ContextService contextService) {
+                                   ContextService contextService, AreaService areaService) {
         this.inboxRepository = inboxRepository;
         this.inboxService = inboxService;
         this.actionService = actionService;
@@ -44,6 +46,7 @@ public class InboxProcessingService {
         this.waitingForService = waitingForService;
         this.documentService = documentService;
         this.contextService = contextService;
+        this.areaService = areaService;
     }
 
     @Transactional
@@ -54,13 +57,21 @@ public class InboxProcessingService {
         Object result = switch (request.action()) {
             case NEXT_ACTION -> {
                 var action = new Action();
-                action.setDescription(inboxItem.getTitle());
-                action.setNotes(inboxItem.getDescription());
+                action.setDescription(firstPresent(request.description(), inboxItem.getTitle()));
+                action.setNotes(firstPresent(request.notes(), inboxItem.getDescription()));
                 action.setStatus(ActionStatus.NEXT);
+                action.setEnergyLevel(request.energyLevel());
+                action.setEstimatedDuration(request.estimatedDuration());
+                action.setDueDate(request.dueDate());
+                action.setScheduledDate(request.scheduledDate());
                 action.setUserId(userId);
                 if (request.projectId() != null) {
                     projectService.findById(request.projectId())
                         .ifPresent(action::setProject);
+                }
+                if (request.areaId() != null) {
+                    areaService.getAreaById(request.areaId())
+                        .ifPresent(action::setArea);
                 }
                 if (request.contextIds() != null && !request.contextIds().isEmpty()) {
                     var contexts = new HashSet<Context>();
@@ -115,5 +126,9 @@ public class InboxProcessingService {
         inboxService.save(inboxItem);
 
         return result;
+    }
+
+    private String firstPresent(String candidate, String fallback) {
+        return candidate != null && !candidate.isBlank() ? candidate : fallback;
     }
 }

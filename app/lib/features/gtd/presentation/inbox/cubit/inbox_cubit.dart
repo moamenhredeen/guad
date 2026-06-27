@@ -94,7 +94,7 @@ class InboxCubit extends Cubit<InboxState> {
 
   Future<void> process({
     required int id,
-    required InboxProcessAction action,
+    required InboxProcessInput input,
   }) async {
     final previousItems = state.items;
     emit(
@@ -105,10 +105,10 @@ class InboxCubit extends Cubit<InboxState> {
     );
 
     try {
-      await _repository.processInboxItem(id: id, action: action);
+      await _repository.processInboxItem(id: id, input: input);
       _changeBus.notify(
         GtdChange(
-          collections: _collectionsAffectedBy(action),
+          collections: _collectionsAffectedBy(input.action),
           source: _changeOrigin,
         ),
       );
