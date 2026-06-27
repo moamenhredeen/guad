@@ -10,7 +10,8 @@ import 'package:guad/features/gtd/domain/services/gtd_change_bus.dart';
 part 'actions_state.dart';
 
 class ActionsCubit extends Cubit<ActionsState> {
-  ActionsCubit(this._repository, this._changeBus) : super(const ActionsState()) {
+  ActionsCubit(this._repository, this._changeBus)
+    : super(const ActionsState()) {
     _changesSubscription = _changeBus.stream.listen(_onGtdChange);
   }
 

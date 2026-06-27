@@ -20,6 +20,11 @@ class TabsScreen extends StatelessWidget {
           initialLocation: index == navigationShell.currentIndex,
         ),
         destinations: [
+          const NavigationDestination(
+            icon: Icon(Icons.dashboard_outlined),
+            selectedIcon: Icon(Icons.dashboard_rounded),
+            label: 'GTD',
+          ),
           NavigationDestination(
             icon: const Icon(Icons.inbox_outlined),
             selectedIcon: const Icon(Icons.inbox_rounded),

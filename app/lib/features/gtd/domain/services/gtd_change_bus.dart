@@ -4,6 +4,8 @@ enum GtdCollection {
   inbox,
   actions,
   projects,
+  areas,
+  contexts,
   waitingFor,
   somedayMaybe,
   reference,
@@ -11,10 +13,7 @@ enum GtdCollection {
 }
 
 class GtdChange {
-  const GtdChange({
-    required this.collections,
-    this.source,
-  });
+  const GtdChange({required this.collections, this.source});
 
   final Set<GtdCollection> collections;
   final Object? source;

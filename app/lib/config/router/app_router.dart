@@ -32,7 +32,7 @@ GoRouter createRouter(AppRouterNotifier notifier) {
         return loc == AuthRoutes.login ? null : AuthRoutes.login;
       }
       if (loc == AppRoutes.splash || loc == AuthRoutes.login) {
-        return GtdRoutes.inbox;
+        return GtdRoutes.dashboard;
       }
 
       return null;
@@ -45,11 +45,13 @@ GoRouter createRouter(AppRouterNotifier notifier) {
       ...AuthRoutes.routes,
       ...NotificationsRoutes.routes,
       ...ProfileRoutes.routes,
+      ...GtdRoutes.routes,
 
       // Tab shell
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => TabsScreen(navigationShell: shell),
         branches: [
+          StatefulShellBranch(routes: [GtdRoutes.dashboardTabRoute]),
           StatefulShellBranch(routes: [GtdRoutes.inboxTabRoute]),
           StatefulShellBranch(routes: [GtdRoutes.actionsTabRoute]),
           StatefulShellBranch(routes: [ProfileRoutes.profileTabRoute]),

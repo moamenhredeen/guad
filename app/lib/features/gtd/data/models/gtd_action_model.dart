@@ -1,3 +1,4 @@
+import 'package:guad/features/gtd/data/models/gtd_model_helpers.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_action.dart';
 
 class GtdActionModel {
@@ -31,18 +32,18 @@ class GtdActionModel {
 
   factory GtdActionModel.fromJson(Map<String, dynamic> json) {
     return GtdActionModel(
-      id: json['id'] as int,
+      id: intFromJson(json['id']),
       description: json['description'] as String,
       notes: json['notes'] as String?,
       status: _statusFromApi(json['status'] as String?),
-      energyLevel: json['energyLevel'] as int?,
-      estimatedDuration: json['estimatedDuration'] as int?,
+      energyLevel: nullableIntFromJson(json['energyLevel']),
+      estimatedDuration: nullableIntFromJson(json['estimatedDuration']),
       projectName: json['projectName'] as String?,
-      projectId: json['projectId'] as int?,
+      projectId: nullableIntFromJson(json['projectId']),
       areaName: json['areaName'] as String?,
-      areaId: json['areaId'] as int?,
-      createdAt: _dateTimeFromApi(json['createdDate']),
-      completedAt: _dateTimeFromApi(json['completedDate']),
+      areaId: nullableIntFromJson(json['areaId']),
+      createdAt: dateTimeFromJson(json['createdDate']),
+      completedAt: dateTimeFromJson(json['completedDate']),
     );
   }
 
@@ -72,10 +73,5 @@ class GtdActionModel {
       'SCHEDULED' => GtdActionStatus.scheduled,
       _ => GtdActionStatus.next,
     };
-  }
-
-  static DateTime? _dateTimeFromApi(Object? value) {
-    if (value is! String || value.isEmpty) return null;
-    return DateTime.tryParse(value);
   }
 }
