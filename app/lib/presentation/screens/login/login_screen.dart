@@ -4,25 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/presentation/blocs/auth/auth_bloc.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  bool _obscurePassword = true;
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,86 +97,41 @@ class _LoginScreenState extends State<LoginScreen> {
                           flex: 6,
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    l10n.loginSignIn,
-                                    style: tt.titleLarge?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  l10n.loginSignIn,
+                                  style: tt.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  const SizedBox(height: 24),
-
-                                  TextFormField(
-                                    controller: _emailController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: InputDecoration(
-                                      labelText: l10n.loginEmail,
-                                      prefixIcon: const Icon(
-                                        Icons.email_outlined,
-                                      ),
-                                    ),
-                                    validator: (v) {
-                                      if (v?.isEmpty == true) {
-                                        return l10n.loginEmailRequired;
-                                      }
-                                      if (!RegExp(
-                                        r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$',
-                                      ).hasMatch(v!)) {
-                                        return l10n.loginEmailInvalid;
-                                      }
-                                      return null;
-                                    },
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  l10n.loginHint,
+                                  style: tt.bodyMedium?.copyWith(
+                                    color: cs.onSurfaceVariant,
                                   ),
-                                  const SizedBox(height: 12),
-
-                                  TextFormField(
-                                    controller: _passwordController,
-                                    obscureText: _obscurePassword,
-                                    textInputAction: TextInputAction.done,
-                                    onFieldSubmitted: (_) => _submit(),
-                                    decoration: InputDecoration(
-                                      labelText: l10n.loginPassword,
-                                      prefixIcon: const Icon(
-                                        Icons.lock_outline,
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          _obscurePassword
-                                              ? Icons.visibility_outlined
-                                              : Icons.visibility_off_outlined,
-                                        ),
-                                        onPressed: () => setState(
-                                          () => _obscurePassword =
-                                              !_obscurePassword,
-                                        ),
-                                      ),
-                                    ),
-                                    validator: (v) => v?.isEmpty == true
-                                        ? l10n.loginPasswordRequired
-                                        : null,
-                                  ),
-                                  const SizedBox(height: 32),
-
-                                  FilledButton(
-                                    onPressed: state.isLoading ? null : _submit,
-                                    child: state.isLoading
-                                        ? SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2.5,
-                                              color: cs.onPrimary,
-                                            ),
-                                          )
-                                        : Text(l10n.loginSignIn),
-                                  ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(height: 32),
+                                FilledButton.icon(
+                                  onPressed: state.isLoading
+                                      ? null
+                                      : () => _submit(context),
+                                  icon: state.isLoading
+                                      ? SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2.5,
+                                            color: cs.onPrimary,
+                                          ),
+                                        )
+                                      : const Icon(Icons.login_outlined),
+                                  label: Text(l10n.loginSignIn),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -209,13 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _submit() {
-    if (_formKey.currentState?.validate() != true) return;
-    context.read<AuthBloc>().add(
-      AuthLoginSubmitted(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      ),
-    );
+  void _submit(BuildContext context) {
+    context.read<AuthBloc>().add(const AuthLoginSubmitted());
   }
 }

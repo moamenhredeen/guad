@@ -1,16 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:guad/domain/core/app_exceptions.dart';
 import 'package:guad/infrastructure/services/biometric_service.dart';
+import 'package:guad/infrastructure/services/keycloak_auth_service.dart';
 import 'package:guad/infrastructure/services/key_value_storage_service.dart';
+import 'package:guad/infrastructure/services/secure_storage_service.dart';
 import 'package:guad/presentation/blocs/auth/app_user.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({required this.keyValueStorage, required this.biometricService})
-    : super(const AuthState()) {
+  AuthBloc({
+    required this.keyValueStorage,
+    required this.biometricService,
+    required this.secureStorage,
+    required this.authService,
+  }) : super(const AuthState()) {
     on<AuthStarted>(_onStarted);
     on<AuthLoginSubmitted>(_onLoginSubmitted);
     on<AuthLogoutRequested>(_onLogoutRequested);
@@ -28,6 +35,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final KeyValueStorageService keyValueStorage;
   final BiometricService biometricService;
+  final SecureStorageService secureStorage;
+  final KeycloakAuthService authService;
 
   Future<void> _onStarted(AuthStarted event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading, clearError: true));
@@ -36,8 +45,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final biometricEnabled =
         keyValueStorage.getBool(_biometricEnabledKey) ?? false;
     final user = AppUser.tryDecode(keyValueStorage.getString(_userKey));
+    final token = await secureStorage.read();
 
-    if (user == null) {
+    if (user == null || token == null || token.isRefreshExpired) {
+      if (token?.isRefreshExpired == true) {
+        await secureStorage.delete();
+        await keyValueStorage.remove(_userKey);
+      }
       emit(
         AuthState(
           status: AuthStatus.unauthenticated,
@@ -66,29 +80,44 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(state.copyWith(isLoading: true, clearError: true));
 
-    final name = event.email.split('@').first.trim();
-    final user = AppUser(
-      id: event.email.toLowerCase(),
-      email: event.email,
-      firstName: name.isEmpty ? 'Guad' : _capitalize(name),
-      lastName: 'User',
-    );
+    try {
+      final session = await authService.signIn();
+      await secureStorage.write(session.token);
+      await keyValueStorage.setString(_userKey, session.user.encode());
 
-    await keyValueStorage.setString(_userKey, user.encode());
-
-    emit(
-      state.copyWith(
-        status: AuthStatus.authenticated,
-        user: user,
-        isLoading: false,
-      ),
-    );
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: session.user,
+          isLoading: false,
+        ),
+      );
+    } on AuthCancelledException {
+      emit(
+        state.copyWith(
+          status: AuthStatus.unauthenticated,
+          isLoading: false,
+          errorMessage: 'Sign in was not completed.',
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.unauthenticated,
+          isLoading: false,
+          errorMessage: 'Sign in failed. Please try again.',
+        ),
+      );
+    }
   }
 
   Future<void> _onLogoutRequested(
     AuthLogoutRequested event,
     Emitter<AuthState> emit,
   ) async {
+    final token = await secureStorage.read();
+    await authService.signOut(token);
+    await secureStorage.delete();
     await keyValueStorage.remove(_userKey);
     emit(
       AuthState(
@@ -175,10 +204,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (_) {
       return false;
     }
-  }
-
-  static String _capitalize(String value) {
-    if (value.isEmpty) return value;
-    return value[0].toUpperCase() + value.substring(1);
   }
 }

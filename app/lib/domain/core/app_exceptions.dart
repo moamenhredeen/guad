@@ -42,6 +42,15 @@ class UnauthorizedException extends AppException {
       );
 }
 
+class AuthCancelledException extends AppException {
+  AuthCancelledException([String? details])
+    : super(
+        'Authentication cancelled',
+        details: details,
+        errorCode: ErrorCode.unauthorized,
+      );
+}
+
 class ServerException extends AppException {
   final int? statusCode;
   ServerException({this.statusCode, String? details})

@@ -8,12 +8,14 @@ import 'package:guad/domain/core/app_exceptions.dart';
 class AuthToken {
   final String accessToken;
   final String refreshToken;
+  final String? idToken;
   final DateTime expiresAt;
   final DateTime refreshTokenExpiresAt;
 
   const AuthToken({
     required this.accessToken,
     required this.refreshToken,
+    this.idToken,
     required this.expiresAt,
     required this.refreshTokenExpiresAt,
   });
@@ -24,6 +26,7 @@ class AuthToken {
   Map<String, dynamic> toJson() => {
     'accessToken': accessToken,
     'refreshToken': refreshToken,
+    'idToken': idToken,
     'expiresAt': expiresAt.toIso8601String(),
     'refreshTokenExpiresAt': refreshTokenExpiresAt.toIso8601String(),
   };
@@ -31,6 +34,7 @@ class AuthToken {
   factory AuthToken.fromJson(Map<String, dynamic> json) => AuthToken(
     accessToken: json['accessToken'] as String,
     refreshToken: json['refreshToken'] as String,
+    idToken: json['idToken'] as String?,
     expiresAt: DateTime.parse(json['expiresAt'] as String),
     refreshTokenExpiresAt: DateTime.parse(
       json['refreshTokenExpiresAt'] as String,

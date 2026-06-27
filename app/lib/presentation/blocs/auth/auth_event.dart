@@ -12,13 +12,7 @@ class AuthStarted extends AuthEvent {
 }
 
 class AuthLoginSubmitted extends AuthEvent {
-  const AuthLoginSubmitted({required this.email, required this.password});
-
-  final String email;
-  final String password;
-
-  @override
-  List<Object?> get props => [email, password];
+  const AuthLoginSubmitted();
 }
 
 class AuthLogoutRequested extends AuthEvent {

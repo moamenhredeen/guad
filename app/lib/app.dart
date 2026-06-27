@@ -3,13 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:guad/config/env_config.dart';
+import 'package:guad/config/api/api_client.dart';
 import 'package:guad/config/router/app_router.dart';
 import 'package:guad/config/router/app_router_notifier.dart';
 import 'package:guad/config/theme/app_theme.dart';
 import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/infrastructure/services/biometric_service.dart';
 import 'package:guad/infrastructure/services/connectivity_service.dart';
+import 'package:guad/infrastructure/services/keycloak_auth_service.dart';
 import 'package:guad/infrastructure/services/key_value_storage_service.dart';
+import 'package:guad/infrastructure/services/secure_storage_service.dart';
+import 'package:guad/infrastructure/services/token_refresh_service.dart';
 import 'package:guad/presentation/blocs/auth/auth_bloc.dart';
 import 'package:guad/presentation/blocs/locale/locale_cubit.dart';
 import 'package:guad/presentation/screens/auth/biometric_gate_screen.dart';
@@ -30,12 +34,27 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final secureStorage = SecureStorageService();
+    final keycloakAuth = KeycloakAuthService(config: config);
+    final tokenRefresh = TokenRefreshService(
+      secureStorage: secureStorage,
+      keycloakAuth: keycloakAuth,
+    );
+    final apiClient = ApiClient(
+      baseUrl: config.apiBaseUrl,
+      tokenRefresh: tokenRefresh,
+    );
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: config),
         RepositoryProvider.value(value: keyValueStorage),
         RepositoryProvider.value(value: connectivityService),
         RepositoryProvider.value(value: biometricService),
+        RepositoryProvider.value(value: secureStorage),
+        RepositoryProvider.value(value: keycloakAuth),
+        RepositoryProvider.value(value: tokenRefresh),
+        RepositoryProvider.value(value: apiClient),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -43,6 +62,8 @@ class App extends StatelessWidget {
             create: (_) => AuthBloc(
               keyValueStorage: keyValueStorage,
               biometricService: biometricService,
+              secureStorage: secureStorage,
+              authService: keycloakAuth,
             ),
           ),
           BlocProvider(
