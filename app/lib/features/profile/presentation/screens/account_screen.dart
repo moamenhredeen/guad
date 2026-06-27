@@ -55,7 +55,7 @@ class AccountScreen extends StatelessWidget {
           _SectionHeader(l10n.accountSecurity),
 
           ListTile(
-            leading: Icon(Icons.lock_outline_rounded, color: cs.primary),
+            leading: const Icon(Icons.lock_outline_rounded),
             title: Text(l10n.accountChangePassword),
             trailing: const Icon(Icons.chevron_right_rounded),
             onTap: () => _showVerificationSheet(
@@ -67,7 +67,7 @@ class AccountScreen extends StatelessWidget {
 
           if (bioAvailable)
             SwitchListTile(
-              secondary: Icon(Icons.fingerprint_rounded, color: cs.primary),
+              secondary: const Icon(Icons.fingerprint_rounded),
               title: Text(l10n.biometricEnable),
               subtitle: Text(l10n.biometricEnableHint),
               value: bioEnabled,
@@ -130,15 +130,15 @@ class AccountScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
-                  color: cs.secondaryContainer,
+                  color: cs.surfaceContainer,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.verified_user_outlined,
-                  color: cs.onSecondaryContainer,
+                  color: cs.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 16),
@@ -206,7 +206,7 @@ class _VerifiedField extends StatelessWidget {
     final tt = Theme.of(context).textTheme;
 
     return ListTile(
-      leading: Icon(icon, color: cs.primary),
+      leading: Icon(icon),
       title: Text(
         label,
         style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),

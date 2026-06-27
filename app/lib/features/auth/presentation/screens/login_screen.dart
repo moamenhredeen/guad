@@ -31,7 +31,6 @@ class LoginScreen extends StatelessWidget {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: cs.surface,
             body: SafeArea(
               child: SingleChildScrollView(
                 child: ConstrainedBox(
@@ -45,27 +44,29 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          flex: 5,
+                          flex: 4,
                           child: Container(
                             width: double.infinity,
-                            color: cs.primaryContainer,
-                            padding: const EdgeInsets.all(32),
+                            padding: const EdgeInsets.fromLTRB(24, 36, 24, 16),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 80,
-                                  height: 80,
+                                  width: 64,
+                                  height: 64,
                                   decoration: BoxDecoration(
-                                    color: cs.primary,
-                                    borderRadius: BorderRadius.circular(24),
+                                    color: cs.surface,
+                                    border: Border.all(
+                                      color: cs.outlineVariant,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Center(
                                     child: Text(
                                       'G',
-                                      style: tt.displaySmall?.copyWith(
-                                        color: cs.onPrimary,
-                                        fontWeight: FontWeight.bold,
+                                      style: tt.headlineMedium?.copyWith(
+                                        color: cs.onSurface,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
@@ -74,18 +75,16 @@ class LoginScreen extends StatelessWidget {
                                 Text(
                                   'GUAD',
                                   style: tt.headlineLarge?.copyWith(
-                                    color: cs.onPrimaryContainer,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 6,
+                                    color: cs.onSurface,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 4,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
                                   l10n.loginHint,
                                   style: tt.bodyMedium?.copyWith(
-                                    color: cs.onPrimaryContainer.withValues(
-                                      alpha: 0.75,
-                                    ),
+                                    color: cs.onSurfaceVariant,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -96,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                         Expanded(
                           flex: 6,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                            padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,

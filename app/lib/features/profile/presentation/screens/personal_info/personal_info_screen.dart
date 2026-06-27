@@ -32,20 +32,20 @@ class PersonalInfoScreen extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            color: cs.surfaceContainer,
-            padding: const EdgeInsets.symmetric(vertical: 32),
+            color: cs.surface,
+            padding: const EdgeInsets.symmetric(vertical: 28),
             child: Column(
               children: [
                 CircleAvatar(
                   radius: 44,
-                  backgroundColor: cs.primaryContainer,
+                  backgroundColor: cs.surfaceContainer,
                   child: Text(
                     user?.firstName.isNotEmpty == true
                         ? user!.firstName[0].toUpperCase()
                         : '?',
                     style: tt.displaySmall?.copyWith(
-                      color: cs.onPrimaryContainer,
-                      fontWeight: FontWeight.bold,
+                      color: cs.onSurface,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -92,7 +92,7 @@ class _Field extends StatelessWidget {
     final tt = Theme.of(context).textTheme;
 
     return ListTile(
-      leading: Icon(icon, color: cs.primary),
+      leading: Icon(icon),
       title: Text(
         label,
         style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),

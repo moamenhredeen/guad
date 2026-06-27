@@ -24,20 +24,20 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            color: cs.primaryContainer,
-            padding: const EdgeInsets.symmetric(vertical: 32),
+            color: cs.surface,
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 28),
             child: Column(
               children: [
                 CircleAvatar(
                   radius: 40,
-                  backgroundColor: cs.primary,
+                  backgroundColor: cs.surfaceContainer,
                   child: Text(
                     user?.firstName.isNotEmpty == true
                         ? user!.firstName[0].toUpperCase()
                         : '?',
                     style: tt.displaySmall?.copyWith(
-                      color: cs.onPrimary,
-                      fontWeight: FontWeight.bold,
+                      color: cs.onSurface,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -45,16 +45,14 @@ class ProfileScreen extends StatelessWidget {
                 Text(
                   user?.fullName ?? '—',
                   style: tt.titleLarge?.copyWith(
-                    color: cs.onPrimaryContainer,
+                    color: cs.onSurface,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   user?.email ?? '',
-                  style: tt.bodyMedium?.copyWith(
-                    color: cs.onPrimaryContainer.withValues(alpha: 0.7),
-                  ),
+                  style: tt.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
                 ),
               ],
             ),

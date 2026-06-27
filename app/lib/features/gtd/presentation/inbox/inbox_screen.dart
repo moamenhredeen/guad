@@ -92,9 +92,9 @@ class _InboxBody extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => context.read<InboxCubit>().load(),
       child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 96),
         itemCount: state.items.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 8),
+        separatorBuilder: (_, _) => const SizedBox(height: 6),
         itemBuilder: (context, index) {
           final item = state.items[index];
           return Dismissible(
@@ -123,10 +123,13 @@ class _InboxItemTile extends StatelessWidget {
     final description = item.description?.trim();
 
     return Material(
-      color: cs.surfaceContainer,
-      borderRadius: BorderRadius.circular(8),
+      color: cs.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: cs.outlineVariant),
+      ),
       child: ListTile(
-        contentPadding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+        contentPadding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
         title: Text(
           item.title,
           style: tt.titleMedium?.copyWith(fontWeight: FontWeight.w600),
@@ -188,7 +191,7 @@ class _InboxEmptyState extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           children: [
-            Icon(Icons.inbox_outlined, size: 64, color: cs.outlineVariant),
+            Icon(Icons.inbox_outlined, size: 48, color: cs.outlineVariant),
             const SizedBox(height: 16),
             Text(
               l10n.inboxEmptyTitle,
@@ -216,14 +219,14 @@ class _DeleteBackground extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: cs.errorContainer,
+        color: cs.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Align(
         alignment: Alignment.centerRight,
         child: Padding(
           padding: const EdgeInsets.only(right: 20),
-          child: Icon(Icons.delete_outline_rounded, color: cs.onErrorContainer),
+          child: Icon(Icons.delete_outline_rounded, color: cs.error),
         ),
       ),
     );
