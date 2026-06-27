@@ -24,7 +24,7 @@ public class Area {
 
     /// for user-defined ordering
     @Column
-    private Integer order;
+    private Integer position;
 
     @Column
     private UUID userId;
@@ -56,12 +56,12 @@ public class Area {
         this.description = description;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getPosition() {
+        return position;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public UUID getUserId() {

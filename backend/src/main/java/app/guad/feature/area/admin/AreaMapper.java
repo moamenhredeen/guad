@@ -10,7 +10,7 @@ public final class AreaMapper {
                 area.getId(),
                 area.getName(),
                 area.getDescription(),
-                area.getOrder()
+                area.getPosition()
         );
     }
 
@@ -19,7 +19,7 @@ public final class AreaMapper {
                 area.getId(),
                 area.getName(),
                 area.getDescription(),
-                area.getOrder()
+                area.getPosition()
         );
     }
 

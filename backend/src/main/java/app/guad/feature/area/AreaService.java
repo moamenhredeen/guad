@@ -49,7 +49,7 @@ public class AreaService {
         var areaFromDb = found.get();
         areaFromDb.setName(area.getName());
         areaFromDb.setDescription(area.getDescription());
-        areaFromDb.setOrder(area.getOrder());
+        areaFromDb.setPosition(area.getPosition());
         areaFromDb.setUserId(area.getUserId());
         return this.areaRepository.save(areaFromDb);
     }

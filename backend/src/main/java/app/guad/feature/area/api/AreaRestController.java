@@ -52,6 +52,7 @@ class AreaRestController {
             .orElseThrow(() -> new ResourceNotFoundException("Area", id));
         area.setName(request.name());
         area.setDescription(request.description());
+        area.setPosition(request.position());
         return ApiResponse.of(AreaResponse.from(areaService.save(area)));
     }
 
