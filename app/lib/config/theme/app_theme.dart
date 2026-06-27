@@ -38,7 +38,7 @@ abstract class AppTheme {
       ),
 
       appBarTheme: AppBarTheme(
-        backgroundColor: cs.surface,
+        backgroundColor: Colors.transparent,
         foregroundColor: cs.onSurface,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -233,7 +233,7 @@ abstract class AppTheme {
       colorScheme: cs,
       scaffoldBackgroundColor: AppColors.backgroundDark,
       appBarTheme: AppBarTheme(
-        backgroundColor: cs.surface,
+        backgroundColor: Colors.transparent,
         foregroundColor: cs.onSurface,
         elevation: 0,
         scrolledUnderElevation: 0,

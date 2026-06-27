@@ -44,12 +44,12 @@ class InboxScreen extends StatelessWidget {
             ],
           ),
           body: _InboxBody(state: state),
-          floatingActionButton: FloatingActionButton.extended(
+          floatingActionButton: FloatingActionButton.small(
             onPressed: state.isMutating
                 ? null
                 : () => _showCaptureSheet(context),
-            icon: const Icon(Icons.add_rounded),
-            label: Text(l10n.inboxCapture),
+            tooltip: l10n.inboxCapture,
+            child: const Icon(Icons.add_rounded),
           ),
         );
       },
@@ -92,9 +92,13 @@ class _InboxBody extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => context.read<InboxCubit>().load(),
       child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 96),
+        padding: const EdgeInsets.fromLTRB(20, 4, 20, 96),
         itemCount: state.items.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 6),
+        separatorBuilder: (context, _) => Divider(
+          height: 1,
+          thickness: 1,
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
         itemBuilder: (context, index) {
           final item = state.items[index];
           return Dismissible(
@@ -122,56 +126,59 @@ class _InboxItemTile extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final description = item.description?.trim();
 
-    return Material(
-      color: cs.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(color: cs.outlineVariant),
+    return ListTile(
+      minVerticalPadding: 12,
+      contentPadding: EdgeInsets.zero,
+      title: Text(
+        item.title,
+        style: tt.bodyLarge?.copyWith(
+          color: cs.onSurface,
+          fontWeight: FontWeight.w500,
+        ),
       ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
-        title: Text(
-          item.title,
-          style: tt.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        subtitle: description?.isNotEmpty == true
-            ? Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(description!),
-              )
-            : null,
-        trailing: PopupMenuButton<InboxProcessAction>(
-          tooltip: l10n.inboxProcessTooltip,
-          icon: const Icon(Icons.more_vert_rounded),
-          onSelected: (action) =>
-              context.read<InboxCubit>().process(id: item.id, action: action),
-          itemBuilder: (_) => [
-            PopupMenuItem(
-              value: InboxProcessAction.nextAction,
-              child: Text(l10n.inboxProcessNextAction),
-            ),
-            PopupMenuItem(
-              value: InboxProcessAction.project,
-              child: Text(l10n.inboxProcessProject),
-            ),
-            PopupMenuItem(
-              value: InboxProcessAction.waitingFor,
-              child: Text(l10n.inboxProcessWaitingFor),
-            ),
-            PopupMenuItem(
-              value: InboxProcessAction.somedayMaybe,
-              child: Text(l10n.inboxProcessSomedayMaybe),
-            ),
-            PopupMenuItem(
-              value: InboxProcessAction.reference,
-              child: Text(l10n.inboxProcessReference),
-            ),
-            PopupMenuItem(
-              value: InboxProcessAction.trash,
-              child: Text(l10n.inboxProcessTrash),
-            ),
-          ],
-        ),
+      subtitle: description?.isNotEmpty == true
+          ? Padding(
+              padding: const EdgeInsets.only(top: 3),
+              child: Text(
+                description!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),
+              ),
+            )
+          : null,
+      trailing: PopupMenuButton<InboxProcessAction>(
+        tooltip: l10n.inboxProcessTooltip,
+        icon: Icon(Icons.more_horiz_rounded, color: cs.onSurfaceVariant),
+        padding: EdgeInsets.zero,
+        onSelected: (action) =>
+            context.read<InboxCubit>().process(id: item.id, action: action),
+        itemBuilder: (_) => [
+          PopupMenuItem(
+            value: InboxProcessAction.nextAction,
+            child: Text(l10n.inboxProcessNextAction),
+          ),
+          PopupMenuItem(
+            value: InboxProcessAction.project,
+            child: Text(l10n.inboxProcessProject),
+          ),
+          PopupMenuItem(
+            value: InboxProcessAction.waitingFor,
+            child: Text(l10n.inboxProcessWaitingFor),
+          ),
+          PopupMenuItem(
+            value: InboxProcessAction.somedayMaybe,
+            child: Text(l10n.inboxProcessSomedayMaybe),
+          ),
+          PopupMenuItem(
+            value: InboxProcessAction.reference,
+            child: Text(l10n.inboxProcessReference),
+          ),
+          PopupMenuItem(
+            value: InboxProcessAction.trash,
+            child: Text(l10n.inboxProcessTrash),
+          ),
+        ],
       ),
     );
   }
@@ -191,11 +198,11 @@ class _InboxEmptyState extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           children: [
-            Icon(Icons.inbox_outlined, size: 48, color: cs.outlineVariant),
-            const SizedBox(height: 16),
+            Icon(Icons.inbox_outlined, size: 40, color: cs.outlineVariant),
+            const SizedBox(height: 12),
             Text(
               l10n.inboxEmptyTitle,
-              style: tt.titleMedium?.copyWith(color: cs.onSurfaceVariant),
+              style: tt.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
             ),
             const SizedBox(height: 4),
             Text(
@@ -218,10 +225,7 @@ class _DeleteBackground extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return DecoratedBox(
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: BoxDecoration(color: cs.surfaceContainerHigh),
       child: Align(
         alignment: Alignment.centerRight,
         child: Padding(
