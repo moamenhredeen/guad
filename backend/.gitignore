@@ -36,3 +36,4 @@ build/
 ### Dev ###
 .env
 application-local.yml
+application-local.properties
