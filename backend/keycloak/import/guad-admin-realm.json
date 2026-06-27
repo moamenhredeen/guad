@@ -1,7 +1,7 @@
 {
-  "realm": "guad",
+  "realm": "guad-admin",
   "enabled": true,
-  "displayName": "Guad",
+  "displayName": "Guad Admin",
   "loginTheme": "guad",
   "registrationAllowed": false,
   "loginWithEmailAllowed": true,
@@ -11,18 +11,11 @@
   "roles": {
     "realm": [
       {
-        "name": "user",
-        "description": "Default Guad user role"
-      },
-      {
         "name": "admin",
         "description": "Guad administrator role"
       }
     ]
   },
-  "defaultRoles": [
-    "user"
-  ],
   "users": [
     {
       "username": "admin",
@@ -32,7 +25,6 @@
       "lastName": "Admin",
       "email": "admin@guad.local",
       "realmRoles": [
-        "user",
         "admin"
       ],
       "credentials": [
@@ -46,14 +38,14 @@
   ],
   "clients": [
     {
-      "clientId": "guad-backend",
-      "name": "Guad Backend",
+      "clientId": "guad-admin-backend",
+      "name": "Guad Admin Backend",
       "enabled": true,
       "protocol": "openid-connect",
       "publicClient": false,
-      "secret": "guad-local-secret",
+      "secret": "guad-admin-local-secret",
       "standardFlowEnabled": true,
-      "directAccessGrantsEnabled": true,
+      "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
       "frontchannelLogout": true,
       "redirectUris": [
@@ -62,11 +54,10 @@
       ],
       "webOrigins": [
         "http://localhost:8080",
-        "http://127.0.0.1:8080",
-        "http://localhost:5173"
+        "http://127.0.0.1:8080"
       ],
       "attributes": {
-        "post.logout.redirect.uris": "http://localhost:8080/admin/auth/login"
+        "post.logout.redirect.uris": "http://localhost:8080/admin/auth/login##http://127.0.0.1:8080/admin/auth/login"
       },
       "protocolMappers": [
         {
