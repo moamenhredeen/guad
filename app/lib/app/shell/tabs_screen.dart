@@ -21,9 +21,9 @@ class TabsScreen extends StatelessWidget {
         ),
         destinations: [
           NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home_rounded),
-            label: l10n.navHome,
+            icon: const Icon(Icons.inbox_outlined),
+            selectedIcon: const Icon(Icons.inbox_rounded),
+            label: l10n.navInbox,
           ),
           NavigationDestination(
             icon: const Icon(Icons.person_outline_rounded),

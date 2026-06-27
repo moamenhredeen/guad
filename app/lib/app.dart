@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:guad/app/localization/locale_cubit.dart';
 import 'package:guad/config/env_config.dart';
 import 'package:guad/config/api/api_client.dart';
 import 'package:guad/config/router/app_router.dart';
@@ -17,7 +18,6 @@ import 'package:guad/features/auth/presentation/screens/biometric_gate_screen.da
 import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/infrastructure/services/connectivity_service.dart';
 import 'package:guad/infrastructure/services/key_value_storage_service.dart';
-import 'package:guad/presentation/blocs/locale/locale_cubit.dart';
 
 class App extends StatelessWidget {
   const App({

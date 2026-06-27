@@ -4,7 +4,7 @@ abstract class ScreenPaths {
 
   // Tabs shell
   static const tabs = '/tabs';
-  static const home = '/tabs/home';
+  static const inbox = '/tabs/inbox';
   static const profile = '/tabs/profile';
 
   // Full-screen flows (outside tabs)

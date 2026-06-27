@@ -6,8 +6,8 @@ import 'package:guad/config/router/screen_paths.dart';
 import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class InboxScreen extends StatelessWidget {
+  const InboxScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appName),
+        title: Text(l10n.navInbox),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
-                l10n.homeWelcome(user.firstName),
+                l10n.inboxWelcome(user.firstName),
                 style: tt.titleMedium?.copyWith(color: cs.onSurfaceVariant),
               ),
             ),

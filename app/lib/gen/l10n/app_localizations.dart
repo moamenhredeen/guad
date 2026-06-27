@@ -104,11 +104,11 @@ abstract class AppLocalizations {
   /// **'Guad'**
   String get appName;
 
-  /// No description provided for @navHome.
+  /// No description provided for @navInbox.
   ///
   /// In en, this message translates to:
-  /// **'Home'**
-  String get navHome;
+  /// **'Inbox'**
+  String get navInbox;
 
   /// No description provided for @navProfile.
   ///
@@ -158,11 +158,11 @@ abstract class AppLocalizations {
   /// **'Password is required'**
   String get loginPasswordRequired;
 
-  /// No description provided for @homeWelcome.
+  /// No description provided for @inboxWelcome.
   ///
   /// In en, this message translates to:
   /// **'Welcome back, {name}'**
-  String homeWelcome(String name);
+  String inboxWelcome(String name);
 
   /// No description provided for @profileTitle.
   ///

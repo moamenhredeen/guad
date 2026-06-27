@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Guad';
 
   @override
-  String get navHome => 'Home';
+  String get navInbox => 'Inbox';
 
   @override
   String get navProfile => 'Profile';
@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginPasswordRequired => 'Password is required';
 
   @override
-  String homeWelcome(String name) {
+  String inboxWelcome(String name) {
     return 'Welcome back, $name';
   }
 

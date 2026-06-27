@@ -2,7 +2,7 @@
   "@@locale": "en",
 
   "appName": "Guad",
-  "navHome": "Home",
+  "navInbox": "Inbox",
   "navProfile": "Profile",
 
   "loginHint": "Keep your tasks and account organized",
@@ -13,8 +13,8 @@
   "loginEmailInvalid": "Enter a valid email",
   "loginPasswordRequired": "Password is required",
 
-  "homeWelcome": "Welcome back, {name}",
-  "@homeWelcome": {
+  "inboxWelcome": "Welcome back, {name}",
+  "@inboxWelcome": {
     "placeholders": {
       "name": { "type": "String" }
     }

@@ -2,7 +2,7 @@
   "@@locale": "ar",
 
   "appName": "Guad",
-  "navHome": "الرئيسية",
+  "navInbox": "الوارد",
   "navProfile": "الملف الشخصي",
 
   "loginHint": "نظّم مهامك وحسابك بسهولة",
@@ -13,8 +13,8 @@
   "loginEmailInvalid": "أدخل بريداً إلكترونياً صحيحاً",
   "loginPasswordRequired": "كلمة المرور مطلوبة",
 
-  "homeWelcome": "مرحباً، {name}",
-  "@homeWelcome": {
+  "inboxWelcome": "مرحباً، {name}",
+  "@inboxWelcome": {
     "placeholders": {
       "name": { "type": "String" }
     }

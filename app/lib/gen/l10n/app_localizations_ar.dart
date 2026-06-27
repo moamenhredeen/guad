@@ -12,7 +12,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appName => 'Guad';
 
   @override
-  String get navHome => 'الرئيسية';
+  String get navInbox => 'الوارد';
 
   @override
   String get navProfile => 'الملف الشخصي';
@@ -39,7 +39,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loginPasswordRequired => 'كلمة المرور مطلوبة';
 
   @override
-  String homeWelcome(String name) {
+  String inboxWelcome(String name) {
     return 'مرحباً، $name';
   }
 

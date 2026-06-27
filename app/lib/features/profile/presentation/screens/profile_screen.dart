@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:guad/config/router/screen_paths.dart';
 import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:guad/presentation/blocs/locale/locale_cubit.dart';
+import 'package:guad/app/localization/locale_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
