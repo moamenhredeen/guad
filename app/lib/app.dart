@@ -79,6 +79,7 @@ class App extends StatelessWidget {
             create: (_) => AuthBloc(
               authRepository: authRepository,
               biometricAuthenticator: biometricService,
+              tokenRefreshService: tokenRefresh,
             ),
           ),
           BlocProvider(

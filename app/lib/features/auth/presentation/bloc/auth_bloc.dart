@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:guad/domain/core/app_exceptions.dart';
+import 'package:guad/features/auth/data/services/token_refresh_service.dart';
 import 'package:guad/features/auth/domain/entities/app_user.dart';
 import 'package:guad/features/auth/domain/repositories/auth_repository.dart';
 import 'package:guad/features/auth/domain/repositories/biometric_authenticator.dart';
@@ -10,8 +11,11 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({required this.authRepository, required this.biometricAuthenticator})
-    : super(const AuthState()) {
+  AuthBloc({
+    required this.authRepository,
+    required this.biometricAuthenticator,
+    required this.tokenRefreshService,
+  }) : super(const AuthState()) {
     on<AuthStarted>(_onStarted);
     on<AuthLoginSubmitted>(_onLoginSubmitted);
     on<AuthLogoutRequested>(_onLogoutRequested);
@@ -26,6 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final AuthRepository authRepository;
   final BiometricAuthenticator biometricAuthenticator;
+  final TokenRefreshService tokenRefreshService;
 
   Future<void> _onStarted(AuthStarted event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading, clearError: true));
@@ -35,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final session = await authRepository.readSession();
 
     if (session == null) {
+      await tokenRefreshService.clearToken();
       emit(
         AuthState(
           status: AuthStatus.unauthenticated,
@@ -45,6 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
+    await tokenRefreshService.setToken(session.token);
     emit(
       AuthState(
         status: biometricAvailable && biometricEnabled
@@ -66,6 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final session = await authRepository.signIn();
       await authRepository.saveSession(session);
+      await tokenRefreshService.setToken(session.token);
 
       emit(
         state.copyWith(
@@ -80,6 +88,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           status: AuthStatus.unauthenticated,
           isLoading: false,
           errorMessage: 'Sign in was not completed.',
+        ),
+      );
+    } on AppException catch (e) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.unauthenticated,
+          isLoading: false,
+          errorMessage: _signInErrorMessage(e),
         ),
       );
     } catch (_) {
@@ -100,6 +116,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final session = await authRepository.readSession();
     await authRepository.signOut(session?.token);
     await authRepository.clearSession();
+    await tokenRefreshService.clearToken();
     emit(
       AuthState(
         status: AuthStatus.unauthenticated,
@@ -185,5 +202,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (_) {
       return false;
     }
+  }
+
+  String _signInErrorMessage(AppException exception) {
+    final details = exception.details;
+    if (details != null &&
+        details.contains('Issued at time is more than 10 minutes')) {
+      return 'Sign in failed because this device clock does not match the auth server. Turn on automatic date and time, then try again.';
+    }
+    return 'Sign in failed. Please try again.';
   }
 }
