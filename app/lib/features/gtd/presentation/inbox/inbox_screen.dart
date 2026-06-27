@@ -247,12 +247,23 @@ class _CaptureInboxSheet extends StatefulWidget {
 class _CaptureInboxSheetState extends State<_CaptureInboxSheet> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _titleFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _titleFocusNode.requestFocus();
+    });
+  }
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _titleFocusNode.dispose();
     super.dispose();
   }
 
@@ -263,55 +274,69 @@ class _CaptureInboxSheetState extends State<_CaptureInboxSheet> {
       (InboxCubit cubit) => cubit.state.isMutating,
     );
     final l10n = AppLocalizations.of(context);
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 16 + bottomInset),
+        padding: EdgeInsets.fromLTRB(20, 12, 20, 10 + bottomInset),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                l10n.inboxCapture,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: _titleController,
-                autofocus: true,
+                focusNode: _titleFocusNode,
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: l10n.inboxCapturePrompt,
-                  prefixIcon: const Icon(Icons.inbox_outlined),
+                style: tt.titleMedium?.copyWith(
+                  color: cs.onSurface,
+                  fontWeight: FontWeight.w500,
+                ),
+                decoration: _bareInputDecoration(
+                  context,
+                  hintText: l10n.inboxCapturePrompt,
                 ),
                 validator: (value) => value?.trim().isEmpty == true
                     ? l10n.inboxTitleRequired
                     : null,
               ),
-              const SizedBox(height: 12),
               TextField(
                 controller: _descriptionController,
-                minLines: 2,
+                minLines: 1,
                 maxLines: 4,
-                decoration: InputDecoration(
-                  labelText: l10n.inboxNotes,
-                  prefixIcon: const Icon(Icons.notes_outlined),
+                style: tt.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+                decoration: _bareInputDecoration(
+                  context,
+                  hintText: l10n.inboxNotes,
                 ),
               ),
-              const SizedBox(height: 20),
-              FilledButton.icon(
-                onPressed: isMutating ? null : _submit,
-                icon: isMutating
-                    ? const SizedBox.square(
-                        dimension: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.add_rounded),
-                label: Text(l10n.inboxAddToInbox),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FilledButton(
+                    onPressed: isMutating ? null : _submit,
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(0, 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                    ),
+                    child: SizedBox(
+                      height: 20,
+                      child: Center(
+                        child: isMutating
+                            ? const SizedBox.square(
+                                dimension: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(l10n.inboxAddToInbox),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -328,5 +353,24 @@ class _CaptureInboxSheetState extends State<_CaptureInboxSheet> {
     );
     if (!mounted) return;
     Navigator.of(context).pop();
+  }
+
+  InputDecoration _bareInputDecoration(
+    BuildContext context, {
+    required String hintText,
+  }) {
+    final cs = Theme.of(context).colorScheme;
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: TextStyle(color: cs.onSurfaceVariant.withValues(alpha: 0.7)),
+      filled: false,
+      isDense: true,
+      contentPadding: const EdgeInsets.symmetric(vertical: 7),
+      border: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      errorBorder: InputBorder.none,
+      focusedErrorBorder: InputBorder.none,
+    );
   }
 }

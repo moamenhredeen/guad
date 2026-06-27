@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
-  static const primary = Color(0xFF1F7A4D);
-  static const primaryShade = Color(0xFF185F3D);
+  static const primary = Color(0xFF1F2328);
+  static const primaryShade = Color(0xFF111111);
   static const secondary = Color(0xFF5C6470);
   static const tertiary = Color(0xFF2F5F4A);
 

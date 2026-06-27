@@ -12,6 +12,8 @@ abstract class AppTheme {
     final cs = base.copyWith(
       primary: AppColors.primary,
       onPrimary: Colors.white,
+      primaryContainer: const Color(0xFFEDEBE7),
+      onPrimaryContainer: AppColors.textPrimary,
       secondary: AppColors.secondary,
       tertiary: AppColors.tertiary,
       surface: AppColors.surface,
@@ -220,7 +222,10 @@ abstract class AppTheme {
       brightness: Brightness.dark,
     );
     final cs = base.copyWith(
-      primary: const Color(0xFF82C9A2),
+      primary: AppColors.textPrimaryDark,
+      onPrimary: AppColors.backgroundDark,
+      primaryContainer: const Color(0xFF303030),
+      onPrimaryContainer: AppColors.textPrimaryDark,
       surface: AppColors.surfaceDark,
       onSurface: AppColors.textPrimaryDark,
       onSurfaceVariant: AppColors.textSecondaryDark,
