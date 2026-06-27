@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:guad/config/router/screen_paths.dart';
-import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:guad/features/profile/presentation/profile_routes.dart';
+import 'package:guad/gen/l10n/app_localizations.dart';
 
 class PersonalInfoScreen extends StatelessWidget {
   const PersonalInfoScreen({super.key});
@@ -23,7 +23,7 @@ class PersonalInfoScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit_outlined),
             tooltip: 'Edit',
-            onPressed: () => context.push(ScreenPaths.editPersonalInfo),
+            onPressed: () => context.push(ProfileRoutes.editPersonalInfo),
           ),
         ],
       ),

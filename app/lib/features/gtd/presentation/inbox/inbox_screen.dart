@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:guad/config/router/screen_paths.dart';
-import 'package:guad/gen/l10n/app_localizations.dart';
 import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:guad/features/notifications/presentation/notifications_routes.dart';
+import 'package:guad/features/profile/presentation/profile_routes.dart';
+import 'package:guad/gen/l10n/app_localizations.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({super.key});
@@ -23,7 +24,7 @@ class InboxScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
             tooltip: l10n.notificationsTitle,
-            onPressed: () => context.push(ScreenPaths.notifications),
+            onPressed: () => context.push(NotificationsRoutes.notifications),
           ),
           const SizedBox(width: 4),
         ],
@@ -43,21 +44,21 @@ class InboxScreen extends StatelessWidget {
             icon: Icons.person_outline_rounded,
             title: l10n.profilePersonalInfo,
             subtitle: user?.fullName ?? '',
-            onTap: () => context.push(ScreenPaths.personalInfo),
+            onTap: () => context.push(ProfileRoutes.personalInfo),
           ),
           const SizedBox(height: 12),
           _ActionTile(
             icon: Icons.manage_accounts_outlined,
             title: l10n.profileAccountSettings,
             subtitle: user?.email ?? '',
-            onTap: () => context.push(ScreenPaths.account),
+            onTap: () => context.push(ProfileRoutes.account),
           ),
           const SizedBox(height: 12),
           _ActionTile(
             icon: Icons.notifications_outlined,
             title: l10n.profileNotifications,
             subtitle: l10n.notificationsCaughtUp,
-            onTap: () => context.push(ScreenPaths.notifications),
+            onTap: () => context.push(NotificationsRoutes.notifications),
           ),
         ],
       ),

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:guad/config/router/screen_paths.dart';
-import 'package:guad/gen/l10n/app_localizations.dart';
-import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:guad/app/localization/locale_cubit.dart';
+import 'package:guad/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:guad/features/notifications/presentation/notifications_routes.dart';
+import 'package:guad/features/profile/presentation/profile_routes.dart';
+import 'package:guad/gen/l10n/app_localizations.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -64,19 +65,19 @@ class ProfileScreen extends StatelessWidget {
             leading: const Icon(Icons.person_outline_rounded),
             title: Text(l10n.profilePersonalInfo),
             trailing: const Icon(Icons.chevron_right_rounded),
-            onTap: () => context.push(ScreenPaths.personalInfo),
+            onTap: () => context.push(ProfileRoutes.personalInfo),
           ),
           ListTile(
             leading: const Icon(Icons.manage_accounts_outlined),
             title: Text(l10n.profileAccountSettings),
             trailing: const Icon(Icons.chevron_right_rounded),
-            onTap: () => context.push(ScreenPaths.account),
+            onTap: () => context.push(ProfileRoutes.account),
           ),
           ListTile(
             leading: const Icon(Icons.notifications_outlined),
             title: Text(l10n.profileNotifications),
             trailing: const Icon(Icons.chevron_right_rounded),
-            onTap: () => context.push(ScreenPaths.notifications),
+            onTap: () => context.push(NotificationsRoutes.notifications),
           ),
 
           _SectionHeader(l10n.profileApp),
