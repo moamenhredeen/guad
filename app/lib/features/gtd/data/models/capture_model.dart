@@ -1,7 +1,7 @@
-import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
+import 'package:guad/features/gtd/domain/entities/capture.dart';
 
-class InboxItemModel {
-  const InboxItemModel({
+class CaptureModel {
+  const CaptureModel({
     required this.id,
     required this.title,
     this.description,
@@ -12,11 +12,11 @@ class InboxItemModel {
   final int id;
   final String title;
   final String? description;
-  final InboxItemStatus status;
+  final CaptureStatus status;
   final DateTime? createdAt;
 
-  factory InboxItemModel.fromJson(Map<String, dynamic> json) {
-    return InboxItemModel(
+  factory CaptureModel.fromJson(Map<String, dynamic> json) {
+    return CaptureModel(
       id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String?,
@@ -25,8 +25,8 @@ class InboxItemModel {
     );
   }
 
-  InboxItem toDomain() {
-    return InboxItem(
+  Capture toDomain() {
+    return Capture(
       id: id,
       title: title,
       description: description,
@@ -35,11 +35,11 @@ class InboxItemModel {
     );
   }
 
-  static InboxItemStatus _statusFromApi(String? value) {
+  static CaptureStatus _statusFromApi(String? value) {
     return switch (value) {
-      'PROCESSING' => InboxItemStatus.processing,
-      'PROCESSED' => InboxItemStatus.processed,
-      _ => InboxItemStatus.unprocessed,
+      'PROCESSING' => CaptureStatus.processing,
+      'PROCESSED' => CaptureStatus.processed,
+      _ => CaptureStatus.unprocessed,
     };
   }
 

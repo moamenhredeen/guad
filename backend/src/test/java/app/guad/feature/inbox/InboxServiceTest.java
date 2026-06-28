@@ -25,11 +25,11 @@ class InboxServiceTest {
 
     @Test
     void save_newItem_delegatesToRepository() {
-        var item = new InboxItem();
+        var item = new Capture();
         item.setTitle("New item");
-        item.setStatus(InboxItemStatus.UNPROCESSED);
+        item.setStatus(CaptureStatus.UNPROCESSED);
 
-        var saved = new InboxItem();
+        var saved = new Capture();
         saved.setId(1L);
         saved.setTitle("New item");
 
@@ -43,16 +43,16 @@ class InboxServiceTest {
 
     @Test
     void save_existingItem_mergesFieldsOntoFoundEntity() {
-        var existing = new InboxItem();
+        var existing = new Capture();
         existing.setId(42L);
         existing.setTitle("Old title");
-        existing.setStatus(InboxItemStatus.UNPROCESSED);
+        existing.setStatus(CaptureStatus.UNPROCESSED);
 
-        var update = new InboxItem();
+        var update = new Capture();
         update.setId(42L);
         update.setTitle("New title");
         update.setDescription("New desc");
-        update.setStatus(InboxItemStatus.PROCESSED);
+        update.setStatus(CaptureStatus.PROCESSED);
 
         when(inboxRepository.findById(42L)).thenReturn(Optional.of(existing));
         when(inboxRepository.save(existing)).thenReturn(existing);
@@ -61,14 +61,14 @@ class InboxServiceTest {
 
         assertThat(result.getTitle()).isEqualTo("New title");
         assertThat(result.getDescription()).isEqualTo("New desc");
-        assertThat(result.getStatus()).isEqualTo(InboxItemStatus.PROCESSED);
+        assertThat(result.getStatus()).isEqualTo(CaptureStatus.PROCESSED);
         verify(inboxRepository).findById(42L);
         verify(inboxRepository).save(existing);
     }
 
     @Test
     void save_nonExistentId_throwsIllegalArgumentException() {
-        var item = new InboxItem();
+        var item = new Capture();
         item.setId(99L);
         item.setTitle("Ghost item");
 
@@ -76,25 +76,25 @@ class InboxServiceTest {
 
         assertThatThrownBy(() -> inboxService.save(item))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("InboxItem not found");
+            .hasMessage("Capture not found");
     }
 
     @Test
     void getUnprocessedByUserId_delegatesToRepository() {
         var userId = UUID.randomUUID();
-        var items = List.of(new InboxItem());
-        when(inboxRepository.findAllByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED)).thenReturn(items);
+        var items = List.of(new Capture());
+        when(inboxRepository.findAllByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED)).thenReturn(items);
 
         var result = inboxService.getUnprocessedByUserId(userId);
 
         assertThat(result).isEqualTo(items);
-        verify(inboxRepository).findAllByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
+        verify(inboxRepository).findAllByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED);
     }
 
     @Test
     void getByIdAndUserId_found_returnsOptionalWithItem() {
         var userId = UUID.randomUUID();
-        var item = new InboxItem();
+        var item = new Capture();
         item.setId(1L);
         when(inboxRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.of(item));
 
@@ -123,11 +123,11 @@ class InboxServiceTest {
     @Test
     void countByUserIdAndStatus_delegatesToRepository() {
         var userId = UUID.randomUUID();
-        when(inboxRepository.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED)).thenReturn(5L);
+        when(inboxRepository.countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED)).thenReturn(5L);
 
-        var result = inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
+        var result = inboxService.countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED);
 
         assertThat(result).isEqualTo(5L);
-        verify(inboxRepository).countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
+        verify(inboxRepository).countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED);
     }
 }

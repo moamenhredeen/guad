@@ -2,7 +2,7 @@ package app.guad.feature.dashboard;
 
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
-import app.guad.feature.inbox.InboxItemStatus;
+import app.guad.feature.inbox.CaptureStatus;
 import app.guad.feature.inbox.InboxService;
 import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
@@ -49,7 +49,7 @@ class DashboardServiceTest {
 
     @Test
     void getDashboard_returnsCorrectCounts() {
-        when(inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED)).thenReturn(5L);
+        when(inboxService.countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED)).thenReturn(5L);
         when(actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT)).thenReturn(3L);
         when(projectService.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE)).thenReturn(2L);
         when(waitingForService.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING)).thenReturn(4L);
@@ -72,7 +72,7 @@ class DashboardServiceTest {
 
     @Test
     void getDashboard_noReviewExists_weeklyReviewDueIsTrue() {
-        when(inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED)).thenReturn(0L);
+        when(inboxService.countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED)).thenReturn(0L);
         when(actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT)).thenReturn(0L);
         when(projectService.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE)).thenReturn(0L);
         when(waitingForService.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING)).thenReturn(0L);
@@ -87,7 +87,7 @@ class DashboardServiceTest {
 
     @Test
     void getDashboard_recentReviewExists_weeklyReviewDueIsFalse() {
-        when(inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED)).thenReturn(0L);
+        when(inboxService.countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED)).thenReturn(0L);
         when(actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT)).thenReturn(0L);
         when(projectService.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE)).thenReturn(0L);
         when(waitingForService.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING)).thenReturn(0L);
@@ -104,7 +104,7 @@ class DashboardServiceTest {
 
     @Test
     void getDashboard_oldReviewExists_weeklyReviewDueIsTrue() {
-        when(inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED)).thenReturn(0L);
+        when(inboxService.countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED)).thenReturn(0L);
         when(actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT)).thenReturn(0L);
         when(projectService.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE)).thenReturn(0L);
         when(waitingForService.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING)).thenReturn(0L);

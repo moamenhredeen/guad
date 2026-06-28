@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class InboxRestControllerTest extends BaseIntegrationTest {
 
     @Test
-    void createInboxItem_returns201() throws Exception {
+    void createCapture_returns201() throws Exception {
         mockMvc.perform(post("/api/inbox")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -29,7 +29,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void listInboxItems_returnsOnlyUserItems() throws Exception {
+    void listCaptures_returnsOnlyUserItems() throws Exception {
         mockMvc.perform(post("/api/inbox")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +51,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void getInboxItem_byId_returns200() throws Exception {
+    void getCapture_byId_returns200() throws Exception {
         var result = mockMvc.perform(post("/api/inbox")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +67,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void getInboxItem_otherUser_returns404() throws Exception {
+    void getCapture_otherUser_returns404() throws Exception {
         var result = mockMvc.perform(post("/api/inbox")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void deleteInboxItem_returns204() throws Exception {
+    void deleteCapture_returns204() throws Exception {
         var result = mockMvc.perform(post("/api/inbox")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +106,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void processInboxItem_asTrash_returns200() throws Exception {
+    void processCapture_asTrash_returns200() throws Exception {
         var result = mockMvc.perform(post("/api/inbox")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -124,7 +124,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void processInboxItem_asNextAction_returns200() throws Exception {
+    void processCapture_asNextAction_returns200() throws Exception {
         var result = mockMvc.perform(post("/api/inbox")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -142,7 +142,7 @@ class InboxRestControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void processInboxItem_asNextAction_usesClarifiedActionFields() throws Exception {
+    void processCapture_asNextAction_usesClarifiedActionFields() throws Exception {
         var areaResult = mockMvc.perform(post("/api/areas")
                 .with(userJwt())
                 .contentType(MediaType.APPLICATION_JSON)

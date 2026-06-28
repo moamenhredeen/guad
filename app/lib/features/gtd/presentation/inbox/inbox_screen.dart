@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_area.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_context.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_project.dart';
-import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
+import 'package:guad/features/gtd/domain/entities/capture.dart';
 import 'package:guad/features/gtd/domain/repositories/gtd_repository.dart';
 import 'package:guad/features/gtd/presentation/inbox/cubit/inbox_cubit.dart';
 import 'package:guad/features/notifications/presentation/notifications_routes.dart';
@@ -110,7 +110,7 @@ class _InboxBody extends StatelessWidget {
             direction: DismissDirection.endToStart,
             background: const _DeleteBackground(),
             onDismissed: (_) => context.read<InboxCubit>().delete(item.id),
-            child: _InboxItemTile(item: item),
+            child: _CaptureTile(item: item),
           );
         },
       ),
@@ -118,10 +118,10 @@ class _InboxBody extends StatelessWidget {
   }
 }
 
-class _InboxItemTile extends StatelessWidget {
-  const _InboxItemTile({required this.item});
+class _CaptureTile extends StatelessWidget {
+  const _CaptureTile({required this.item});
 
-  final InboxItem item;
+  final Capture item;
 
   @override
   Widget build(BuildContext context) {
@@ -406,7 +406,7 @@ class _CaptureInboxSheetState extends State<_CaptureInboxSheet> {
 class _ClarifyNextActionSheet extends StatefulWidget {
   const _ClarifyNextActionSheet({required this.item});
 
-  final InboxItem item;
+  final Capture item;
 
   @override
   State<_ClarifyNextActionSheet> createState() =>

@@ -11,7 +11,7 @@ class InboxState extends Equatable {
   });
 
   final InboxStatus status;
-  final List<InboxItem> items;
+  final List<Capture> items;
   final bool isMutating;
   final String? errorMessage;
 
@@ -20,7 +20,7 @@ class InboxState extends Equatable {
 
   InboxState copyWith({
     InboxStatus? status,
-    List<InboxItem>? items,
+    List<Capture>? items,
     bool? isMutating,
     String? errorMessage,
     bool clearError = false,

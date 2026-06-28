@@ -4,7 +4,7 @@ import 'package:guad/features/gtd/domain/entities/gtd_area.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_context.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_dashboard.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_project.dart';
-import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
+import 'package:guad/features/gtd/domain/entities/capture.dart';
 import 'package:guad/features/gtd/domain/entities/someday_maybe.dart';
 import 'package:guad/features/gtd/domain/entities/waiting_for_item.dart';
 import 'package:guad/features/gtd/domain/entities/weekly_review.dart';
@@ -16,17 +16,17 @@ class ApiGtdRepository implements GtdRepository {
   final GtdRemoteDataSource _remoteDataSource;
 
   @override
-  Future<List<InboxItem>> getInboxItems() async {
-    final items = await _remoteDataSource.getInboxItems();
+  Future<List<Capture>> getCaptures() async {
+    final items = await _remoteDataSource.getCaptures();
     return items.map((item) => item.toDomain()).toList();
   }
 
   @override
-  Future<InboxItem> createInboxItem({
+  Future<Capture> createCapture({
     required String title,
     String? description,
   }) async {
-    final item = await _remoteDataSource.createInboxItem(
+    final item = await _remoteDataSource.createCapture(
       title: title,
       description: description,
     );
@@ -34,16 +34,16 @@ class ApiGtdRepository implements GtdRepository {
   }
 
   @override
-  Future<void> deleteInboxItem(int id) {
-    return _remoteDataSource.deleteInboxItem(id);
+  Future<void> deleteCapture(int id) {
+    return _remoteDataSource.deleteCapture(id);
   }
 
   @override
-  Future<void> processInboxItem({
+  Future<void> processCapture({
     required int id,
     required InboxProcessInput input,
   }) {
-    return _remoteDataSource.processInboxItem(id: id, input: input);
+    return _remoteDataSource.processCapture(id: id, input: input);
   }
 
   @override

@@ -1,16 +1,16 @@
 package app.guad.feature.inbox.admin;
 
 import app.guad.feature.attachment.AttachmentListItemViewModel;
-import app.guad.feature.inbox.InboxItemStatus;
+import app.guad.feature.inbox.CaptureStatus;
 
 import java.time.Instant;
 import java.util.List;
 
-record InboxItemDetailsViewModel(
+record CaptureDetailsViewModel(
         Long id,
         String title,
         String description,
-        InboxItemStatus status,
+        CaptureStatus status,
         Instant createdDate,
         Instant updatedDate,
         Instant processedDate,

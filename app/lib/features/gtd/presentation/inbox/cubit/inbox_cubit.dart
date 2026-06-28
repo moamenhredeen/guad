@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
+import 'package:guad/features/gtd/domain/entities/capture.dart';
 import 'package:guad/features/gtd/domain/repositories/gtd_repository.dart';
 import 'package:guad/features/gtd/domain/services/gtd_change_bus.dart';
 
@@ -17,7 +17,7 @@ class InboxCubit extends Cubit<InboxState> {
   Future<void> load() async {
     emit(state.copyWith(status: InboxStatus.loading, clearError: true));
     try {
-      final items = await _repository.getInboxItems();
+      final items = await _repository.getCaptures();
       emit(state.copyWith(status: InboxStatus.loaded, items: items));
     } catch (_) {
       emit(
@@ -36,7 +36,7 @@ class InboxCubit extends Cubit<InboxState> {
 
     emit(state.copyWith(isMutating: true, clearError: true));
     try {
-      final item = await _repository.createInboxItem(
+      final item = await _repository.createCapture(
         title: trimmedTitle,
         description: trimmedDescription?.isEmpty == true
             ? null
@@ -75,7 +75,7 @@ class InboxCubit extends Cubit<InboxState> {
     );
 
     try {
-      await _repository.deleteInboxItem(id);
+      await _repository.deleteCapture(id);
       _changeBus.notify(
         GtdChange(
           collections: const {GtdCollection.inbox, GtdCollection.dashboard},
@@ -105,7 +105,7 @@ class InboxCubit extends Cubit<InboxState> {
     );
 
     try {
-      await _repository.processInboxItem(id: id, input: input);
+      await _repository.processCapture(id: id, input: input);
       _changeBus.notify(
         GtdChange(
           collections: _collectionsAffectedBy(input.action),

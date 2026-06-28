@@ -2,8 +2,8 @@ package app.guad.feature.inbox.api;
 
 import app.guad.core.ApiResponse;
 import app.guad.core.ResourceNotFoundException;
-import app.guad.feature.inbox.InboxItem;
-import app.guad.feature.inbox.InboxItemStatus;
+import app.guad.feature.inbox.Capture;
+import app.guad.feature.inbox.CaptureStatus;
 import app.guad.feature.inbox.InboxProcessingService;
 import app.guad.feature.inbox.InboxService;
 import app.guad.security.AuthenticatedUser;
@@ -29,46 +29,46 @@ class InboxRestController {
     }
 
     @PostMapping
-    ResponseEntity<ApiResponse<InboxItemResponse>> create(@Valid @RequestBody CreateInboxItemRequest request,
+    ResponseEntity<ApiResponse<CaptureResponse>> create(@Valid @RequestBody CreateCaptureRequest request,
                                              @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
-        var item = new InboxItem();
+        var item = new Capture();
         item.setTitle(request.title());
         item.setDescription(request.description());
-        item.setStatus(InboxItemStatus.UNPROCESSED);
+        item.setStatus(CaptureStatus.UNPROCESSED);
         item.setUserId(userId);
         var saved = inboxService.save(item);
         return ResponseEntity.created(URI.create("/api/inbox/" + saved.getId()))
-            .body(ApiResponse.of(InboxItemResponse.from(saved)));
+            .body(ApiResponse.of(CaptureResponse.from(saved)));
     }
 
     @GetMapping
-    ApiResponse<List<InboxItemResponse>> list(@AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<List<CaptureResponse>> list(@AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         return ApiResponse.of(inboxService.getUnprocessedByUserId(userId).stream()
-            .map(InboxItemResponse::from).toList());
+            .map(CaptureResponse::from).toList());
     }
 
     @GetMapping("/{id}")
-    ApiResponse<InboxItemResponse> get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    ApiResponse<CaptureResponse> get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         return ApiResponse.of(inboxService.getByIdAndUserId(id, userId)
-            .map(InboxItemResponse::from)
-            .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id)));
+            .map(CaptureResponse::from)
+            .orElseThrow(() -> new ResourceNotFoundException("Capture", id)));
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         inboxService.getByIdAndUserId(id, userId)
-            .orElseThrow(() -> new ResourceNotFoundException("InboxItem", id));
+            .orElseThrow(() -> new ResourceNotFoundException("Capture", id));
         inboxService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/process")
     ResponseEntity<Void> process(@PathVariable Long id,
-                                 @Valid @RequestBody ProcessInboxItemRequest request,
+                                 @Valid @RequestBody ProcessCaptureRequest request,
                                  @AuthenticationPrincipal Jwt jwt) {
         var userId = AuthenticatedUser.from(jwt).id();
         inboxProcessingService.process(id, request, userId);

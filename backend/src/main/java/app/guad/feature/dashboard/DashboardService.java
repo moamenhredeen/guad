@@ -3,7 +3,7 @@ package app.guad.feature.dashboard;
 import app.guad.feature.action.ActionService;
 import app.guad.feature.action.ActionStatus;
 import app.guad.feature.dashboard.api.DashboardResponse;
-import app.guad.feature.inbox.InboxItemStatus;
+import app.guad.feature.inbox.CaptureStatus;
 import app.guad.feature.inbox.InboxService;
 import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
@@ -38,7 +38,7 @@ public class DashboardService {
 
     @Transactional(readOnly = true)
     public DashboardResponse getDashboard(UUID userId) {
-        long inboxCount = inboxService.countByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
+        long inboxCount = inboxService.countByUserIdAndStatus(userId, CaptureStatus.UNPROCESSED);
         long nextActionsCount = actionService.countByUserIdAndStatus(userId, ActionStatus.NEXT);
         long activeProjectsCount = projectService.countByUserIdAndStatus(userId, ProjectStatus.ACTIVE);
         long waitingForCount = waitingForService.countByUserIdAndStatus(userId, WaitingForItemStatus.WAITING);

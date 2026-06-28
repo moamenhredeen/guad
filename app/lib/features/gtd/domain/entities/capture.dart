@@ -1,4 +1,4 @@
-enum InboxItemStatus { unprocessed, processing, processed }
+enum CaptureStatus { unprocessed, processing, processed }
 
 enum InboxProcessAction {
   nextAction,
@@ -29,8 +29,8 @@ class InboxProcessInput {
   final List<int> contextIds;
 }
 
-class InboxItem {
-  const InboxItem({
+class Capture {
+  const Capture({
     required this.id,
     required this.title,
     this.description,
@@ -41,6 +41,6 @@ class InboxItem {
   final int id;
   final String title;
   final String? description;
-  final InboxItemStatus status;
+  final CaptureStatus status;
   final DateTime? createdAt;
 }

@@ -10,19 +10,19 @@
 
     <dl class="detail-list">
         <dt>Id</dt>
-        <dd th:text="${inboxItem.id()}"></dd>
+        <dd th:text="${capture.id()}"></dd>
         <dt>Title</dt>
-        <dd th:text="${inboxItem.title()}"></dd>
+        <dd th:text="${capture.title()}"></dd>
         <dt>Description</dt>
-        <dd th:text="${inboxItem.description()}"></dd>
+        <dd th:text="${capture.description()}"></dd>
         <dt>Status</dt>
-        <dd th:text="${inboxItem.status()}"></dd>
+        <dd th:text="${capture.status()}"></dd>
     </dl>
 
-<!--    <div th:replace="~{admin/fragments/attachments :: attachment-grid(${inboxItem.attachments()})}"></div>-->
+<!--    <div th:replace="~{admin/fragments/attachments :: attachment-grid(${capture.attachments()})}"></div>-->
 
     <div class="mt-4">
-        <a th:href="@{/admin/inbox/{id}/create-action(id=${inboxItem.id()})}" class="btn btn-primary">Create Action from this Item</a>
+        <a th:href="@{/admin/inbox/{id}/create-action(id=${capture.id()})}" class="btn btn-primary">Create Action from this Item</a>
     </div>
 </main>
 

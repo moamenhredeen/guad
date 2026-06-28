@@ -28,7 +28,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${inboxItems}">
+        <tr th:each="item : ${captures}">
             <td th:text="${item.id()}"></td>
             <td th:text="${item.title()}"></td>
             <td th:text="${item.description()}"></td>

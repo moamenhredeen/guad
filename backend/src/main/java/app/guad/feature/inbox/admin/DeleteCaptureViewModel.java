@@ -1,6 +1,6 @@
 package app.guad.feature.inbox.admin;
 
-record DeleteInboxItemViewModel(
+record DeleteCaptureViewModel(
         Long id,
         String title
 ) {

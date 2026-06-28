@@ -3,22 +3,22 @@ import 'package:guad/features/gtd/domain/entities/gtd_area.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_context.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_dashboard.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_project.dart';
-import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
+import 'package:guad/features/gtd/domain/entities/capture.dart';
 import 'package:guad/features/gtd/domain/entities/someday_maybe.dart';
 import 'package:guad/features/gtd/domain/entities/waiting_for_item.dart';
 import 'package:guad/features/gtd/domain/entities/weekly_review.dart';
 
 abstract class GtdRepository {
-  Future<List<InboxItem>> getInboxItems();
+  Future<List<Capture>> getCaptures();
 
-  Future<InboxItem> createInboxItem({
+  Future<Capture> createCapture({
     required String title,
     String? description,
   });
 
-  Future<void> deleteInboxItem(int id);
+  Future<void> deleteCapture(int id);
 
-  Future<void> processInboxItem({
+  Future<void> processCapture({
     required int id,
     required InboxProcessInput input,
   });

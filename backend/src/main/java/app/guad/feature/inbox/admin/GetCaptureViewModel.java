@@ -1,12 +1,12 @@
 package app.guad.feature.inbox.admin;
 
-import app.guad.feature.inbox.InboxItemStatus;
+import app.guad.feature.inbox.CaptureStatus;
 
-record GetInboxItemViewModel(
+record GetCaptureViewModel(
         Long id,
         String title,
         String description,
-        InboxItemStatus status
+        CaptureStatus status
 ) {
 }
 

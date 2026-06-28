@@ -5,31 +5,31 @@ import 'package:guad/features/gtd/data/models/gtd_area_model.dart';
 import 'package:guad/features/gtd/data/models/gtd_context_model.dart';
 import 'package:guad/features/gtd/data/models/gtd_dashboard_model.dart';
 import 'package:guad/features/gtd/data/models/gtd_project_model.dart';
-import 'package:guad/features/gtd/data/models/inbox_item_model.dart';
+import 'package:guad/features/gtd/data/models/capture_model.dart';
 import 'package:guad/features/gtd/data/models/someday_maybe_model.dart';
 import 'package:guad/features/gtd/data/models/waiting_for_item_model.dart';
 import 'package:guad/features/gtd/data/models/weekly_review_model.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_action.dart';
 import 'package:guad/features/gtd/domain/entities/gtd_project.dart';
-import 'package:guad/features/gtd/domain/entities/inbox_item.dart';
+import 'package:guad/features/gtd/domain/entities/capture.dart';
 
 class GtdRemoteDataSource {
   const GtdRemoteDataSource(this._dio);
 
   final Dio _dio;
 
-  Future<List<InboxItemModel>> getInboxItems() async {
+  Future<List<CaptureModel>> getCaptures() async {
     final response = await _dio.get<Map<String, dynamic>>('inbox');
     final data = response.data?['data'];
     if (data is! List) return const [];
 
     return data
         .whereType<Map<String, dynamic>>()
-        .map(InboxItemModel.fromJson)
+        .map(CaptureModel.fromJson)
         .toList();
   }
 
-  Future<InboxItemModel> createInboxItem({
+  Future<CaptureModel> createCapture({
     required String title,
     String? description,
   }) async {
@@ -41,16 +41,16 @@ class GtdRemoteDataSource {
           'description': description,
       },
     );
-    return InboxItemModel.fromJson(
+    return CaptureModel.fromJson(
       response.data?['data'] as Map<String, dynamic>,
     );
   }
 
-  Future<void> deleteInboxItem(int id) {
+  Future<void> deleteCapture(int id) {
     return _dio.delete<void>('inbox/$id');
   }
 
-  Future<void> processInboxItem({
+  Future<void> processCapture({
     required int id,
     required InboxProcessInput input,
   }) {

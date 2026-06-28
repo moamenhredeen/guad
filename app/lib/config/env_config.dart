@@ -25,11 +25,11 @@ class EnvConfig {
     environment: AppEnvironment.dev,
     apiBaseUrl: String.fromEnvironment(
       'API_BASE_URL',
-      defaultValue: 'http://192.168.178.60:8080/api',
+      defaultValue: 'http://192.168.178.86:8080/api',
     ),
     keycloakIssuer: String.fromEnvironment(
       'KEYCLOAK_ISSUER',
-      defaultValue: 'http://192.168.178.60:8081/realms/guad-app',
+      defaultValue: 'http://192.168.178.86:8081/realms/guad-app',
     ),
     keycloakClientId: String.fromEnvironment(
       'KEYCLOAK_CLIENT_ID',

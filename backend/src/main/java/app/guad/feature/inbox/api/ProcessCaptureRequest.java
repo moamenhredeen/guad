@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ProcessInboxItemRequest(
+public record ProcessCaptureRequest(
     @NotNull ProcessAction action,
     String description,
     String notes,

@@ -1,6 +1,6 @@
 package app.guad.feature.inbox;
 
-public enum InboxItemStatus {
+public enum CaptureStatus {
     UNPROCESSED,
     PROCESSING,
     PROCESSED

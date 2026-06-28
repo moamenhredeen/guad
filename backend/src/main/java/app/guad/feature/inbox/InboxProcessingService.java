@@ -9,7 +9,7 @@ import app.guad.feature.context.Context;
 import app.guad.feature.context.ContextService;
 import app.guad.feature.document.Document;
 import app.guad.feature.document.DocumentService;
-import app.guad.feature.inbox.api.ProcessInboxItemRequest;
+import app.guad.feature.inbox.api.ProcessCaptureRequest;
 import app.guad.feature.project.Project;
 import app.guad.feature.project.ProjectService;
 import app.guad.feature.project.ProjectStatus;
@@ -50,15 +50,16 @@ public class InboxProcessingService {
     }
 
     @Transactional
-    public Object process(Long inboxItemId, ProcessInboxItemRequest request, UUID userId) {
-        var inboxItem = inboxRepository.findByIdAndUserId(inboxItemId, userId)
-            .orElseThrow(() -> new ResourceNotFoundException("InboxItem", inboxItemId));
+    @Deprecated
+    public Object process(Long captureId, ProcessCaptureRequest request, UUID userId) {
+        var capture = inboxRepository.findById(captureId, userId)
+            .orElseThrow(() -> new ResourceNotFoundException("Capture", captureId));
 
         Object result = switch (request.action()) {
             case NEXT_ACTION -> {
                 var action = new Action();
-                action.setDescription(firstPresent(request.description(), inboxItem.getTitle()));
-                action.setNotes(firstPresent(request.notes(), inboxItem.getDescription()));
+                action.setDescription(firstPresent(request.description(), capture.getTitle()));
+                action.setNotes(firstPresent(request.notes(), capture.getDescription()));
                 action.setStatus(ActionStatus.NEXT);
                 action.setEnergyLevel(request.energyLevel());
                 action.setEstimatedDuration(request.estimatedDuration());
@@ -84,16 +85,16 @@ public class InboxProcessingService {
             }
             case PROJECT -> {
                 var project = new Project();
-                project.setName(inboxItem.getTitle());
-                project.setDescription(inboxItem.getDescription());
+                project.setName(capture.getTitle());
+                project.setDescription(capture.getDescription());
                 project.setStatus(ProjectStatus.ACTIVE);
                 project.setUserId(userId);
                 yield projectService.save(project);
             }
             case WAITING_FOR -> {
                 var wfi = new WaitingForItem();
-                wfi.setTitle(inboxItem.getTitle());
-                wfi.setNotes(inboxItem.getDescription());
+                wfi.setTitle(capture.getTitle());
+                wfi.setNotes(capture.getDescription());
                 wfi.setDelegatedTo(request.delegatedTo());
                 wfi.setStatus(WaitingForItemStatus.WAITING);
                 wfi.setUserId(userId);
@@ -105,25 +106,25 @@ public class InboxProcessingService {
             }
             case SOMEDAY_MAYBE -> {
                 var action = new Action();
-                action.setDescription(inboxItem.getTitle());
-                action.setNotes(inboxItem.getDescription());
+                action.setDescription(capture.getTitle());
+                action.setNotes(capture.getDescription());
                 action.setStatus(ActionStatus.SOMEDAY_MAYBE);
                 action.setUserId(userId);
                 yield actionService.save(action);
             }
             case REFERENCE -> {
                 var doc = new Document();
-                doc.setName(inboxItem.getTitle());
-                doc.setContent(inboxItem.getDescription());
+                doc.setName(capture.getTitle());
+                doc.setContent(capture.getDescription());
                 yield documentService.save(doc);
             }
             case TRASH -> null;
         };
 
         // Mark inbox item as processed
-        inboxItem.setStatus(InboxItemStatus.PROCESSED);
-        inboxItem.setProcessedDate(Instant.now());
-        inboxService.save(inboxItem);
+        capture.setStatus(CaptureStatus.PROCESSED);
+        capture.setProcessedDate(Instant.now());
+        inboxService.save(capture);
 
         return result;
     }

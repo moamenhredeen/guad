@@ -7,9 +7,9 @@
 <main class="main-content">
     <h1>Delete Inbox Item</h1>
     <div class="delete-card">
-        <p>Are you sure you want to delete inbox item "<strong th:text="${inboxItem.title()}"></strong>"?</p>
+        <p>Are you sure you want to delete inbox item "<strong th:text="${capture.title()}"></strong>"?</p>
         <div class="delete-actions">
-            <form method="post" th:action="@{/admin/inbox/delete/{id}(id=${inboxItem.id()})}">
+            <form method="post" th:action="@{/admin/inbox/delete/{id}(id=${capture.id()})}">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
             <a th:href="@{/admin/inbox}" class="btn btn-secondary">Cancel</a>

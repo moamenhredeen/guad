@@ -11,11 +11,13 @@ import java.util.UUID;
 
 /// Capture point for all incoming thoughts, tasks, emails, etc.
 @Entity
-@Table(name = "inbox_items")
+@Table(name = "captures")
 @EntityListeners(AuditingEntityListener.class)
-public class InboxItem {
+public class Capture {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "capture_sequence")
+    @SequenceGenerator(name = "capture_sequence", sequenceName = "captures_seq", allocationSize = 50)
     private Long id;
 
     @Column(nullable = false)
@@ -24,8 +26,9 @@ public class InboxItem {
     @Column
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private InboxItemStatus status;
+    private CaptureStatus status;
 
     @Embedded
     private AuditMetadata audit = new AuditMetadata();
@@ -33,13 +36,13 @@ public class InboxItem {
     @Column
     private Instant processedDate;
 
-    @Column
+    @Column(nullable = false)
     private UUID userId;
 
     @ManyToMany
     @JoinTable(
-            name = "inbox_item_attachments",
-            joinColumns = @JoinColumn(name = "inbox_item_id"),
+            name = "capture_attachments",
+            joinColumns = @JoinColumn(name = "capture_id"),
             inverseJoinColumns = @JoinColumn(name = "attachment_id")
     )
     private Set<Attachment> attachments;
@@ -68,11 +71,11 @@ public class InboxItem {
         this.description = description;
     }
 
-    public InboxItemStatus getStatus() {
+    public CaptureStatus getStatus() {
         return status;
     }
 
-    public void setStatus(InboxItemStatus status) {
+    public void setStatus(CaptureStatus status) {
         this.status = status;
     }
 

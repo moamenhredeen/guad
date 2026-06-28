@@ -21,65 +21,65 @@ public class InboxService {
         this.inboxRepository = inboxRepository;
     }
 
-    public Page<InboxItem> getInboxItems(Pageable pageable) {
+    public Page<Capture> getCaptures(Pageable pageable) {
         return this.inboxRepository.findAll(pageable);
     }
 
-    public Page<InboxItem> search(String title, InboxItemStatus status, Pageable pageable) {
+    public Page<Capture> search(String title, CaptureStatus status, Pageable pageable) {
         var spec = Specification.allOf(
-            InboxItemSpecifications.byTitle(title),
-            InboxItemSpecifications.byStatus(status)
+            CaptureSpecifications.byTitle(title),
+            CaptureSpecifications.byStatus(status)
         );
         return inboxRepository.findAll(spec, pageable);
     }
 
-    public Optional<InboxItem> getInboxItemById(long id) {
+    public Optional<Capture> getCaptureById(long id) {
         return this.inboxRepository.findById(id);
     }
 
-    public List<InboxItem> getUnprocessedByUserId(UUID userId) {
-        return inboxRepository.findAllByUserIdAndStatus(userId, InboxItemStatus.UNPROCESSED);
+    public List<Capture> getUnprocessedByUserId(UUID userId) {
+        return inboxRepository.findByStatus(userId, CaptureStatus.UNPROCESSED);
     }
 
-    public Optional<InboxItem> getByIdAndUserId(Long id, UUID userId) {
-        return inboxRepository.findByIdAndUserId(id, userId);
+    public Optional<Capture> getByIdAndUserId(Long id, UUID userId) {
+        return inboxRepository.findById(id, userId);
     }
 
-    public long countByUserIdAndStatus(UUID userId, InboxItemStatus status) {
-        return inboxRepository.countByUserIdAndStatus(userId, status);
+    public long countByUserIdAndStatus(UUID userId, CaptureStatus status) {
+        return inboxRepository.countByStatus(userId, status);
     }
 
     @Transactional
-    public InboxItem save(InboxItem inboxItem) {
-        if (inboxItem.getId() == null) {
-            return this.inboxRepository.save(inboxItem);
+    public Capture save(Capture capture) {
+        if (capture.getId() == null) {
+            return this.inboxRepository.save(capture);
         }
-        var found = this.inboxRepository.findById(inboxItem.getId());
+        var found = this.inboxRepository.findById(capture.getId());
         if (found.isEmpty()) {
-            throw new IllegalArgumentException("InboxItem not found");
+            throw new IllegalArgumentException("Capture not found");
         }
-        var inboxItemFromDb = found.get();
-        inboxItemFromDb.setTitle(inboxItem.getTitle());
-        inboxItemFromDb.setDescription(inboxItem.getDescription());
-        inboxItemFromDb.setStatus(inboxItem.getStatus());
-        inboxItemFromDb.setProcessedDate(inboxItem.getProcessedDate());
-        inboxItemFromDb.setUserId(inboxItem.getUserId());
-        // Preserve attachments if they were set on the inboxItem
-        if (inboxItem.getAttachments() != null) {
-            inboxItemFromDb.setAttachments(inboxItem.getAttachments());
+        var captureFromDb = found.get();
+        captureFromDb.setTitle(capture.getTitle());
+        captureFromDb.setDescription(capture.getDescription());
+        captureFromDb.setStatus(capture.getStatus());
+        captureFromDb.setProcessedDate(capture.getProcessedDate());
+        captureFromDb.setUserId(capture.getUserId());
+        // Preserve attachments if they were set on the capture
+        if (capture.getAttachments() != null) {
+            captureFromDb.setAttachments(capture.getAttachments());
         }
-        return this.inboxRepository.save(inboxItemFromDb);
+        return this.inboxRepository.save(captureFromDb);
     }
 
     @Transactional
-    public InboxItem saveWithAttachments(InboxItem inboxItem, Set<Attachment> attachments) {
+    public Capture saveWithAttachments(Capture capture, Set<Attachment> attachments) {
         if (attachments != null && !attachments.isEmpty()) {
-            if (inboxItem.getAttachments() == null) {
-                inboxItem.setAttachments(new HashSet<>());
+            if (capture.getAttachments() == null) {
+                capture.setAttachments(new HashSet<>());
             }
-            inboxItem.getAttachments().addAll(attachments);
+            capture.getAttachments().addAll(attachments);
         }
-        return save(inboxItem);
+        return save(capture);
     }
 
     public void deleteById(long id) {

@@ -4,7 +4,7 @@ CREATE SEQUENCE IF NOT EXISTS areas_seq START WITH 1 INCREMENT BY 50;
 CREATE SEQUENCE IF NOT EXISTS attachments_seq START WITH 1 INCREMENT BY 50;
 CREATE SEQUENCE IF NOT EXISTS contexts_seq START WITH 1 INCREMENT BY 50;
 CREATE SEQUENCE IF NOT EXISTS documents_seq START WITH 1 INCREMENT BY 50;
-CREATE SEQUENCE IF NOT EXISTS inbox_items_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE IF NOT EXISTS captures_seq START WITH 1 INCREMENT BY 50;
 CREATE SEQUENCE IF NOT EXISTS projects_seq START WITH 1 INCREMENT BY 50;
 CREATE SEQUENCE IF NOT EXISTS waiting_for_items_seq START WITH 1 INCREMENT BY 50;
 CREATE SEQUENCE IF NOT EXISTS weekly_reviews_seq START WITH 1 INCREMENT BY 50;
@@ -91,19 +91,19 @@ CREATE TABLE documents
     CONSTRAINT pk_documents PRIMARY KEY (id)
 );
 
-CREATE TABLE inbox_items
+CREATE TABLE captures
 (
     id             BIGINT       NOT NULL,
     title          VARCHAR(255) NOT NULL,
     description    VARCHAR(255),
-    status         SMALLINT     NOT NULL,
+    status         varchar(255) NOT NULL,
     created_at     TIMESTAMPTZ,
     updated_at     TIMESTAMPTZ,
     created_by     VARCHAR(255),
     updated_by     VARCHAR(255),
     processed_date TIMESTAMPTZ,
     user_id        UUID         NOT NULL,
-    CONSTRAINT pk_inbox_items PRIMARY KEY (id)
+    CONSTRAINT pk_captures PRIMARY KEY (id)
 );
 
 CREATE TABLE projects
@@ -200,11 +200,11 @@ CREATE TABLE document_attachments
     CONSTRAINT pk_document_attachments PRIMARY KEY (attachment_id, document_id)
 );
 
-CREATE TABLE inbox_item_attachments
+CREATE TABLE capture_attachments
 (
     attachment_id BIGINT NOT NULL,
-    inbox_item_id BIGINT NOT NULL,
-    CONSTRAINT pk_inbox_item_attachments PRIMARY KEY (attachment_id, inbox_item_id)
+    capture_id BIGINT NOT NULL,
+    CONSTRAINT pk_capture_attachments PRIMARY KEY (attachment_id, capture_id)
 );
 
 CREATE TABLE project_attachments
@@ -251,11 +251,11 @@ ALTER TABLE document_attachments
 ALTER TABLE document_attachments
     ADD CONSTRAINT fk_docatt_on_document FOREIGN KEY (document_id) REFERENCES documents (id);
 
-ALTER TABLE inbox_item_attachments
+ALTER TABLE capture_attachments
     ADD CONSTRAINT fk_inbiteatt_on_attachment FOREIGN KEY (attachment_id) REFERENCES attachments (id);
 
-ALTER TABLE inbox_item_attachments
-    ADD CONSTRAINT fk_inbiteatt_on_inbox_item FOREIGN KEY (inbox_item_id) REFERENCES inbox_items (id);
+ALTER TABLE capture_attachments
+    ADD CONSTRAINT fk_inbiteatt_on_capture FOREIGN KEY (capture_id) REFERENCES captures (id);
 
 ALTER TABLE project_attachments
     ADD CONSTRAINT fk_proatt_on_attachment FOREIGN KEY (attachment_id) REFERENCES attachments (id);
@@ -267,7 +267,7 @@ ALTER TABLE project_attachments
 CREATE INDEX idx_actions_user_id ON actions (user_id);
 CREATE INDEX idx_areas_user_id ON areas (user_id);
 CREATE INDEX idx_contexts_user_id ON contexts (user_id);
-CREATE INDEX idx_inbox_items_user_id ON inbox_items (user_id);
+CREATE INDEX idx_captures_user_id ON captures (user_id);
 CREATE INDEX idx_projects_user_id ON projects (user_id);
 CREATE INDEX idx_waiting_for_items_user_id ON waiting_for_items (user_id);
 CREATE INDEX idx_weekly_reviews_user_id ON weekly_reviews (user_id);
